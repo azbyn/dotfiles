@@ -1,0 +1,23 @@
+Lua:
+	lua-yaml
+	lrexlib-pcre
+
+Perl:
+	Switch::Plain
+
+Utils:
+	amixer (alsa-utils)
+	curl
+	perl
+	sensors
+	acpi
+	iwconfig (wireless_tools)
+	compton
+	unclutter
+
+Programs:
+	rofi
+	vim
+	qutebrowser
+
+

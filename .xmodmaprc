@@ -1,0 +1,25 @@
+clear Mod4
+clear Mod2
+clear Lock
+
+!keycode 135 = Hyper_R
+add Mod3 = Hyper_L Hyper_R Caps_Lock
+keycode 66 = F13 Caps_Lock NoSymbol NoSymbol
+
+add Mod4 = Super_L Super_R
+keycode 77 = Super_R
+! Super_R NoSymbol NoSymbol
+
+keysym KP_End = 1
+keysym KP_Down = 2
+keysym KP_Next = 3
+keysym KP_Left = 4
+keysym KP_Begin = 5
+keysym KP_Right = 6
+keysym KP_Home = 7
+keysym KP_Up = 8
+keysym KP_Prior = 9
+keysym KP_Insert = 0
+keysym KP_Delete = KP_Decimal
+keycode 77 = Super_R
+!add Mod2 = Num_Lock

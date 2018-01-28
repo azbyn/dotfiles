@@ -1,0 +1,49 @@
+#! /usr/bin/env perl
+use strict;
+use warnings;
+use Getopt::Long;
+use Pod::Usage;
+
+my $help = 0;
+my $directory = "";
+
+GetOptions(
+	"help|?"=>\$help,
+	"directory=s"=>\$directory,
+) or pod2usage(1);
+
+pod2usage(0) if $help;
+print "find '$ENV{HOME}/Music/$directory' -regextype posix-extended -iregex '.*(".join('|', @ARGV).").*'\n";
+
+system "find", "$ENV{HOME}/Music/$directory",
+	"-regextype", "posix-extended",
+	"-iregex", ".*(".join('|', @ARGV).").*";
+
+__END__
+
+=head1 NAME
+findsong - Find a file in ~/Music
+
+=head1 SYNOPSIS
+
+orgview [options...] [patterns...]
+
+=head1 OPTIONS
+
+=over 20
+
+=item B<-h>, B<--help>
+
+Print a brief help message and exits.
+
+=item B<-d>, B<--directory>
+
+Sub-directory to search in
+
+=back
+
+=head1 DESCRIPTION
+
+B<This program> is a simple wrapper around find
+
+=cut

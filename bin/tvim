@@ -1,0 +1,23 @@
+#! /usr/bin/env perl
+use strict;
+use warnings;
+use Data::Dumper;
+
+my @term_args = ();
+my @vim_args = ();
+
+
+my $i = 0;
+while ($i < 0+@ARGV) {
+	if ($ARGV[$i] eq '-bg') {
+		push @term_args, '-bg';
+		push @term_args, $ARGV[++$i];
+	} else {
+		push @vim_args, $ARGV[$i];
+	}
+	++$i;
+}
+
+push @term_args, ("-e", "sh", "-c", 'sh ~/.colors/shell; nvim ' . join(' ', @vim_args)) ;
+
+system "urxvt", @term_args;

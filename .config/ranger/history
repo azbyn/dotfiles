@@ -1,0 +1,50 @@
+rename 
+bulkrename 
+rename Initial D - Black Out.mp3
+rename Europe - The Final Countdown.mp3
+rename Warrant - Cherry Pie.mp3
+w
+rename Black Sabbath - War Pigs.mp3
+rename 2016 Sabaton The Last Stand
+rename 05. To Hell And Back.mp3
+rename Sabaton
+set 
+shell unzip recovery.tar.rar 
+shell unzip tard.recovery.rar
+shell mkdir
+open_with q
+rename Young Buck- Get Buck.mp3
+rename Young Buck - Get Buck.mp3
+rename hgt
+rename HhGttG
+rename HhGttG.pdf
+shell du Music -sh
+rename Rammstein
+search h
+rename 05.Parazitii - Shoot Yourself (Necenzurat) (2001) [SVCD].mpg.webmdD.part
+rename Parazitii - Shoot Yourself.mp3
+rename Parazitii - Jos Cenzura!.mp3
+wq
+Q
+rename Storaged Melodies
+rename System Of A Down - Shame on a Nigga.mp3
+rename 1998 - System Of A Down
+rename 11 CUBErt.mp3
+rename 2001 - Toxicity
+rename 2003 - Steal This Album
+rename 2005 - Hypnotize
+rename 2005 - Mezmerize
+rename 02 - BYOB.mp3
+rename 03 - Revenga.mp3
+rename System Of A Down
+rename Manowar - The Sons of Odin.mp3
+shell tar xvfJ kmscon-8.tar.xz 
+
+shell mkdir wm
+search 
+open_with nvim
+open_with 
+rename Cheloo - Timp pentru mine.mp3
+rename Cheloo feat Ombladon si Freakadadisk - Sau.mp3
+search debi
+delete

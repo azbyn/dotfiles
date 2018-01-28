@@ -1,0 +1,28 @@
+#! /usr/bin/env perl
+use strict;
+use warnings;
+use Getopt::Long;
+use Data::Dumper;
+use Pod::Usage;
+use Cwd;
+
+my $path;
+my $include;
+my $expression;
+my $help;
+
+GetOptions(
+	"include=s"=>\$include,
+	"expression=s"=>\$expression,
+	"help|?"=>\$help,
+) or pod2usage(2);
+
+$path = @ARGV ? $ARGV[0] : getcwd();
+
+my $cmd = "grep ";
+$cmd .= "--include='$include' " if $include;
+$cmd .= "-rnw '$path' ";
+$cmd .= "-e '$expression' " if $expression;
+
+print "$cmd\n";
+system $cmd;

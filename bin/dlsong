@@ -1,0 +1,103 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Getopt::Long;
+use Data::Dumper;
+use Pod::Usage;
+
+my $verbose = 0;
+my $file;
+my $output;
+my $print = 1;
+my $help = 0;
+my $man = 0;
+
+
+GetOptions(
+	"verbose!"=>\$verbose,
+	"print!"=>\$print,
+	"file=s"=>\$file,
+	"output=s"=>\$output,
+	"help|?"=>\$help,
+	"man"=>\$man) or pod2usage(2);
+
+$output = "~/Music" unless $output;
+
+#$print = 1 if !(defined $print) && $verbose;
+
+pod2usage(0) if $help;
+pod2usage(-exitval => 0, -verbose => 2) if $man;
+
+sub download {
+	my $song = shift;
+	$song =~ s/&.*//; #remove data about playlist and others
+	print "$song\n" if $print;
+	my $cmd = "youtube-dl --extract-audio --audio-format mp3 '$song' -o '$output/%(title)s.%(ext)s'";
+	unless ($verbose) {#show output in real time
+		system $cmd;
+	}
+	else {#ignore output
+		`youtube-dl --extract-audio --audio-format mp3 '$song' -o '$output/%(title)s.%(ext)s'`
+	}
+}
+
+if ($file) {
+	open FILE, $file or die "Could not open $file: $!";
+	while (my $line = <FILE>) {
+		download($line);
+	}
+}
+else {
+	for my $s (@ARGV) {
+		download($s);
+	}
+}
+__END__
+
+=head1 NAME
+
+dlsong - Download songs from youtube
+
+=head1 SYNOPSIS
+
+dlsong [options...] [urls...]
+
+=head1 OPTIONS
+
+=over 20
+
+=item B<-v>, B<--verbose>
+
+Show verbose output (prints url unless specified --noprint)
+
+=item B<--noverbose>
+
+Don't show verbose output (default)
+
+=item B<-p>, B<--print>
+
+Print url (default)
+
+=item B<--noprint>
+
+Don't print url
+
+=item B<-h>, B<--help>
+
+Print a brief help message and exits.
+
+=item B<-o>, B<--output=PATH>
+
+Download path (default = "~/music")
+
+=item B<-f>, B<--file=PATH>
+
+Use urls in file (new line separated)
+
+=back
+
+=head1 DESCRIPTION
+
+B<This program> is a simple wraper around youtube-dl
+
+=cut

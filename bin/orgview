@@ -1,0 +1,97 @@
+#! /usr/bin/env perl
+use strict;
+use warnings;
+use Getopt::Long;
+use Pod::Usage;
+
+my $help = 0;
+GetOptions(
+	"help|?"=>\$help,
+) or pod2usage(1);
+
+pod2usage(0) if $help;
+
+my $BLACK   = "\x1b[30m";
+my $RED     = "\x1b[31m";
+my $GREEN   = "\x1b[32m";
+my $YELLOW  = "\x1b[33m";
+my $BLUE    = "\x1b[34m";
+my $MAGENTA = "\x1b[35m";
+my $CYAN    = "\x1b[36m";
+my $WHITE   = "\x1b[37m";
+my $ORANGE  = "\x1b[38;5;16m";
+my $GREY    = "\x1b[38;5;8m";
+my $RESET   = "\x1b[0m";
+my $BOLD    = "\x1b[1m";
+
+my %data = (
+	normal => $WHITE,
+	key => $ORANGE,
+	value => $WHITE.':',
+	#◉ ○ ✸ ✿ ♥ ● ◇ ✚ ✜ ☯ ◆ ♠ ♣ ♦ ☢ ❀ ◆ ◖ ▶
+	#► • ★ ▸
+	headers => [
+		$BOLD.$BLUE.   '◉',
+		$BOLD.$CYAN.   '○',
+		$BOLD.$GREEN.  '✸',
+		$BOLD.$YELLOW. '●',
+		$BOLD.$MAGENTA.'◆',
+		$BOLD.$RED.    '☢',
+		$BOLD.$WHITE.  '▶',
+	],
+);
+
+
+for (<>) {
+	chomp;
+	for my $i (0 .. @{ $data{headers} }-1) {
+		my $star = '\*' x ($i+1);
+		if (/^$star( .*)/) {
+			print ' 'x$i, $data{headers}->[$i], $1, $RESET, "\n";
+			goto FOUND_HEADER;
+		}
+	}
+	if (/- (.*)\s*:\s*(.*)/) {
+		print $data{key}, $1, $data{value}, ' ', $2, $RESET, "\n";
+	}
+	elsif ($_) {
+		print $data{normal}, $_, $RESET, "\n";
+	}
+	FOUND_HEADER:
+}
+print $RESET;
+
+__END__
+
+=head1 NAME
+orgview - A simple .org file visualizer
+
+=head1 SYNOPSIS
+
+orgview [options...] [files...]
+
+=head1 OPTIONS
+
+=over 20
+
+=item B<-h>, B<--help>
+
+Print a brief help message and exits.
+
+=back
+
+=head1 SYNTAX
+* title
+** title
+*** title
+**** title
+***** title
+****** title
+******* title
+- key: value
+
+=head1 DESCRIPTION
+
+B<This program> is a simple orgmode visualizer
+
+=cut

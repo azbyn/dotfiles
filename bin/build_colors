@@ -1,0 +1,58 @@
+#! /usr/bin/env perl
+
+use strict;
+use warnings;
+use Template::Mustache;
+use Data::Dumper;
+use YAML::XS;
+use FindBin;
+use File::Slurp;
+
+my $home = $ENV{HOME};
+my $argc = 0+@ARGV;
+my $dir = $argc >= 1 ? $ARGV[0] : "$home/.config/colors";
+my $out_dir = $argc >= 2 ? $ARGV[1] : "$home/.colors";
+my $data = YAML::XS::LoadFile("$dir/colors");
+
+my $slug = "base16-custom";
+my %lookup;
+
+for my $scheme_value (sort keys %{$data}) {
+	if ($scheme_value =~ m/base/) {
+		# add baseXX-hex to the lookup table
+		$lookup{"$scheme_value-hex"} = $data->{$scheme_value};
+		my @hex = $data->{$scheme_value} =~ m/(..)/g;
+		my @letters = qw(r g b);
+		my $index = 0;
+		# add baseXX-hex/rgb-r/g/b to the lookup table
+		for my $duo (@hex) {
+			$lookup{"$scheme_value-hex-$letters[$index]"} = $duo;
+			$lookup{"$scheme_value-rgb-$letters[$index]"} = hex $duo;
+			($index %= 3)++;
+		}
+	}
+}
+$lookup{"scheme-name"} = $data->{"scheme"};
+$lookup{"scheme-author"} = $data->{"author"};
+$lookup{"scheme-slug"} = $slug;
+
+sub process_template {
+	my ($name, $out, $exec) = @_;
+	my $template = read_file("$dir/templates/$name.mustache");
+	open FILE, ">", $out;
+	print FILE Template::Mustache->render($template, \%lookup);
+	close FILE;
+	chmod 0755, $out if $exec;
+}
+
+mkdir($out_dir) unless(-d $out_dir);
+process_template("xresources", "$out_dir/xresources");
+process_template("vim", "$home/.vim/colors/selected.vim");
+process_template("vim", "$home/.config/nvim/colors/selected.vim");
+process_template("nvim", "$home/.config/nvim/colors/gui.vim");
+process_template("shell", "$out_dir/shell", 1);
+#process_template("gtk2", "$home/.gtkrc-2.0");
+process_template("colortest", "$home/bin/colortest", 1);
+process_template("emacs", "$out_dir/$slug-theme.el", 1);
+
+

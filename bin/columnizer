@@ -1,0 +1,78 @@
+#! /usr/bin/env perl
+use strict;
+use warnings;
+use Getopt::Long;
+use Pod::Usage;
+use Data::Dumper;
+use POSIX qw/ceil/;
+
+
+my $help = 0;
+my $margin = 1;
+my $width = `tput cols`;
+my $height = `tput lines`;
+
+GetOptions(
+	"help|?"=>\$help,
+	"margin=i"=>\$margin,
+	"width=i"=>\$width,
+	"height=i"=>\$height,
+) or pod2usage(1);
+
+pod2usage(0) if $help;
+
+$width = 50;
+$height = 5;
+my @lines = <>;
+my $num_colums = ceil(@lines/ $height);
+my @maximums = (0) x $num_colums;
+my @rows = ("") x $height;
+
+for my $i (0 .. @lines - 1) {
+	my $l = length $lines[$i] - 1; # exclude eof
+	if ($l > $maximums[$i / $num_colums]) {
+		$ 
+	}
+}
+
+#chomp @lines;
+print Dumper \@maximums;
+#for (<>) {
+#	chomp;
+#}
+printf "m=%d w=%d, h=%d, c='%s'", $margin, $width, $height, $num_colums;
+
+__END__
+
+=head1 NAME
+orgview - A simple .org file visualizer
+
+=head1 SYNOPSIS
+
+orgview [options...] [files...]
+
+=head1 OPTIONS
+
+=over 20
+
+=item B<-h>, B<--help>
+
+Print a brief help message and exits.
+
+=back
+
+=head1 SYNTAX
+* title
+** title
+*** title
+**** title
+***** title
+****** title
+******* title
+- key: value
+
+=head1 DESCRIPTION
+
+B<This program> is a simple orgmode visualizer
+
+=cut
