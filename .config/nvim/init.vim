@@ -16,7 +16,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 "Plug 'vim-scripts/grep.vim'
 Plug 'Raimondi/delimitMate'
-"Plug 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
 
 "Plug 'Shougo/vimshell.vim'
 "Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
@@ -30,6 +30,9 @@ Plug 'honza/vim-snippets'
 
 "Plug 'tpope/vim-fugitive'
 "Plug 'airblade/vim-gitgutter'
+"
+
+Plug 'junegunn/vim-easy-align'
 
 
 Plug 'xolox/vim-misc'
@@ -44,6 +47,7 @@ Plug 'racer-rust/vim-racer'
 
 " c
 Plug 'ericcurtin/CurtineIncSw.vim'
+"Plug 'yuyuyu101/vim-cpplint'
 "Plug 'vim-scripts/c.vim', {'for': ['c', 'cpp']}
 "Plug 'ludwig/split-manpage.vim'
 
@@ -99,6 +103,10 @@ hi perlVarPlain ctermfg=03
 hi perlStatementStorage ctermfg=05
 hi luaIn ctermfg=05
 hi luaOperator ctermfg=05
+hi Error ctermfg=03 ctermbg=01 term=bold
+"hi ErrorMsg ctermfg=03 ctermbg=01 term=bold
+"call <sid>hi("Error",         s:gui00, s:gui08, s:cterm00, s:cterm08, "", "")
+"call <sid>hi("ErrorMsg",      s:gui08, s:gui00, s:cterm08, s:cterm00, "", "")
 
 set encoding=utf-8
 set fileencoding=utf-8
@@ -160,7 +168,7 @@ set mouse=a
 
 let mapleader = "\<Space>"
 
-set cursorline
+"set cursorline
 hi CursorLine ctermbg=18 ctermfg=None
 
 hi OverLength ctermbg=darkgray ctermfg=red
@@ -196,6 +204,10 @@ endif
 
 
 "" Plugin config
+"easy-align
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
+
 "deoplete
 autocmd Filetype {c,cpp,rust} call deoplete#enable()
 
@@ -299,6 +311,10 @@ let g:syntastic_style_error_symbol = '✗'
 let g:syntastic_style_warning_symbol = '⚠'
 let g:syntastic_auto_loc_list=1
 let g:syntastic_aggregate_errors = 1
+
+
+
+let g:syntastic_cpp_compiler_options = ' -I/usr/include/libdrm -std=c++17'
 
 "Nerdtree
 let NERDTreeDirArrows = 1

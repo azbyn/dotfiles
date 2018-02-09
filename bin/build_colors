@@ -14,7 +14,7 @@ my $dir = $argc >= 1 ? $ARGV[0] : "$home/.config/colors";
 my $out_dir = $argc >= 2 ? $ARGV[1] : "$home/.colors";
 my $data = YAML::XS::LoadFile("$dir/colors");
 
-my $slug = "base16-custom";
+my $slug = "custom";
 my %lookup;
 
 for my $scheme_value (sort keys %{$data}) {
@@ -53,6 +53,7 @@ process_template("nvim", "$home/.config/nvim/colors/gui.vim");
 process_template("shell", "$out_dir/shell", 1);
 #process_template("gtk2", "$home/.gtkrc-2.0");
 process_template("colortest", "$home/bin/colortest", 1);
-process_template("emacs", "$out_dir/$slug-theme.el", 1);
+#different one used
+#process_template("emacs", "$out_dir/base16-$slug-theme.el", 1);
 
 

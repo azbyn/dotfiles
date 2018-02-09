@@ -25,7 +25,7 @@ if exists('syntax_on')
 endif
 
 " Tell them our name.
-let g:colors_name = 'base16-custom'
+let g:colors_name = 'custom'
 
 
 " The Color Dictionary -------------------------------------------------------
@@ -349,7 +349,7 @@ endif
 
 " Airline config. ------------------------------------------------------------
 if get(g:, 'base16_airline', 0)
-  let s:palette = substitute('base16-custom', '-', '_', 'g').'_'.&background
+  let s:palette = substitute('custom', '-', '_', 'g').'_'.&background
   let g:airline#themes#{s:palette}#palette = {}
   function! s:airlist(fg, bg)
     return [

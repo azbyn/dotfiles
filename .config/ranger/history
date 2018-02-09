@@ -1,8 +1,3 @@
-rename 
-bulkrename 
-rename Initial D - Black Out.mp3
-rename Europe - The Final Countdown.mp3
-rename Warrant - Cherry Pie.mp3
 w
 rename Black Sabbath - War Pigs.mp3
 rename 2016 Sabaton The Last Stand
@@ -24,7 +19,6 @@ search h
 rename 05.Parazitii - Shoot Yourself (Necenzurat) (2001) [SVCD].mpg.webmdD.part
 rename Parazitii - Shoot Yourself.mp3
 rename Parazitii - Jos Cenzura!.mp3
-wq
 Q
 rename Storaged Melodies
 rename System Of A Down - Shame on a Nigga.mp3
@@ -39,12 +33,18 @@ rename 03 - Revenga.mp3
 rename System Of A Down
 rename Manowar - The Sons of Odin.mp3
 shell tar xvfJ kmscon-8.tar.xz 
-
 shell mkdir wm
 search 
 open_with nvim
-open_with 
 rename Cheloo - Timp pentru mine.mp3
 rename Cheloo feat Ombladon si Freakadadisk - Sau.mp3
 search debi
+shell cppcheck keymaps.cpp 
+
+shell tar xvfJ coreutils-8.29.tar.xz 
+s
+shell mkdir Cheloo Ombladon Parazitii
+wq
+shell 
 delete
+open_with 

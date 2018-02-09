@@ -96,7 +96,7 @@ M.special_tags = {
 	P = {"keepass", "KeePass2"},
 	T = {"qbittorrent", "qBittorrent"},
 	V = {"vlc", "Vlc", "vlc-main"},
-	E = {"pinta", "Pinta"},
+	E = {"emacs", "Emacs"},
 }
 M.tags = {}
 for i=1, M.nr_normal_tags do

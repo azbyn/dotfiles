@@ -44,17 +44,17 @@ sub full_or_short {
 	}
 }
 my $a = defined $ARGV[0] ? $ARGV[0] : "";
-if ($a eq "full" || $a eq "f" || $a eq "-f") {
+if ($a eq "full" || $a eq "f") {
 	full_or_short(9)
 }
-elsif ($a eq "short" || $a eq "s" || $a eq "-s") {
+elsif ($a eq "short" || $a eq "s") {
 	full_or_short(1)
 }
-elsif ($a eq "ordered" || $a eq "o" || $a eq "-o") {
+elsif ($a eq "ordered" || $a eq "o") {
 	for my $i (0..15) {
 		my $ansi = $base16_to_ansi[$i];
-		printf "\33[38;5;%dmbase%02X color%02d %-15s %s \33[0m\n",
-			$ansi, $i, $ansi, $colors[$i], "█" x 25;
+		printf "\33[38;5;%dmbase%02X %-15s %s \33[0m\n",
+			$ansi, $i, $colors[$i], "█" x 25;
 	}
 }
 else {

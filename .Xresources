@@ -1,5 +1,5 @@
 !URxvt.font: xft:Droid Sans Mono for Powerline:size=14
-URxvt.font: xft:DejaVuSansMono Nerd Font:size=14, xft:FontAwesome:size=14, xft:Icons:size=14, xft:unifont:size=14
+URxvt.font: xft:DejaVuSansMono Nerd Font:size=13, xft:FontAwesome, xft:Icons, xft:unifont
 !URxvt.font: xft:UbuntuMono Nerd Font:pixelsize=20
 !URxvt.background: [60]#050205
 URxvt.intensityStyles:	false

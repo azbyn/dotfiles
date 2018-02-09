@@ -234,6 +234,7 @@ M.globalkeys = awful.util.table.join(
 	key(mod, ctrl, shift, "Escape", {"Misc", "Shutdown",
 		exec("systemctl poweroff")}),
 
+	--[[
 	key(alt, "Tab", {"Movement", "View Last Window",
 		function()
 			awful.client.focus.history.previous()
@@ -241,6 +242,7 @@ M.globalkeys = awful.util.table.join(
 				client.focus:raise()
 			end
 		end}),
+	]]--
 	key(mod, "Tab", {"Movement", "Last Tags",
 		awful.tag.history.restore}),
 
@@ -308,6 +310,9 @@ M.globalkeys = awful.util.table.join(
 	key(mod, "Print", music["toggle"]),
 	key(mod, shift, "Print", music["pause"]),
 	key(mod, "Pause", vol["mute"]),
+	key(mod, "Scroll_Lock", {"Misc", "Dropdown music player",
+		function() toggle_dropdown("music") end}),
+
 
 	key(mod, "Prior", vol["up"]),
 	key(mod, shift, "Prior", vol["sup"]),
@@ -369,7 +374,7 @@ M.globalkeys = awful.util.table.join(
 	key(mod, ctrl, "t", {"Tag", "Toggle tag T",
 		function() toggle_tag("T") end}),
 
-	key(mod, "e", {"Program", "Pinta",
+	key(mod, "e", {"Program", "Emacs",
 		exec_tag_special("E")}),
 	key(mod, ctrl, "e", {"Tag", "Toggle tag E",
 		function() toggle_tag("E") end}),
