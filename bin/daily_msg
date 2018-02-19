@@ -31,7 +31,6 @@ my @databases = qw(
 	definitions
 	drugs
 	education
-	ethnic
 	food
 	fortunes
 	goedel
@@ -55,12 +54,10 @@ my @databases = qw(
 	miscellaneous
 	montypython
 	news
-	paradoxum
 	people
 	perl
 	pets
 	platitudes
-	politics
 	question-answer-jokes
 	riddles
 	rtfm

@@ -1327,8 +1327,8 @@ c.url.auto_search = 'naive'
 ## Type: Dict
 c.url.searchengines = {
     'DEFAULT': 'https://duckduckgo.com/?q={}',
+    'ddg': 'https://duckduckgo.com/?q={}',
     'aw': 'https://wiki.archlinux.org/?search={}',
-    'git': 'https://github.com/search?utf8=%E2%9C%93&q={}&type=',
     'gw': 'https://wiki.gentoo.org/?search={}',
     'tpb': 'http://thepiratebay.org/search/{}',
     'tr': 'https://translate.google.com/#auto/en/{}',

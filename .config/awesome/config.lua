@@ -155,7 +155,7 @@ function M.get_dropdowns()
 	return {
 		small = lain.util.quake({
 			app = M.term,
-			extra = alpha_bg.." -cd ~/Projects/kmswm/",
+			extra = alpha_bg.." -cd ~/Projects/",
 			name = "QuakeDD_small",
 			height = 0.7,
 			width = 0.7,

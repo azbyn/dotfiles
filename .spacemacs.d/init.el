@@ -42,13 +42,13 @@ values."
      emacs-lisp
      (c-c++ :variables c-c++-enable-clang-support t)
      ;; colors
-     ;; git
+     git
      markdown
      org
      lua
-     (shell :variables
-            shell-default-height 30
-            shell-default-position 'bottom)
+     ;;(shell :variables
+     ;;       shell-default-height 30
+     ;;       shell-default-position 'bottom)
      ;;spell-checking
      syntax-checking
      )
@@ -57,6 +57,7 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(base16-theme
+                                      browse-kill-ring
                                       highlight-escape-sequences)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -125,7 +126,7 @@ values."
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
-   dotspacemacs-scratch-mode 'text-mode
+   dotspacemacs-scratch-mode 'elisp-mode
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
@@ -299,7 +300,7 @@ values."
    ))
 
 (defun dotspacemacs/user-init ()
-  (setq-default base16-google-dark-colors
+   (setq-default base16-google-dark-colors
                 '(:base00 "#1d1f21"
                   :base01 "#282a2e"
                   :base02 "#373b41"
@@ -315,11 +316,19 @@ values."
                   :base0C "#3971ed" ;;:base0C "#12A59C"
                   :base0D "#3971ED"
                   :base0E "#A36AC7"
-                  :base0F "#FBA922"))
+                  :base0F "#FBA922")) ;;
+
+  (setq-default evil-toggle-key "H-e")
+  ;;(setq-default show-trailing-whitespace t)
+  (set-face-attribute 'trailing-whitespace
+                      nil
+                      :background "#CC342B"
+                      :foreground "#FBA922")
 )
 
 (defun dotspacemacs/user-config ()
-  (menu-bar-mode 1)
+  ;;
+  (menu-bar-mode t)
   ;; .h cpp highlight
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
   ;; (setq-default dotspacemacs-configuration-layers
@@ -332,19 +341,38 @@ values."
   (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
   (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
   (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
-  (define-key ivy-minibuffer-map (kbd "<escape>") 'minibuffer-keyboard-quit)
+  (define-key ivy-minibuffer-map [escape] 'minibuffer-keyboard-quit)
+  ;;(define-key browse-kill-ring-mode-map (kbd "<escape>") 'browse-kill-ring-quit)
   (global-set-key [escape] 'keyboard-quit)
 
-  (global-set-key (kbd "M-<up>") 'windmove-up)
-  (global-set-key (kbd "M-<down>") 'windmove-down)
-  (global-set-key (kbd "M-<right>") 'windmove-right)
-  (global-set-key (kbd "M-<left>") 'windmove-left)
+  (global-set-key (kbd "H-<up>") 'windmove-up)
+  (global-set-key (kbd "H-<down>") 'windmove-down)
+  (global-set-key (kbd "H-<left>") 'windmove-left)
+  (global-set-key (kbd "H-<right>") 'windmove-right)
 
-  (global-set-key (kbd "C-M-<right>") 'enlarge-window-horizontally)
-  (global-set-key (kbd "C-M-<left>") 'shrink-window-horizontally)
-  (global-set-key (kbd "C-M-<down>") 'balance-windows)
-  (global-set-key (kbd "C-M-<up>") 'evil-window-rotate-upwards)
+  (global-set-key (kbd "H-M-<right>") 'enlarge-window-horizontally)
+  (global-set-key (kbd "H-M-<left>") 'shrink-window-horizontally)
+  (global-set-key (kbd "H-M-<down>") 'balance-windows)
+  (global-set-key (kbd "H-M-<up>") 'evil-window-rotate-upwards)
+
+  (global-set-key (kbd "M-c") 'kill-ring-save)
+  (global-set-key (kbd "M-v") 'yank)
+  ;;(define-key evil-visual-state-map (kbd "M-c") 'kill-ring-save)
+  (define-key evil-visual-state-map (kbd "C-x") 'kill-region)
+  ;;(define-key evil-visual-state-map (kbd "M-v") 'yank)
+  (define-key evil-hybrid-state-map (kbd "C-v") 'yank)
   (global-set-key (kbd "H-r") 'dotspacemacs/sync-configuration-layers)
+  (global-set-key (kbd "H-M-v") 'browse-kill-ring)
+  (global-set-key (kbd "H-s") 'save-buffer)
+  (global-set-key (kbd "H-q") 'kill-emacs)
+  (global-set-key (kbd "H-M-r") 'spacemacs/restart-emacs-resume-layouts)
+  (global-set-key (kbd "H-t") 'spacemacs/cycle-spacemacs-theme)
+  (global-set-key (kbd "H-f") 'flycheck-list-errors)
+  (global-set-key (kbd "C-z") 'undo)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t) (emacs-lisp . t) (perl . t)))
+
   ;; (add-hook
   ;;  'c++-mode-hook
   ;;  (lambda ()
@@ -373,23 +401,27 @@ values."
   (setq-default tab-width 4)
   ;;(setq-default c-basic-offset 4)
   ;;(add-hook 'font-lock-mode-hook 'hc-highlight-tabs)
-  (set-face-attribute 'trailing-whitespace nil :background "#CC342B")
-  (setq-default show-trailing-whitespace t)
 
-  ;;         
+  ;;(setq powerline-default-separator 'arrow)
+
+  ;;                
 
   (setq-default whitespace-line-column 80)
   (setq-default whitespace-style '(face
-                                   trailing
+                                   ;;trailing
                                    tabs
-                                   ;; spaces
+                                   ;;spaces
                                    space-before-tab
                                    space-after-tab
                                    tab-mark
-                                   ;; space-mark
+                                   ;;space-mark
                                    lines-tail))
   (add-hook 'prog-mode-hook 'whitespace-mode)
   (add-hook 'prog-mode-hook 'hes-mode)
+  ;;(add-hook 'prog-mode-hook 'hungry-delete-mode)
+
+  ;;(setq-default show-trailing-whitespace t)
+  (set-face-attribute 'trailing-whitespace nil :background "#CC342B")
 
 
   (defun get-deletion-count (arg)
@@ -398,6 +430,7 @@ values."
       (let ((result (mod (current-column) arg)))
         (if (eq result 0) arg
           result))))
+
   (defun backspace-some (arg)
     "Deletes some backspaces, ARG unused."
     (interactive "*P")
@@ -414,10 +447,17 @@ values."
   (setq shell-command-switch "-c")
 
   (put 'hes-escape-backslash-face 'face-alias 'hes-escape-sequence-face)
+  (put 'font-lock-comment-delimiter-face 'face-alias 'font-lock-comment-face)
   (global-set-key (kbd "C-`") 'evil-search-highlight-persist-remove-all)
   (with-eval-after-load 'flycheck
     (setq-default flycheck-disabled-checkers
-                  '(c/c++-cppcheck)))
+                  '(c/c++-cppcheck c/c++-gcc)))
+  ;;(set-face-attribute 'whitespace-space nil
+  ;;                    :background "#1d1f21"
+  ;;                    :foreground "#1d1f21")
   )
 (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
 (load custom-file 'no-error 'no-message)
+
+
+
