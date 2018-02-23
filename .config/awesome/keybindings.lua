@@ -26,8 +26,8 @@ local term = {"Program", "Terminal (URXVT)",
 
 local browser1 = {"Program", "Browser - qutebrowser",
 	exec_tag_special("W")}
-local browser2 = {"Program", "Browser - Iceweasel",
-	exec("iceweasel")}
+local browser2 = {"Program", "Browser - firefox",
+	exec("firefox")}
 local launcher1 = {"Program", "Program Launcher",
 	exec("rofi -modi drun -show drun")}
 local launcher2  = {"Program", "Command Launcher",

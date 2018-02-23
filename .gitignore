@@ -1,0 +1,4 @@
+.config/fish/fishd.*
+.config/nvim/undodir/*
+.config/nvim/plugged/*
+.config/nvim/.netrwhist

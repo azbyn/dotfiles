@@ -1,10 +1,3 @@
-search h
-rename 05.Parazitii - Shoot Yourself (Necenzurat) (2001) [SVCD].mpg.webmdD.part
-rename Parazitii - Shoot Yourself.mp3
-rename Parazitii - Jos Cenzura!.mp3
-Q
-rename Storaged Melodies
-rename System Of A Down - Shame on a Nigga.mp3
 rename 1998 - System Of A Down
 rename 11 CUBErt.mp3
 rename 2001 - Toxicity
@@ -26,7 +19,6 @@ shell cppcheck keymaps.cpp
 shell tar xvfJ coreutils-8.29.tar.xz 
 s
 shell mkdir Cheloo Ombladon Parazitii
-wq
 open_with 
 q
 rename spacemacs
@@ -39,7 +31,6 @@ rename Sechestrati in vacanta
 shell unzip tetris\ guideline\ docs\ 2009.zip 
 m
 shell unzip www_RegieLive_ro_BRITTANIC_1CD.zip 
-
 shell mkdir Britannic
 shell unzip %s 
 shell unzip 
@@ -47,4 +38,13 @@ shell mkdir 'Lista lui Schindler'
 rename Hachiko
 rename Gunfighters_Moon
 shel
+rename movies_2_watch
+Q
+shell mkdir Pictures
+shell ln 1518972729088.jpg Wallpaper
+rename Picturesa
+shell chown /mnt/hdd/Music -R azbyn
+shell mkdir mpd
+
+wq
 delete

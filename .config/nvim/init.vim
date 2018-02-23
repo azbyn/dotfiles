@@ -2,68 +2,21 @@
 set nocompatible
 call plug#begin(expand('~/.config/nvim/plugged'))
 
-Plug 'tpope/vim-speeddating'
-Plug 'dhruvasagar/vim-table-mode'
+"Plug 'tpope/vim-speeddating'
+"Plug 'dhruvasagar/vim-table-mode'
 Plug 'jceb/vim-orgmode'
 Plug 'farmergreg/vim-lastplace'
 Plug 'nathanaelkane/vim-indent-guides'
 "Plug 'bronson/vim-trailing-whitespace'
 "Plug 'vim-scripts/Smart-Tabs', {'for': ['c', 'cpp']}
 Plug 'scrooloose/nerdtree'
-"Plug 'jistr/vim-nerdtree-tabs'
-Plug 'tpope/vim-commentary'
+
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-"Plug 'vim-scripts/grep.vim'
 Plug 'Raimondi/delimitMate'
-Plug 'scrooloose/syntastic'
-
-"Plug 'Shougo/vimshell.vim'
-"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
-"Plug 'junegunn/fzf.vim'
-
-"Plug 'Shougo/vimproc.vim', {'do': 'make'}
-
-"Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-"Plug 'majutsushi/tagbar'
-
-"Plug 'tpope/vim-fugitive'
-"Plug 'airblade/vim-gitgutter'
-"
-
-Plug 'junegunn/vim-easy-align'
-
-
-Plug 'xolox/vim-misc'
-
-Plug 'sheerun/vim-polyglot'
-Plug 'dag/vim-fish'
-
-Plug 'rust-lang/rust.vim'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'ajh17/VimCompletesMe'
-Plug 'racer-rust/vim-racer'
 
-" c
-Plug 'ericcurtin/CurtineIncSw.vim'
-"Plug 'yuyuyu101/vim-cpplint'
-"Plug 'vim-scripts/c.vim', {'for': ['c', 'cpp']}
-"Plug 'ludwig/split-manpage.vim'
-
-
-" lua
-"Plug 'xolox/vim-lua-ftplugin'
-"Plug 'xolox/vim-lua-inspect'
-
-" perl
-Plug 'vim-perl/vim-perl'
-Plug 'c9s/perlomni.vim'
-
-" python
-"Plug 'davidhalter/jedi-vim'
-"Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
-
+Plug 'dag/vim-fish'
 
 call plug#end()
 
@@ -107,7 +60,6 @@ hi Error ctermfg=03 ctermbg=01 term=bold
 "hi ErrorMsg ctermfg=03 ctermbg=01 term=bold
 "call <sid>hi("Error",         s:gui00, s:gui08, s:cterm00, s:cterm08, "", "")
 "call <sid>hi("ErrorMsg",      s:gui08, s:gui00, s:cterm08, s:cterm00, "", "")
-
 set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=utf-8
@@ -139,7 +91,6 @@ set splitbelow
 set splitright
 "set hidden
 set ruler
-
 
 set hlsearch
 set incsearch
@@ -207,16 +158,6 @@ endif
 "easy-align
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
-
-"deoplete
-autocmd Filetype {c,cpp,rust} call deoplete#enable()
-
-" table-Mode slows down stuff
-"autocmd BufRead,BufNewFile *.{org} TableModeEnable
-" grep.vim
-let Grep_Default_Options = '-IR'
-let Grep_Skip_Files = '*.log *.db'
-let Grep_Skip_Dirs = '.git node_modules'
 
 "vim-indent-guides
 let g:indent_guides_enable_on_vim_startup = 1
@@ -297,25 +238,6 @@ else
 	let g:airline_symbols.notexists = ' '
 endif
 
-" snippets
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<c-b>"
-let g:UltiSnipsEditSplit="vertical"
-
-" syntastic
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_error_symbol='✗'
-let g:syntastic_warning_symbol='⚠'
-let g:syntastic_style_error_symbol = '✗'
-let g:syntastic_style_warning_symbol = '⚠'
-let g:syntastic_auto_loc_list=1
-let g:syntastic_aggregate_errors = 1
-
-
-
-let g:syntastic_cpp_compiler_options = ' -I/usr/include/libdrm -std=c++17'
-
 "Nerdtree
 let NERDTreeDirArrows = 1
 let NERDTreeQuitOnOpen = 1
@@ -329,38 +251,6 @@ let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
 let g:NERDTreeWinSize = 50
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 
-"tagbar
-let g:tagbar_autofocus = 1
-" python
-" vim-python
-"augroup vimrc-python
-"	autocmd!
-"	autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 colorcolumn=79
-"	  \ formatoptions+=croq softtabstop=4
-"	  \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
-"augroup END
-
-" jedi-vim
-let g:jedi#popup_on_dot = 0
-let g:jedi#goto_assignments_command = "<leader>g"
-let g:jedi#goto_definitions_command = "<leader>d"
-let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = "<leader>n"
-let g:jedi#rename_command = "<leader>r"
-let g:jedi#show_call_signatures = "0"
-let g:jedi#completions_command = "<C-Space>"
-let g:jedi#smart_auto_mappings = 0
-
-" syntastic
-let g:syntastic_python_checkers=['python', 'flake8']
-" Syntax highlight
-" Default highlight is better than polyglot
-let g:polyglot_disabled = ['python']
-let python_highlight_all = 1
-
-
-
-
 "" Abbreviations
 cnoreabbrev W! w!
 cnoreabbrev Q! q!
@@ -372,8 +262,6 @@ cnoreabbrev WQ wq
 cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev Qall qall
-
-
 
 "" Keybindings
 function IncludeSort()
@@ -462,7 +350,6 @@ vnoremap <C-z> u
 nnoremap q: <NOP>
 nnoremap Q <NOP>
 
-
 vnoremap <F2> >gv<
 nnoremap <F4> <Esc>:w<CR>:make<CR>
 inoremap <F4> <C-o>:w<CR>:make<CR>
@@ -479,19 +366,6 @@ inoremap <F9> <NOP>
 inoremap <F10> <NOP>
 inoremap <F11> <NOP>
 inoremap <F12> <NOP>
-
-inoremap <F13> <C-n>
-inoremap <C-F13> <C-p>
-
-
-autocmd Filetype rust nnoremap <F4> :w<CR>:! cargo run<CR>
-autocmd Filetype rust nnoremap <F5> :w<CR>:! cargo build<CR>
-
-autocmd Filetype {c,cpp} nnoremap <F4> :w<CR>:! make run<CR>
-autocmd Filetype {c,cpp} nnoremap <F5> :w<CR>:! make<CR>
-
-
-
 
 "redraw screen after this
 redraw!

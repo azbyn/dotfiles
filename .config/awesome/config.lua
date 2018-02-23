@@ -58,7 +58,7 @@ M.secondary_layout = {"ru", "phonetic"}
 
 M.term = "urxvt"
 M.music = "ncmpcpp"
-M.editor = "nvim"
+M.editor = "vim"
 M.geditor = "tvim"
 
 -- tables of form { when, cmd }

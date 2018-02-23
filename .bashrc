@@ -9,8 +9,8 @@
 #alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
-export VISUAL="nvim"
-export EDITOR="nvim"
+export VISUAL="vim"
+export EDITOR="vim"
 #PATH=$PATH:~/bin
 
 export BASE16_SHELL_SET_BACKGROUND=false
