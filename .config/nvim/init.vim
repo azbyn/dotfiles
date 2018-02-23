@@ -3,8 +3,6 @@ set nocompatible
 call plug#begin(expand('~/.config/nvim/plugged'))
 
 "Plug 'tpope/vim-speeddating'
-"Plug 'dhruvasagar/vim-table-mode'
-Plug 'jceb/vim-orgmode'
 Plug 'farmergreg/vim-lastplace'
 Plug 'nathanaelkane/vim-indent-guides'
 "Plug 'bronson/vim-trailing-whitespace'
