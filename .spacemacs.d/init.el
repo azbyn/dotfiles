@@ -46,6 +46,7 @@ values."
      markdown
      org
      lua
+     ;; gtags
      ;;(shell :variables
      ;;       shell-default-height 30
      ;;       shell-default-position 'bottom)
@@ -57,6 +58,10 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(base16-theme
+                                      rtags
+                                      company-rtags
+                                      ivy-rtags
+                                      flycheck-rtags
                                       browse-kill-ring
                                       highlight-escape-sequences)
    ;; A list of packages that cannot be updated.
