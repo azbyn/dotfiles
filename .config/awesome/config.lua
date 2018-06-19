@@ -53,8 +53,8 @@ M.bar_font = "UbuntuMono Nerd Font 11"
 
 M.kb_led = "3"
 --                   {layout, variant}
-M.main_kb_layout   = {"ro"}
-M.secondary_layout = {"ru", "phonetic"}
+M.main_kb_layout   = {"us"}
+M.secondary_layout = {"ro", "std"}
 
 M.term = "urxvt"
 M.music = "ncmpcpp"
@@ -75,6 +75,7 @@ M.autorun = {
 	{ "once", "unclutter -root" },
 	{ "once", "compton -b --config ~/.config/compton.conf" },
 	{ "once", "mpd ; mpc pause" },
+    -- { "once", "emacs --daemon"},
 	-- { "start", "mpc pause" },
 	{ "start_fn", function()
 		awful.spawn(sprintf("%s -e sh -c '~/bin/daily_msg; %s'",
@@ -85,6 +86,8 @@ M.autorun = {
 M.program_rules = {
 	{ rule_any = { type = { "dialog", "normal" } },
 	  properties = { titlebars_enabled = true } },
+    { rule = { class = "qt_ts" },
+      properties = { floating=true } },
 }
 
 M.nr_normal_tags = 5
@@ -155,7 +158,7 @@ function M.get_dropdowns()
 	return {
 		small = lain.util.quake({
 			app = M.term,
-			extra = alpha_bg.." -cd ~/Projects/",
+			extra = alpha_bg.." -cd ~/Projects/qt_ts",
 			name = "QuakeDD_small",
 			height = 0.7,
 			width = 0.7,
@@ -185,7 +188,7 @@ function M.get_dropdowns()
 			extra = alpha_bg.." -e sh -c 'sh ~/.colors/shell; nvim ~/todo.org'",
 			name = "QuakeDD_todo",
 			height = 0.9,
-			width = 0.5,
+			width = 0.55,
 			vert = "center",
 			horiz = "center",
 		}),

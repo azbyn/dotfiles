@@ -1,50 +1,50 @@
-rename 1998 - System Of A Down
-rename 11 CUBErt.mp3
-rename 2001 - Toxicity
-rename 2003 - Steal This Album
-rename 2005 - Hypnotize
-rename 2005 - Mezmerize
-rename 02 - BYOB.mp3
-rename 03 - Revenga.mp3
-rename System Of A Down
-rename Manowar - The Sons of Odin.mp3
-shell tar xvfJ kmscon-8.tar.xz 
-shell mkdir wm
-search 
-open_with nvim
-rename Cheloo - Timp pentru mine.mp3
-rename Cheloo feat Ombladon si Freakadadisk - Sau.mp3
-search debi
-shell cppcheck keymaps.cpp 
-shell tar xvfJ coreutils-8.29.tar.xz 
-s
-shell mkdir Cheloo Ombladon Parazitii
-open_with 
-q
-rename spacemacs
-deletee
-shell 
-shell unzip www_RegieLive_ro_CELLULAR_2004_BLURAY_720P_DTS_X264_3LI_1CD_1.zip 
-rename Celularul
-shell mkdir Eyewitness
-rename Sechestrati in vacanta
-shell unzip tetris\ guideline\ docs\ 2009.zip 
-m
-shell unzip www_RegieLive_ro_BRITTANIC_1CD.zip 
-shell mkdir Britannic
-shell unzip %s 
-shell unzip 
-shell mkdir 'Lista lui Schindler'
-rename Hachiko
-rename Gunfighters_Moon
-shel
-rename movies_2_watch
-Q
-shell mkdir Pictures
-shell ln 1518972729088.jpg Wallpaper
-rename Picturesa
-shell chown /mnt/hdd/Music -R azbyn
-shell mkdir mpd
+shell mkdir afret
+rename after
+shell mkdir syntax
 
+e python.vim
+rename bi_overloads._+d
+rename bi_overloads.d
+shell mkdir stdlib
+rename package.d
+rename biguintarm.d
+rename biguintcore.d
+rename biguintnoasm.d
+rename biguintx86.d
+rename biguintarm.+d
+rename biguintcore.+d
+rename biguintnoasm.+d
+rename biguintx86.+d
+rename bigint.+d
 wq
+q
+rename type.d
+rename type_meta.d
+edit app
+e met
+shell e meta.d
+shell mkdir com
+shell touch log.d
+rename log.d
+s
+shell e log.d 
+shell mkdir objects
+rename ts_test
+rename qt_ts_old
+rename qt_ts
+shell mkdir build
+shell mkdir build_android
+shell mkdir src
+shell mkdir ts
+rename ts_
+rename builtin.d
+rename cw
+rename ir
+find 
+rename minciuni virtuale - Italiana
+rename minciuni virtuale - Italiana.mkv
+shell mkdir 'Minciuni virtuale - italiana'
+open_with 
+rename Dubioza kolektiv Zbog svjetske krize nemam za rizle.mp3
+rename Dubioza kolektiv - Zbog svjetske krize nemam za rizle.mp3
 delete

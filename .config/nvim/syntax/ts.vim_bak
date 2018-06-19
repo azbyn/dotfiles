@@ -1,0 +1,210 @@
+" Vim syntax file
+" Language:	ts
+" Maintainer:	David Barnett (https://github.com/tsogle/vim-ft-ts)
+" Last Change:	2014 Aug 16
+
+" Options:
+"   There are some options for customizing the highlighting; the recommended
+"   settings are the default values, but you can write:
+"     let OPTION_NAME = 0
+"   in your ~/.vimrc file to disable particular options. You can also write:
+"     let OPTION_NAME = 1
+"   to enable particular options. At present, all options default to on.
+"
+"   - g:ts_highlight_array_whitespace_error
+"     Highlights white space after "[]".
+"   - g:ts_highlight_chan_whitespace_error
+"     Highlights white space around the communications operator that don't
+"     follow the standard style.
+"   - g:ts_highlight_extra_types
+"     Highlights commonly used library types (io.Reader, etc.).
+"   - g:ts_highlight_space_tab_error
+"     Highlights instances of tabs following spaces.
+"   - g:ts_highlight_trailing_whitespace_error
+"     Highlights trailing white space.
+
+" Quit when a (custom) syntax file was already loaded
+if exists('b:current_syntax')
+  finish
+endif
+
+"if !exists('g:ts_highlight_array_whitespace_error')
+"  let g:ts_highlight_array_whitespace_error = 1
+"endif
+"if !exists('g:ts_highlight_chan_whitespace_error')
+"  let g:ts_highlight_chan_whitespace_error = 1
+"endif
+"if !exists('g:ts_highlight_extra_types')
+"  let g:ts_highlight_extra_types = 1
+"endif
+"if !exists('g:ts_highlight_space_tab_error')
+"  let g:ts_highlight_space_tab_error = 1
+"endif
+"if !exists('g:ts_highlight_trailing_whitespace_error')
+"  let g:ts_highlight_trailing_whitespace_error = 1
+"endif
+
+syn case match
+
+syn keyword     tsDirective         package import
+syn keyword     tsDeclaration       const type
+syn keyword     tsKeyword           assert in
+
+hi def link     tsDirective         Statement
+hi def link     tsDeclaration       Keyword
+hi def link     tsKeyword           Keyword
+
+" Keywords within functions
+syn keyword     tsStatement         defer go goto return break continue fallthrough
+syn keyword     tsConditional       if else while for switch select
+syn keyword     tsLabel             case default
+syn keyword     tsRepeat            range
+
+hi def link     tsStatement         Statement
+hi def link     tsConditional       Conditional
+hi def link     tsLabel             Label
+hi def link     tsRepeat            Repeat
+
+" Predefined types
+syn keyword     tsType              chan map bool string error
+syn keyword     tsSignedInts        int int8 int16 int32 int64 rune
+syn keyword     tsUnsignedInts      byte uint uint8 uint16 uint32 uint64 uintptr
+syn keyword     tsFloats            float32 float64
+syn keyword     tsComplexes         complex64 complex128
+
+hi def link     tsType              Type
+hi def link     tsSignedInts        Type
+hi def link     tsUnsignedInts      Type
+hi def link     tsFloats            Type
+hi def link     tsComplexes         Type
+
+" Treat func specially: it's a declaration at the start of a line, but a type
+" elsewhere. Order matters here.
+syn match       tsDeclaration       /\<fun\>/
+
+" Predefined functions and values
+"syn keyword     tsBuiltins          append cap close complex copy delete imag len
+syn keyword     tsBuiltins          print printf printfln println
+syn keyword     tsConstants         true false nil
+syn match       tsKeywords          /->/
+syn match       tsKeywords          /\\/
+
+hi def link     tsBuiltins          Function
+hi def link     tsConstants         Keyword
+"hi def link     tsKeywords          Statement
+
+" Comments; their contents
+syn keyword     tsTodo              contained TODO FIXME XXX BUG
+syn cluster     tsCommentGroup      contains=tsTodo
+syn region      tsComment           start="/\*" end="\*/" contains=@tsCommentGroup,@Spell
+syn region      tsComment           start="#" end="$" contains=@tsCommentGroup,@Spell
+
+hi def link     tsComment           Comment
+hi def link     tsTodo              Todo
+
+" ts escapes
+syn match       tsEscapeOctal       display contained "\\[0-7]\{3}"
+syn match       tsEscapeC           display contained +\\[abfnrtv\\'"]+
+syn match       tsEscapeX           display contained "\\x\x\{2}"
+syn match       tsEscapeU           display contained "\\u\x\{4}"
+syn match       tsEscapeBigU        display contained "\\U\x\{8}"
+syn match       tsEscapeError       display contained +\\[^0-7xuUabfnrtv\\'"]+
+
+hi def link     tsEscapeOctal       tsSpecialString
+hi def link     tsEscapeC           tsSpecialString
+hi def link     tsEscapeX           tsSpecialString
+hi def link     tsEscapeU           tsSpecialString
+hi def link     tsEscapeBigU        tsSpecialString
+hi def link     tsSpecialString     Special
+hi def link     tsEscapeError       Error
+
+" Strings and their contents
+syn cluster     tsStringGroup       contains=tsEscapeOctal,tsEscapeC,tsEscapeX,tsEscapeU,tsEscapeBigU,tsEscapeError
+syn region      tsString            start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=@tsStringGroup
+syn region      tsRawString         start=+`+ end=+`+
+
+hi def link     tsString            String
+hi def link     tsRawString         String
+
+" Characters; their contents
+syn cluster     tsCharacterGroup    contains=tsEscapeOctal,tsEscapeC,tsEscapeX,tsEscapeU,tsEscapeBigU
+syn region      tsCharacter         start=+'+ skip=+\\\\\|\\'+ end=+'+ contains=@tsCharacterGroup
+
+hi def link     tsCharacter         Character
+
+" Regions
+syn region      tsBlock             start="{" end="}" transparent fold
+syn region      tsParen             start='(' end=')' transparent
+
+" Integers
+syn match       tsDecimalInt        "\<\d\+\([Ee]\d\+\)\?\>"
+syn match       tsHexadecimalInt    "\<0x\x\+\>"
+syn match       tsOctalInt          "\<0\o\+\>"
+syn match       tsOctalError        "\<0\o*[89]\d*\>"
+
+hi def link     tsDecimalInt        Integer
+hi def link     tsHexadecimalInt    Integer
+hi def link     tsOctalInt          Integer
+hi def link     Integer             Number
+
+" Floating point
+syn match       tsFloat             "\<\d\+\.\d*\([Ee][-+]\d\+\)\?\>"
+syn match       tsFloat             "\<\.\d\+\([Ee][-+]\d\+\)\?\>"
+syn match       tsFloat             "\<\d\+[Ee][-+]\d\+\>"
+
+"hi def link     tsFloat             Float
+"
+"" Imaginary literals
+"syn match       tsImaginary         "\<\d\+i\>"
+"syn match       tsImaginary         "\<\d\+\.\d*\([Ee][-+]\d\+\)\?i\>"
+"syn match       tsImaginary         "\<\.\d\+\([Ee][-+]\d\+\)\?i\>"
+"syn match       tsImaginary         "\<\d\+[Ee][-+]\d\+i\>"
+"
+"hi def link     tsImaginary         Number
+"
+"" Spaces after "[]"
+"if ts_highlight_array_whitespace_error != 0
+"  syn match tsSpaceError display "\(\[\]\)\@<=\s\+"
+"endif
+"
+"" Spacing errors around the 'chan' keyword
+"if ts_highlight_chan_whitespace_error != 0
+"  " receive-only annotation on chan type
+"  syn match tsSpaceError display "\(<-\)\@<=\s\+\(chan\>\)\@="
+"  " send-only annotation on chan type
+"  syn match tsSpaceError display "\(\<chan\)\@<=\s\+\(<-\)\@="
+"  " value-ignoring receives in a few contexts
+"  syn match tsSpaceError display "\(\(^\|[={(,;]\)\s*<-\)\@<=\s\+"
+"endif
+"
+"" Extra types commonly seen
+"if ts_highlight_extra_types != 0
+"  syn match tsExtraType /\<bytes\.\(Buffer\)\>/
+"  syn match tsExtraType /\<io\.\(Reader\|Writer\|ReadWriter\|ReadWriteCloser\)\>/
+"  syn match tsExtraType /\<reflect\.\(Kind\|Type\|Value\)\>/
+"  syn match tsExtraType /\<unsafe\.Pointer\>/
+"endif
+
+" Space-tab error
+"if ts_highlight_space_tab_error != 0
+"  syn match tsSpaceError display " \+\t"me=e-1
+"endif
+
+"" Trailing white space error
+"if ts_highlight_trailing_whitespace_error != 0
+"  syn match tsSpaceError display excludenl "\s\+$"
+"endif
+
+"hi def link     tsExtraType         Type
+"hi def link     tsSpaceError        Error
+
+" Search backwards for a global declaration to start processing the syntax.
+"syn sync match tsSync grouphere NONE /^\(const\|var\|type\|func\)\>/
+
+" There's a bug in the implementation of grouphere. For now, use the
+" following as a more expensive/less precise workaround.
+"syn sync minlines=500
+
+let b:current_syntax = 'ts'
+
+" vim: sw=2 sts=2 et

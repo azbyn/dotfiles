@@ -1,0 +1,297 @@
+" Vim syntax file
+" Language:     ts
+" Maintainer:   Patrick Walton <pcwalton@mozilla.com>
+" Maintainer:   Ben Blum <bblum@cs.cmu.edu>
+" Maintainer:   Chris Morgan <me@chrismorgan.info>
+" Last Change:  Feb 24, 2016
+" For bugs, patches and license go to https://github.com/ts-lang/ts.vim
+
+if version < 600
+	syntax clear
+elseif exists("b:current_syntax")
+	finish
+endif
+
+" Syntax definitions {{{1
+" Basic keywords {{{2
+syn keyword   tsConditional match if else
+syn keyword   tsRepeat for loop while
+syn keyword   tsTypedef type nextgroup=tsIdentifier skipwhite skipempty
+syn keyword   tsStructure struct enum nextgroup=tsIdentifier skipwhite skipempty
+syn keyword   tsUnion union nextgroup=tsIdentifier skipwhite skipempty contained
+syn match tsUnionContextual /\<union\_s\+\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*/ transparent contains=tsUnion
+syn keyword   tsOperator    as
+
+syn match     tsAssert      "\<assert\(\w\)*!" contained
+syn match     tsPanic       "\<panic\(\w\)*!" contained
+syn keyword   tsKeyword     break
+syn keyword   tsKeyword     box nextgroup=tsBoxPlacement skipwhite skipempty
+syn keyword   tsKeyword     continue
+syn keyword   tsKeyword     extern nextgroup=tsExternCrate,tsObsoleteExternMod skipwhite skipempty
+syn keyword   tsKeyword     fun nextgroup=tsFuncName skipwhite skipempty
+syn keyword   tsKeyword     in impl let
+syn keyword   tsKeyword     pub nextgroup=tsPubScope skipwhite skipempty
+syn keyword   tsKeyword     return
+syn keyword   tsSuper       super
+syn keyword   tsKeyword     unsafe where
+syn keyword   tsKeyword     use nextgroup=tsModPath skipwhite skipempty
+" FIXME: Scoped impl's name is also fallen in this category
+syn keyword   tsKeyword     mod trait nextgroup=tsIdentifier skipwhite skipempty
+syn keyword   tsStorage     move mut ref static const
+syn match tsDefault /\<default\ze\_s\+\(impl\|fun\|type\|const\)\>/
+
+syn keyword   tsInvalidBareKeyword crate
+
+syn keyword tsPubScopeCrate crate contained
+syn match tsPubScopeDelim /[()]/ contained
+syn match tsPubScope /([^()]*)/ contained contains=tsPubScopeDelim,tsPubScopeCrate,tsSuper,tsModPath,tsModPathSep,tsSelf transparent
+
+syn keyword   tsExternCrate crate contained nextgroup=tsIdentifier,tsExternCrateString skipwhite skipempty
+" This is to get the `bar` part of `extern crate "foo" as bar;` highlighting.
+syn match   tsExternCrateString /".*"\_s*as/ contained nextgroup=tsIdentifier skipwhite transparent skipempty contains=tsString,tsOperator
+syn keyword   tsObsoleteExternMod mod contained nextgroup=tsIdentifier skipwhite skipempty
+
+syn match     tsIdentifier  contains=tsIdentifierPrime "\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*" display contained
+syn match     tsFuncName    "\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*" display contained
+
+syn region    tsBoxPlacement matchgroup=tsBoxPlacementParens start="(" end=")" contains=TOP contained
+" Ideally we'd have syntax rules set up to match arbitrary expressions. Since
+" we don't, we'll just define temporary contained rules to handle balancing
+" delimiters.
+syn region    tsBoxPlacementBalance start="(" end=")" containedin=tsBoxPlacement transparent
+syn region    tsBoxPlacementBalance start="\[" end="\]" containedin=tsBoxPlacement transparent
+" {} are handled by tsFoldBraces
+
+syn region tsMacroRepeat matchgroup=tsMacroRepeatDelimiters start="$(" end=")" contains=TOP nextgroup=tsMacroRepeatCount
+syn match tsMacroRepeatCount ".\?[*+]" contained
+syn match tsMacroVariable "$\w\+"
+
+" Reserved (but not yet used) keywords {{{2
+syn keyword   tsReservedKeyword alignof become do offsetof priv pure sizeof typeof unsized yield abstract virtual final override macro
+
+" Built-in types {{{2
+syn keyword   tsType        isize usize char bool u8 u16 u32 u64 u128 f32
+syn keyword   tsType        f64 i8 i16 i32 i64 i128 str Self
+
+" Things from the libstd v1 prelude (src/libstd/prelude/v1.rs) {{{2
+" This section is just straight transformation of the contents of the prelude,
+" to make it easy to update.
+
+" Reexported core operators {{{3
+syn keyword   tsTrait       Copy Send Sized Sync
+syn keyword   tsTrait       Drop Fn FnMut FnOnce
+
+" Reexported functions {{{3
+" There’s no point in highlighting these; when one writes drop( or drop::< it
+" gets the same highlighting anyway, and if someone writes `let drop = …;` we
+" don’t really want *that* drop to be highlighted.
+"syn keyword tsFunction drop
+
+" Reexported types and traits {{{3
+syn keyword tsTrait Box
+syn keyword tsTrait ToOwned
+syn keyword tsTrait Clone
+syn keyword tsTrait PartialEq PartialOrd Eq Ord
+syn keyword tsTrait AsRef AsMut Into From
+syn keyword tsTrait Default
+syn keyword tsTrait Iterator Extend IntoIterator
+syn keyword tsTrait DoubleEndedIterator ExactSizeIterator
+syn keyword tsEnum Option
+syn keyword tsEnumVariant Some None
+syn keyword tsEnum Result
+syn keyword tsEnumVariant Ok Err
+syn keyword tsTrait SliceConcatExt
+syn keyword tsTrait String ToString
+syn keyword tsTrait Vec
+
+" Other syntax {{{2
+syn keyword   tsSelf        self
+syn keyword   tsBoolean     true false
+
+" If foo::bar changes to foo.bar, change this ("::" to "\.").
+" If foo::bar changes to Foo::bar, change this (first "\w" to "\u").
+syn match     tsModPath     "\w\(\w\)*::[^<]"he=e-3,me=e-3
+syn match     tsModPathSep  "::"
+
+syn match     tsFuncCall    "\w\(\w\)*("he=e-1,me=e-1
+syn match     tsFuncCall    "\w\(\w\)*::<"he=e-3,me=e-3 " foo::<T>();
+
+" This is merely a convention; note also the use of [A-Z], restricting it to
+" latin identifiers rather than the full Unicode uppercase. I have not used
+" [:upper:] as it depends upon 'noignorecase'
+"syn match     tsCapsIdent    display "[A-Z]\w\(\w\)*"
+
+syn match     tsOperator     display "\%(+\|-\|/\|*\|=\|\^\|&\||\|!\|>\|<\|%\)=\?"
+" This one isn't *quite* right, as we could have binary-& with a reference
+syn match     tsSigil        display /&\s\+[&~@*][^)= \t\r\n]/he=e-1,me=e-1
+syn match     tsSigil        display /[&~@*][^)= \t\r\n]/he=e-1,me=e-1
+" This isn't actually correct; a closure with no arguments can be `|| { }`.
+" Last, because the & in && isn't a sigil
+syn match     tsOperator     display "&&\|||"
+" This is tsArrowCharacter rather than tsArrow for the sake of matchparen,
+" so it skips the ->; see http://stackoverflow.com/a/30309949 for details.
+syn match     tsArrowCharacter display "->"
+syn match     tsQuestionMark display "?\([a-zA-Z]\+\)\@!"
+
+syn match     tsMacro       '\w\(\w\)*!' contains=tsAssert,tsPanic
+syn match     tsMacro       '#\w\(\w\)*' contains=tsAssert,tsPanic
+
+syn match     tsEscapeError   display contained /\\./
+syn match     tsEscape        display contained /\\\([nrt0\\'"]\|x\x\{2}\)/
+syn match     tsEscapeUnicode display contained /\\u{\x\{1,6}}/
+syn match     tsStringContinuation display contained /\\\n\s*/
+syn region    tsString      start=+b"+ skip=+\\\\\|\\"+ end=+"+ contains=tsEscape,tsEscapeError,tsStringContinuation
+syn region    tsString      start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=tsEscape,tsEscapeUnicode,tsEscapeError,tsStringContinuation,@Spell
+syn region    tsString      start='b\?r\z(#*\)"' end='"\z1' contains=@Spell
+
+syn region    tsAttribute   start="#!\?\[" end="\]" contains=tsString,tsDerive,tsCommentLine,tsCommentBlock,tsCommentLineDocError,tsCommentBlockDocError
+syn region    tsDerive      start="derive(" end=")" contained contains=tsDeriveTrait
+" This list comes from src/libsyntax/ext/deriving/mod.rs
+" Some are deprecated (Encodable, Decodable) or to be removed after a new snapshot (Show).
+syn keyword   tsDeriveTrait contained Clone Hash tscEncodable tscDecodable Encodable Decodable PartialEq Eq PartialOrd Ord Rand Show Debug Default FromPrimitive Send Sync Copy
+
+" Number literals
+syn match     tsDecNumber   display "\<[0-9][0-9_]*\%([iu]\%(size\|8\|16\|32\|64\|128\)\)\="
+syn match     tsHexNumber   display "\<0x[a-fA-F0-9_]\+\%([iu]\%(size\|8\|16\|32\|64\|128\)\)\="
+syn match     tsOctNumber   display "\<0o[0-7_]\+\%([iu]\%(size\|8\|16\|32\|64\|128\)\)\="
+syn match     tsBinNumber   display "\<0b[01_]\+\%([iu]\%(size\|8\|16\|32\|64\|128\)\)\="
+
+" Special case for numbers of the form "1." which are float literals, unless followed by
+" an identifier, which makes them integer literals with a method call or field access,
+" or by another ".", which makes them integer literals followed by the ".." token.
+" (This must go first so the others take precedence.)
+syn match     tsFloat       display "\<[0-9][0-9_]*\.\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\|\.\)\@!"
+" To mark a number as a normal float, it must have at least one of the three things integral values don't have:
+" a decimal point and more numbers; an exponent; and a type suffix.
+syn match     tsFloat       display "\<[0-9][0-9_]*\%(\.[0-9][0-9_]*\)\%([eE][+-]\=[0-9_]\+\)\=\(f32\|f64\)\="
+syn match     tsFloat       display "\<[0-9][0-9_]*\%(\.[0-9][0-9_]*\)\=\%([eE][+-]\=[0-9_]\+\)\(f32\|f64\)\="
+syn match     tsFloat       display "\<[0-9][0-9_]*\%(\.[0-9][0-9_]*\)\=\%([eE][+-]\=[0-9_]\+\)\=\(f32\|f64\)"
+
+" For the benefit of delimitMate
+syn region tsLifetimeCandidate display start=/&'\%(\([^'\\]\|\\\(['nrt0\\\"]\|x\x\{2}\|u{\x\{1,6}}\)\)'\)\@!/ end=/[[:cntrl:][:space:][:punct:]]\@=\|$/ contains=tsSigil,tsLifetime
+syn region tsGenericRegion display start=/<\%('\|[^[cntrl:][:space:][:punct:]]\)\@=')\S\@=/ end=/>/ contains=tsGenericLifetimeCandidate
+syn region tsGenericLifetimeCandidate display start=/\%(<\|,\s*\)\@<='/ end=/[[:cntrl:][:space:][:punct:]]\@=\|$/ contains=tsSigil,tsLifetime
+
+"tsLifetime must appear before tsCharacter, or chars will get the lifetime highlighting
+syn match     tsLifetime    display "\'\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*"
+syn match     tsLabel       display "\'\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*:"
+syn match   tsCharacterInvalid   display contained /b\?'\zs[\n\r\t']\ze'/
+" The groups negated here add up to 0-255 but nothing else (they do not seem to go beyond ASCII).
+syn match   tsCharacterInvalidUnicode   display contained /b'\zs[^[:cntrl:][:graph:][:alnum:][:space:]]\ze'/
+syn match   tsCharacter   /b'\([^\\]\|\\\(.\|x\x\{2}\)\)'/ contains=tsEscape,tsEscapeError,tsCharacterInvalid,tsCharacterInvalidUnicode
+syn match   tsCharacter   /'\([^\\]\|\\\(.\|x\x\{2}\|u{\x\{1,6}}\)\)'/ contains=tsEscape,tsEscapeUnicode,tsEscapeError,tsCharacterInvalid
+
+syn match tsShebang /\%^#![^[].*/
+syn region tsCommentLine                                                  start="#"                      end="$"   contains=tsTodo,@Spell
+syn region tsCommentLineDoc                                               start="//\%(//\@!\|!\)"         end="$"   contains=tsTodo,@Spell
+syn region tsCommentLineDocError                                          start="//\%(//\@!\|!\)"         end="$"   contains=tsTodo,@Spell contained
+syn region tsCommentBlock             matchgroup=tsCommentBlock         start="/\*\%(!\|\*[*/]\@!\)\@!" end="\*/" contains=tsTodo,tsCommentBlockNest,@Spell
+syn region tsCommentBlockDoc          matchgroup=tsCommentBlockDoc      start="/\*\%(!\|\*[*/]\@!\)"    end="\*/" contains=tsTodo,tsCommentBlockDocNest,@Spell
+syn region tsCommentBlockDocError     matchgroup=tsCommentBlockDocError start="/\*\%(!\|\*[*/]\@!\)"    end="\*/" contains=tsTodo,tsCommentBlockDocNestError,@Spell contained
+syn region tsCommentBlockNest         matchgroup=tsCommentBlock         start="/\*"                     end="\*/" contains=tsTodo,tsCommentBlockNest,@Spell contained transparent
+syn region tsCommentBlockDocNest      matchgroup=tsCommentBlockDoc      start="/\*"                     end="\*/" contains=tsTodo,tsCommentBlockDocNest,@Spell contained transparent
+syn region tsCommentBlockDocNestError matchgroup=tsCommentBlockDocError start="/\*"                     end="\*/" contains=tsTodo,tsCommentBlockDocNestError,@Spell contained transparent
+" FIXME: this is a really ugly and not fully correct implementation. Most
+" importantly, a case like ``/* */*`` should have the final ``*`` not being in
+" a comment, but in practice at present it leaves comments open two levels
+" deep. But as long as you stay away from that particular case, I *believe*
+" the highlighting is correct. Due to the way Vim's syntax engine works
+" (greedy for start matches, unlike ts's tokeniser which is searching for
+" the earliest-starting match, start or end), I believe this cannot be solved.
+" Oh you who would fix it, don't bother with things like duplicating the Block
+" rules and putting ``\*\@<!`` at the start of them; it makes it worse, as
+" then you must deal with cases like ``/*/**/*/``. And don't try making it
+" worse with ``\%(/\@<!\*\)\@<!``, either...
+
+syn keyword tsTodo contained TODO FIXME XXX NB NOTE
+
+" Folding rules {{{2
+" Trivial folding rules to begin with.
+" FIXME: use the AST to make really good folding
+syn region tsFoldBraces start="{" end="}" transparent fold
+
+" Default highlighting {{{1
+hi def link tsDecNumber       tsNumber
+hi def link tsHexNumber       tsNumber
+hi def link tsOctNumber       tsNumber
+hi def link tsBinNumber       tsNumber
+hi def link tsIdentifierPrime tsIdentifier
+hi def link tsTrait           tsType
+hi def link tsDeriveTrait     tsTrait
+
+hi def link tsMacroRepeatCount   tsMacroRepeatDelimiters
+hi def link tsMacroRepeatDelimiters   Macro
+hi def link tsMacroVariable Define
+hi def link tsSigil         StorageClass
+hi def link tsEscape        Special
+hi def link tsEscapeUnicode tsEscape
+hi def link tsEscapeError   Error
+hi def link tsStringContinuation Special
+hi def link tsString        String
+hi def link tsCharacterInvalid Error
+hi def link tsCharacterInvalidUnicode tsCharacterInvalid
+hi def link tsCharacter     Character
+hi def link tsNumber        Number
+hi def link tsBoolean       Boolean
+hi def link tsEnum          tsType
+hi def link tsEnumVariant   tsConstant
+hi def link tsConstant      Constant
+hi def link tsSelf          Constant
+hi def link tsFloat         Float
+hi def link tsArrowCharacter tsOperator
+hi def link tsOperator      Operator
+hi def link tsKeyword       Keyword
+hi def link tsTypedef       Keyword " More precise is Typedef, but it doesn't feel right for ts
+hi def link tsStructure     Keyword " More precise is Structure
+hi def link tsUnion         tsStructure
+hi def link tsPubScopeDelim Delimiter
+hi def link tsPubScopeCrate tsKeyword
+hi def link tsSuper         tsKeyword
+hi def link tsReservedKeyword Error
+hi def link tsRepeat        Conditional
+hi def link tsConditional   Conditional
+hi def link tsIdentifier    Identifier
+hi def link tsCapsIdent     tsIdentifier
+hi def link tsModPath       Include
+hi def link tsModPathSep    Delimiter
+hi def link tsFunction      Function
+hi def link tsFuncName      Function
+hi def link tsFuncCall      Function
+hi def link tsShebang       Comment
+hi def link tsCommentLine   Comment
+hi def link tsCommentLineDoc SpecialComment
+hi def link tsCommentLineDocError Error
+hi def link tsCommentBlock  tsCommentLine
+hi def link tsCommentBlockDoc tsCommentLineDoc
+hi def link tsCommentBlockDocError Error
+hi def link tsAssert        PreCondit
+hi def link tsPanic         PreCondit
+hi def link tsMacro         Macro
+hi def link tsType          Type
+hi def link tsTodo          Todo
+hi def link tsAttribute     PreProc
+hi def link tsDerive        PreProc
+hi def link tsDefault       StorageClass
+hi def link tsStorage       StorageClass
+hi def link tsObsoleteStorage Error
+hi def link tsLifetime      Special
+hi def link tsLabel         Label
+hi def link tsInvalidBareKeyword Error
+hi def link tsExternCrate   tsKeyword
+hi def link tsObsoleteExternMod Error
+hi def link tsBoxPlacementParens Delimiter
+hi def link tsQuestionMark  Special
+
+" Other Suggestions:
+" hi tsAttribute ctermfg=cyan
+" hi tsDerive ctermfg=cyan
+" hi tsAssert ctermfg=yellow
+" hi tsPanic ctermfg=red
+" hi tsMacro ctermfg=magenta
+
+syn sync minlines=200
+syn sync maxlines=500
+
+set noexpandtab
+
+let b:current_syntax = "ts"

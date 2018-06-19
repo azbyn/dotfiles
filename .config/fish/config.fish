@@ -6,6 +6,7 @@ fish_default_key_bindings
 #fish_hybrid_key_bindings
 
 set -x RANGER_LOAD_DEFAULT_RC FALSE
+set -x DC_BASE ldc
 
 set -g theme_display_date no
 set -g theme_nerd_fonts yes
@@ -49,7 +50,7 @@ alias rD="r ~/Downloads/"
 alias rDf="r --cmd='set show_hidden true' ~/dotfiles/"
 alias rG="r ~/Git/"
 alias rM="r ~/Music/"
-alias rP="r ~/Pictures/"
+alias rP="r ~/Projects/"
 alias rB="r ~/bin/"
 alias rW="r /mnt/windows/"
 alias rH="r /mnt/hdd/"

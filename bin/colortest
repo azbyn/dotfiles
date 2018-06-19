@@ -53,8 +53,8 @@ elsif ($a eq "short" || $a eq "s") {
 elsif ($a eq "ordered" || $a eq "o") {
 	for my $i (0..15) {
 		my $ansi = $base16_to_ansi[$i];
-		printf "\33[38;5;%dmbase%02X %-15s %s \33[0m\n",
-			$ansi, $i, $colors[$i], "█" x 25;
+		printf "\33[38;5;%dmbase%02X  %-15s %s \\33[38;5;%dm \33[0m\n",
+			$ansi, $i, $colors[$i], "█" x 25, $ansi;
 	}
 }
 else {

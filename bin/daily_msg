@@ -34,14 +34,7 @@ my @databases = qw(
 	food
 	fortunes
 	goedel
-	hitchhiker
 	humorists
-	husse-funny
-	husse-helping
-	husse-moderating
-	husse-self
-	joel-on-software
-	kernelnewbies
 	kids
 	law
 	linux
@@ -52,19 +45,14 @@ my @databases = qw(
 	medicine
 	men-women
 	miscellaneous
-	montypython
-	news
-	people
 	perl
 	pets
 	platitudes
 	question-answer-jokes
 	riddles
-	rtfm
 	science
 	songs-poems
 	sports
-	vimtips
 	wisdom
 	work
 	zippy

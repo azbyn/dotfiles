@@ -4,7 +4,7 @@ call plug#begin(expand('~/.config/nvim/plugged'))
 
 "Plug 'tpope/vim-speeddating'
 Plug 'farmergreg/vim-lastplace'
-Plug 'nathanaelkane/vim-indent-guides'
+"Plug 'nathanaelkane/vim-indent-guides'
 "Plug 'bronson/vim-trailing-whitespace'
 "Plug 'vim-scripts/Smart-Tabs', {'for': ['c', 'cpp']}
 Plug 'scrooloose/nerdtree'
@@ -65,18 +65,14 @@ set fileencodings=utf-8
 set number
 set relativenumber
 
-
+set expandtab
 set tabstop=4
 set shiftwidth=4
-"set autoindent
-"set smartindent
-
-set noexpandtab  "tell vim to keep tabs instead of inserting spaces
-"retab
-"set softtabstop=0
-"set smarttab
-"set noexpandtab
+set autoindent
+set cindent
 "set cindent
+
+"set noexpandtab
 
 set list
 set listchars=eol:\ ,tab:→\ ,trail:·,extends:»,precedes:«
@@ -160,8 +156,8 @@ xmap ga <Plug>(EasyAlign)
 "vim-indent-guides
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermfg=darkgray ctermbg=18
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermfg=darkgray ctermbg=19
+"autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermfg=darkgray ctermbg=18
+"autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermfg=darkgray ctermbg=19
 
 "airline
 " vim-airline

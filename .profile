@@ -1,4 +1,5 @@
-export VISUAL="vim"
-export EDITOR="vim"
+export VISUAL="nvim"
+export EDITOR="nvim"
 
-PATH=~/bin:$PATH
+PATH=~/bin:~/Android/Sdk/tools:~/Android/Sdk/ndk-bundle:$PATH
+

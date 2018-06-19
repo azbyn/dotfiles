@@ -17,6 +17,7 @@ require("utils")
 local M = {}
 
 local mod   = "Mod4"
+local hyper = "Mod3"
 local alt   = "Mod1"
 local ctrl  = "Control"
 local shift = "Shift"
@@ -212,8 +213,12 @@ local function switch_kb_layout()
 end
 
 M.globalkeys = awful.util.table.join(
-	awful.key({}, "Menu", function() end),
-	awful.key({shift}, "Menu", function() end),
+    awful.key({}, "Menu", exec("xdotool click 3")),
+	awful.key({shift}, "Menu", exec("xdotool click 1")),
+	awful.key({alt}, "Menu", exec("xdotool click 2")),
+	awful.key({ctrl}, "Menu", exec("xdotool click 3")),
+	key("Mod3", mod, "grave", {"Misc", "Caps Lock",
+		exec("xdotool key Caps_Lock")}),
 
 
 	awful.key({mod, shift}, "Menu", function() switch_kb_layout() end),
