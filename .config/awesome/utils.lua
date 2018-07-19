@@ -2,8 +2,8 @@ local awful = require("awful")
 local gears = require("gears")
 
 
-local LOG_FILE = os.getenv("HOME").."/.log_awesome"
-awful.spawn.with_shell("date > "..LOG_FILE)
+-- local LOG_FILE = os.getenv("HOME").."/.log_awesome"
+-- awful.spawn.with_shell("date > "..LOG_FILE)
 
 -- Alias for string.format
 sprintf = string.format
@@ -11,15 +11,15 @@ THIN_SPACE = "\xE2\x80\x85" --four per em space
 
 -- Log msg to log_file
 function dlog(msg)
-	local file = io.open(LOG_FILE, "a")
-	if not file then return nil end
-	io.output(file)
-	io.write(msg.."\n")
-	file:close()
+	-- local file = io.open(LOG_FILE, "a")
+	-- if not file then return nil end
+	-- io.output(file)
+	-- io.write(msg.."\n")
+	-- file:close() ]
 end
 -- Log formated string to log_file
 function dlogf(...)
-	dlog(sprintf(...))
+	-- dlog(sprintf(...))
 end
 
 -- Run cmd if no instances are found

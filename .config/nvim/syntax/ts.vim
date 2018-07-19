@@ -1,1 +1,0 @@
-/home/azbyn/Projects/qt_ts/ts.vim

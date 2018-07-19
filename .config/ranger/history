@@ -1,50 +1,50 @@
-shell mkdir afret
-rename after
-shell mkdir syntax
-
-e python.vim
-rename bi_overloads._+d
-rename bi_overloads.d
-shell mkdir stdlib
-rename package.d
-rename biguintarm.d
-rename biguintcore.d
-rename biguintnoasm.d
-rename biguintx86.d
-rename biguintarm.+d
-rename biguintcore.+d
-rename biguintnoasm.+d
-rename biguintx86.+d
-rename bigint.+d
-wq
-q
-rename type.d
-rename type_meta.d
-edit app
-e met
-shell e meta.d
-shell mkdir com
-shell touch log.d
-rename log.d
-s
-shell e log.d 
-shell mkdir objects
-rename ts_test
-rename qt_ts_old
-rename qt_ts
-shell mkdir build
-shell mkdir build_android
-shell mkdir src
-shell mkdir ts
-rename ts_
-rename builtin.d
-rename cw
-rename ir
-find 
-rename minciuni virtuale - Italiana
-rename minciuni virtuale - Italiana.mkv
-shell mkdir 'Minciuni virtuale - italiana'
+shell g
+rename app.zip
+shell mkdir app
+shell unzip app.zip 
+open_with q
+open_with
+rename Ари
+rename 
+rename Aria - Ария
+rename Doom - At Doom's Gate.mp3
+shell mkdir ir
+rename Master
+rename (2010) VII
+rename 2010 - VII
+rename Wilczy Pająk – Niestabilność (Lyrics Video).
+rename Wilczy Pająk– Niestabilność (Lyrics Video).mp3
+rename Wilczy Pająk – Niestabilność (Lyrics Video).mp3
+rename Leningrad - Ленинград
+shell mkdir doom-full
+shell unzip doom\[torrents.ru\].zip 
+shell unzip doom2\[torrents.ru\].zip \
+shell unzip doom2\[torrents.ru\].zip
+rename closure.d+
+rename closure._d
+shell unzip Bac_2017_E_d_Informatica_Model.zip 
+rename Vremya i Steklo Время и Стекло
+rename Vremya i Steklo - Время и Стекло
+rename Potap i Nastya- Потап и Настя Каменских
+rename Potap i Nastya- Потап и Настя
+rename 2018 - Khram
+rename 2014 - Yav
+rename 1987 - Мастер
+cd 
+shell chmod tag2utf-0.16.py +x
+shell unzip Bac.2009.V2.rar 
+shell unrar Bac.2009.V2.rar 
 open_with 
-rename Dubioza kolektiv Zbog svjetske krize nemam za rizle.mp3
-rename Dubioza kolektiv - Zbog svjetske krize nemam za rizle.mp3
+shell tar -xf glibc-1.09.1.tar.gz 
+rename Annihilator - Alison Hell.mp3-bkp
+rename Annihilator - Alison Hell.mp3
+rename Annihilator - Alison Hell.mp3-og
+rename Slayer - Angel of Death.mp3
+shell 
+shell unzip E_d_scris_28_iunie_2018.zip 
+shell mkdir rezerva18
+shell unzip E_d_scris_rezerva_28_iunie_2018.zip 
+shell unzip E_d_scris_Sesiune_speciala_2018.zip 
+shell mkdir loz tww
+rename loz tww
 delete

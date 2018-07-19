@@ -55,6 +55,7 @@ M.kb_led = "3"
 --                   {layout, variant}
 M.main_kb_layout   = {"us"}
 M.secondary_layout = {"ro", "std"}
+--M.secondary_layout = {"ru", "phonetic"}
 
 M.term = "urxvt"
 M.music = "ncmpcpp"
@@ -86,7 +87,7 @@ M.autorun = {
 M.program_rules = {
 	{ rule_any = { type = { "dialog", "normal" } },
 	  properties = { titlebars_enabled = true } },
-    { rule = { class = "qt_ts" },
+    { rule = { class = "mos" },
       properties = { floating=true } },
 }
 
@@ -158,7 +159,7 @@ function M.get_dropdowns()
 	return {
 		small = lain.util.quake({
 			app = M.term,
-			extra = alpha_bg.." -cd ~/Projects/qt_ts",
+			extra = alpha_bg.." -cd ~/Projects/mos_cmd",
 			name = "QuakeDD_small",
 			height = 0.7,
 			width = 0.7,
