@@ -53,7 +53,7 @@ M.bar_font = "UbuntuMono Nerd Font 11"
 
 M.kb_led = "3"
 --                   {layout, variant}
-M.main_kb_layout   = {"us"}
+M.main_kb_layout   = {"us", }
 M.secondary_layout = {"ro", "std"}
 --M.secondary_layout = {"ru", "phonetic"}
 

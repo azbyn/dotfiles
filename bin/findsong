@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Getopt::Long;
 use Pod::Usage;
-
+my $extensions = "\\.(m4a|mp3|flac|wma|wav|3gp|aac|m4b|mpc|ogg|oga|raw|ra|rm|webm|wv)";
 my $help = 0;
 my $directory = "";
 
@@ -13,11 +13,61 @@ GetOptions(
 ) or pod2usage(1);
 
 pod2usage(0) if $help;
-print "find '$ENV{HOME}/Music/$directory' -regextype posix-extended -iregex '.*(".join('|', @ARGV).").*'\n";
+print "find '~/Music/$directory' '".join('|', @ARGV)."'\n";
 
 system "find", "$ENV{HOME}/Music/$directory",
+    "-type", "f",
 	"-regextype", "posix-extended",
-	"-iregex", ".*(".join('|', @ARGV).").*";
+	"-iregex", ".*(".join('|', @ARGV).").*$extensions";
+
+my $org = join('|', @ARGV);
+my $cyr = $org;
+if ($cyr ne "") {
+    $cyr =~ s/(ya|ja|ia)/я/gi;
+    $cyr =~ s/(yu|ju|iu)/ю/gi;
+    $cyr =~ s/shch/щ/gi;
+    $cyr =~ s/shh/щ/gi;
+    $cyr =~ s/sh/ш/gi;
+    $cyr =~ s/zh/ж/gi;
+    $cyr =~ s/ch/ч/gi;
+    $cyr =~ s/ts/ц/gi;
+    $cyr =~ s/eh/э/gi;
+    $cyr =~ s/(yo|eo)/ё/gi;
+    $cyr =~ s/h/х/gi;
+    $cyr =~ s/e/е/gi;
+    $cyr =~ s/g/г/gi;
+    $cyr =~ s/b/б/gi;
+    $cyr =~ s/v|w/в/gi;
+    $cyr =~ s/d/д/gi;
+    $cyr =~ s/y/ы/gi;
+    $cyr =~ s/i/и/gi;
+    $cyr =~ s/j/й/gi;
+    $cyr =~ s/z/з/gi;
+    $cyr =~ s/k|c/к/gi;
+    $cyr =~ s/s/с/gi;
+    $cyr =~ s/r/р/gi;
+    $cyr =~ s/a/а/gi;
+    $cyr =~ s/l/л/gi;
+    $cyr =~ s/m/м/gi;
+    $cyr =~ s/n/н/gi;
+    $cyr =~ s/p/п/gi;
+    $cyr =~ s/o/о/gi;
+    $cyr =~ s/t/т/gi;
+    $cyr =~ s/u/у/gi;
+    $cyr =~ s/f/ф/gi;
+    $cyr =~ s/'/ь/gi;
+    $cyr =~ s/"/Ъ/gi;
+}
+if ($cyr eq $org) {
+    exit 0;
+}
+
+print "find '~/Music/$directory' '$cyr'\n";
+
+system "find", "$ENV{HOME}/Music/$directory",
+    "-type", "f",
+	"-regextype", "posix-extended",
+	"-iregex", ".*($cyr).*$extensions";
 
 __END__
 

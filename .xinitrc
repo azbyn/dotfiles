@@ -10,7 +10,6 @@ xset s off
 # turn off default standby, hibernate, ... after n minutes
 xset -dpms
 
-
 session=${1:-awesome}
 
 case $session in

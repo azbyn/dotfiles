@@ -1,50 +1,50 @@
-shell g
-rename app.zip
-shell mkdir app
-shell unzip app.zip 
-open_with q
-open_with
-rename Ари
-rename 
-rename Aria - Ария
-rename Doom - At Doom's Gate.mp3
-shell mkdir ir
-rename Master
-rename (2010) VII
-rename 2010 - VII
-rename Wilczy Pająk – Niestabilność (Lyrics Video).
-rename Wilczy Pająk– Niestabilność (Lyrics Video).mp3
-rename Wilczy Pająk – Niestabilność (Lyrics Video).mp3
-rename Leningrad - Ленинград
-shell mkdir doom-full
-shell unzip doom\[torrents.ru\].zip 
-shell unzip doom2\[torrents.ru\].zip \
-shell unzip doom2\[torrents.ru\].zip
-rename closure.d+
-rename closure._d
-shell unzip Bac_2017_E_d_Informatica_Model.zip 
-rename Vremya i Steklo Время и Стекло
-rename Vremya i Steklo - Время и Стекло
-rename Potap i Nastya- Потап и Настя Каменских
-rename Potap i Nastya- Потап и Настя
-rename 2018 - Khram
-rename 2014 - Yav
-rename 1987 - Мастер
-cd 
-shell chmod tag2utf-0.16.py +x
-shell unzip Bac.2009.V2.rar 
-shell unrar Bac.2009.V2.rar 
+rename Colectionarul de Oase
+rename The.Bone.Collector.srt
+rename The.Bone.Collector.1999.mp4
+rename The.Bone.Collector.mp4
+rename method.d[
+rename method.d
+rename Lovitura de pistol
+shell unzip www_RegieLive_ro_PISTOL_WHIPPED_STV_DVDRIP_XVID_PREVAIL_1CD_1.zip 
+rename PW.srt
+rename PW.avi
+shell ln -s carpixel.net-1988-volkswagen-golf-gti-g60-3-door-46542-hd.jpg Wallpaper
+rename lib.d
+shell unzip www_RegieLive_ro_DJANGO_1966_REMASTERED_720P_BRRIP_X264_AAC_OZLEM_1CD.zip 
+shell unzip www_RegieLive_ro_DJANGO_1966_720P_BLURAY_X264_CINEFILE_1CD.zip 
+shell unzip www_RegieLive_ro_DJANGO_1966_REMASTERED_BRRIP_XVID_MP3_RARBG_1CD_1.zip 
+rename D.mkv
+rename D.srt
+rename Django
+shell unzip www_RegieLive_ro_LES_MISERABLES_1998_BLURAY_720P_1CD.zip 
+rename Les.Miserables.1998.mp4
+rename Les.Miserables.1998.srt
+rename Les Miserables - 1998 - Liam Neeson
+rename www_RegieLive_ro_LES_MIS_RABLES_2012_720P_BRRIP_X264_GAZ_YIFY_1CD.zip
+shell unzip www_RegieLive_ro_LES_MIS_RABLES_2012_720P_BRRIP_X264_GAZ_YIFY_1CD.zip 
+rename Les.Miserables.2012.720p.BRrip.x264.GAZ.YIFY.srt
+rename Les.Miserables.srt
+rename Les.Misérables.mp4
+rename Les Misérables - 2012 - Hugh Jackman
+rename Les Miserables - 2012 - Hugh Jackman
 open_with 
-shell tar -xf glibc-1.09.1.tar.gz 
-rename Annihilator - Alison Hell.mp3-bkp
-rename Annihilator - Alison Hell.mp3
-rename Annihilator - Alison Hell.mp3-og
-rename Slayer - Angel of Death.mp3
+rename block.d
+rename compiler.d
+rename block._d
+rename compiler._d
+find 
+shell mkdir fundamentele
+rename base.cpp
+shell e README
+rename READ
+wq
+open_with e
+shell mkdir RCR
+shell unrar Retro.City.Rampage.DX.v1.56.rar 
+find F
+shell mkdir Music
 shell 
-shell unzip E_d_scris_28_iunie_2018.zip 
-shell mkdir rezerva18
-shell unzip E_d_scris_rezerva_28_iunie_2018.zip 
-shell unzip E_d_scris_Sesiune_speciala_2018.zip 
-shell mkdir loz tww
-rename loz tww
 delete
+shell mkrdir "Ucide sau mori (Western) (Dublat rusa)"
+shell mkdir "Ucide sau mori (Western) (Dublat rusa)"
+shell q
