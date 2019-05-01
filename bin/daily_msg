@@ -24,38 +24,49 @@ my $B_CYAN    = "\x1b[1;36m";
 my $B_WHITE   = "\x1b[1;37m";
 
 my @databases = qw(
-	art
-	computers
-	cookie
-	debian
-	definitions
-	drugs
-	education
-	food
-	fortunes
-	goedel
-	humorists
-	kids
-	law
-	linux
-	linuxcookie
-	literature
-	love
-	magic
-	medicine
-	men-women
-	miscellaneous
-	perl
-	pets
-	platitudes
-	question-answer-jokes
-	riddles
-	science
-	songs-poems
-	sports
-	wisdom
-	work
-	zippy
+    anti-jokes
+    archer
+    art
+    ascii-art
+    chucknorris
+    computers
+    cookie
+    debian
+    definitions
+    disclaimer
+    drugs
+    education
+    ethnic
+    food
+    fortunes
+    goedel
+    humorists
+    kids
+    knghtbrd
+    law
+    limericks
+    linux
+    linuxcookie
+    literature
+    love
+    medicine
+    men-women
+    miscellaneous
+    paradoxum
+    people
+    pets
+    platitudes
+    politics
+    pratchett
+    rickandmorty
+    riddles
+    science
+    songs-poems
+    sports
+    translate-me
+    wisdom
+    work
+    zippy
 );
 
 my $day = (localtime(time))[6];
@@ -76,6 +87,6 @@ print $BLUE, "Welcome back $ENV{USER}", $RESET, "\n";
 if ($daymsg ne "") {
 	print "\t", $RED, $daymsg, $RESET, "\n";
 }
-#print "($db)\n";
+print "($db)\n";
 #print $CYAN, "Daily message:\n", $RESET;
 system("fortune -ascn 500 $db | lolcat");
