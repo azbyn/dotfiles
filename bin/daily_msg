@@ -25,48 +25,22 @@ my $B_WHITE   = "\x1b[1;37m";
 
 my @databases = qw(
     anti-jokes
-    archer
-    art
-    ascii-art
-    chucknorris
     computers
     cookie
     debian
-    definitions
-    disclaimer
     drugs
-    education
-    ethnic
     food
     fortunes
-    goedel
     humorists
     kids
-    knghtbrd
-    law
     limericks
     linux
     linuxcookie
-    literature
     love
-    medicine
     men-women
     miscellaneous
-    paradoxum
-    people
-    pets
     platitudes
-    politics
-    pratchett
-    rickandmorty
-    riddles
     science
-    songs-poems
-    sports
-    translate-me
-    wisdom
-    work
-    zippy
 );
 
 my $day = (localtime(time))[6];
