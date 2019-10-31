@@ -22,6 +22,32 @@ c.aliases = {
     'ytt': 'open -t https://www.youtube.com',
 }
 
+## Search engines which can be used via the address bar. Maps a search
+## engine name (such as `DEFAULT`, or `ddg`) to a URL with a `{}`
+## placeholder. The placeholder will be replaced by the search term, use
+## `{{` and `}}` for literal `{`/`}` signs. The search engine named
+## `DEFAULT` is used when `url.auto_search` is turned on and something
+## else than a URL was entered to be opened. Other search engines can be
+## used by prepending the search engine name to the search term, e.g.
+## `:open google qutebrowser`.
+## Type: Dict
+c.url.searchengines = {
+    'DEFAULT': 'https://duckduckgo.com/?q={}',
+    'ddg': 'https://duckduckgo.com/?q={}',
+    'gg': 'https://google.com/search?q={}',
+    'aw': 'https://wiki.archlinux.org/?search={}',
+    'gw': 'https://wiki.gentoo.org/?search={}',
+    'tpb': 'http://thepiratebay.org/search/{}',
+    'tr': 'https://translate.google.com/#auto/en/{}',
+    'yt': 'https://youtube.com/results?search_query={}',
+    'as': 'https://developer.android.com/s/results?q={}',
+    'wd': 'https://en.wiktionary.org/wiki/{}'
+}
+
+## Page(s) to open at the start.
+## Type: List of FuzzyUrl, or FuzzyUrl
+# c.url.start_pages = ['https://start.duckduckgo.com']
+
 
 
 ## Time interval (in milliseconds) between auto-saves of
@@ -45,7 +71,7 @@ c.aliases = {
 ## Valid values:
 ##   - webengine: Use QtWebEngine (based on Chromium).
 ##   - webkit: Use QtWebKit (based on WebKit, similar to Safari).
-c.backend = 'webkit'
+c.backend = 'webengine'
 
 ## This setting can be used to map keys to other keys. When the key used
 ## as dictionary-key is pressed, the binding for the key used as
@@ -688,7 +714,10 @@ c.completion.scrollbar.width = 12
 ## List of user stylesheet filenames to use.
 ## Type: List of File, or File
 # c.content.user_stylesheets = []
-
+c.content.user_stylesheets = [
+    #'custom.css',
+    #'custom_solarized.css',
+]
 ## Enable WebGL.
 ## Type: Bool
 # c.content.webgl = True
@@ -759,27 +788,27 @@ c.editor.command = ['gvim', '-f', '{file}', '-c', 'normal {line}G{column0}l']
 
 ## Font used in the completion categories.
 ## Type: Font
-c.fonts.completion.category = 'bold 10pt monospace'
+c.fonts.completion.category = 'bold 11pt monospace'
 
 ## Font used in the completion widget.
 ## Type: Font
-c.fonts.completion.entry = '10pt monospace'
+c.fonts.completion.entry = '11pt monospace'
 
 ## Font used for the debugging console.
 ## Type: QtFont
-c.fonts.debug_console = '10pt monospace'
+c.fonts.debug_console = '11pt monospace'
 
 ## Font used for the downloadbar.
 ## Type: Font
-c.fonts.downloads = '10pt monospace'
+c.fonts.downloads = '11pt monospace'
 
 ## Font used for the hints.
 ## Type: Font
-c.fonts.hints = 'bold 10pt monospace'
+c.fonts.hints = 'bold 11pt monospace'
 
 ## Font used in the keyhint widget.
 ## Type: Font
-c.fonts.keyhint = '10pt monospace'
+c.fonts.keyhint = '12pt monospace'
 
 ## Font used for error messages.
 ## Type: Font
@@ -804,11 +833,11 @@ c.fonts.monospace = '"xos4 Terminus", Terminus, Monospace, "DejaVu Sans Mono", M
 
 ## Font used in the statusbar.
 ## Type: Font
-c.fonts.statusbar = '11pt monospace'
+c.fonts.statusbar = '12pt monospace'
 
 ## Font used in the tab bar.
 ## Type: QtFont
-c.fonts.tabs = '11pt monospace'
+c.fonts.tabs = '12pt monospace'
 
 ## Font family for cursive fonts.
 ## Type: FontFamily
@@ -1043,11 +1072,11 @@ c.fonts.tabs = '11pt monospace'
 ## as it can cause issues with some bitmap fonts. As an alternative to
 ## this, it's possible to set font sizes and the `zoom.default` setting.
 ## Type: Bool
-# c.qt.highdpi = False
+c.qt.highdpi = True
 
 ## Show a scrollbar.
 ## Type: Bool
-c.scrolling.bar = True
+#c.scrolling.bar = True
 
 ## Enable smooth scrolling for web pages. Note smooth scrolling does not
 ## work with the `:scroll-px` command.
@@ -1316,28 +1345,6 @@ c.url.auto_search = 'naive'
 ##   - anchor
 # c.url.incdec_segments = ['path', 'query']
 
-## Search engines which can be used via the address bar. Maps a search
-## engine name (such as `DEFAULT`, or `ddg`) to a URL with a `{}`
-## placeholder. The placeholder will be replaced by the search term, use
-## `{{` and `}}` for literal `{`/`}` signs. The search engine named
-## `DEFAULT` is used when `url.auto_search` is turned on and something
-## else than a URL was entered to be opened. Other search engines can be
-## used by prepending the search engine name to the search term, e.g.
-## `:open google qutebrowser`.
-## Type: Dict
-c.url.searchengines = {
-    'DEFAULT': 'https://duckduckgo.com/?q={}',
-    'ddg': 'https://duckduckgo.com/?q={}',
-    'aw': 'https://wiki.archlinux.org/?search={}',
-    'gw': 'https://wiki.gentoo.org/?search={}',
-    'tpb': 'http://thepiratebay.org/search/{}',
-    'tr': 'https://translate.google.com/#auto/en/{}',
-    'yt': 'https://youtube.com/results?search_query={}',
-}
-
-## Page(s) to open at the start.
-## Type: List of FuzzyUrl, or FuzzyUrl
-# c.url.start_pages = ['https://start.duckduckgo.com']
 
 ## URL parameters to strip with `:yank url`.
 ## Type: List of String
@@ -1354,7 +1361,7 @@ c.url.searchengines = {
 
 ## Default zoom level.
 ## Type: Perc
-# c.zoom.default = '100%'
+c.zoom.default = '125%'
 
 ## Available zoom levels.
 ## Type: List of Perc

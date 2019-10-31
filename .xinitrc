@@ -1,9 +1,9 @@
 # vim:filetype=sh
 xrdb -load $HOME/.Xresources
 xrdb -merge $HOME/.colors/xresources
-setxkbmap moj
+#setxkbmap moj
 #numlockx &
-xmodmap ~/.xmodmaprc
+xmodmap $HOME/.xmodmaprc
 #
 # turn off default screensaver
 xset s off

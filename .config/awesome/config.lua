@@ -48,12 +48,17 @@ M.colors.fg_gray   = M.colors.base03
 M.colors.fg_normal = M.colors.base05
 M.colors.fg_focus  = M.colors.orange
 
-M.default_font = "UbuntuMono Nerd Font 9"-- "DejaVu Sans 9" "Droid Sans Mono 9"-- --"xos4 Terminus 9"
-M.bar_font = "UbuntuMono Nerd Font 11"
+--M.default_font = "DejaVu Sans Mono 10"
+--M.top_font = "DejaVu Sans Mono 10"
+--M.bar_font = "DejaVu Sans Mono 8"
+M.default_font = "UbuntuMono Nerd Font 11"-- "DejaVu Sans 9" "Droid Sans Mono 9"-- --"xos4 Terminus 9"
+M.top_font = "UbuntuMono Nerd Font 11"
+
+M.bar_font = "UbuntuMono Nerd Font 9"
 
 M.kb_led = "3"
 --                   {layout, variant}
-M.main_kb_layout   = {"us", }
+M.main_kb_layout   = {"ro", "std" }
 M.secondary_layout = {"ro", "std"}
 --M.secondary_layout = {"ru", "phonetic"}
 
@@ -92,15 +97,16 @@ M.program_rules = {
 }
 
 M.nr_normal_tags = 5
-M.special_tags_order = {"W", "G", "P", "T", "E", "V" }
+M.special_tags_order = { "S", "W", "G", "P", "T", "E" } --"V"
 M.special_tags = {
 	--tag = {command, class, role-for-primary}
 	W = {"qutebrowser", "qutebrowser"},
 	G = {"gimp", "Gimp", "gimp-image-window"},
 	P = {"keepass", "KeePass2"},
 	T = {"qbittorrent", "qBittorrent"},
-	V = {"vlc", "Vlc", "vlc-main"},
+	S = {"android-studio", "jetbrains-studio"},
 	E = {"emacs", "Emacs"},
+	--V = {"vlc", "Vlc", "vlc-main"},
 }
 M.tags = {}
 for i=1, M.nr_normal_tags do
@@ -159,7 +165,7 @@ function M.get_dropdowns()
 	return {
 		small = lain.util.quake({
 			app = M.term,
-			extra = alpha_bg.." -cd ~/Projects/mos_cmd",
+			extra = alpha_bg.." -cd ~/Projects/ocr",
 			name = "QuakeDD_small",
 			height = 0.7,
 			width = 0.7,
@@ -190,6 +196,15 @@ function M.get_dropdowns()
 			name = "QuakeDD_todo",
 			height = 0.9,
 			width = 0.55,
+			vert = "center",
+			horiz = "center",
+		}),
+		transliterate = lain.util.quake({
+			app = M.term,
+            extra = alpha_bg.." -e '/home/azbyn/bin/transliterate'",
+			name = "QuakeDD_transliterate",
+			height = 120,
+			width = 1005,--0.6,
 			vert = "center",
 			horiz = "center",
 		}),

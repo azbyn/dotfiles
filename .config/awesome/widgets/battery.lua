@@ -12,7 +12,8 @@ local LOW  = config.icons_dir.."battery_low.png"
 local NONE = config.icons_dir.."battery_empty.png"
 
 local CRIT_PERCENT = 15
-local LOW_PERCENT  = 40
+local LOW_PERCENT  = 35
+local FULL_PERCENT = 95
 local M = { last={charge=100, pluggedin=true} }
 
 M.icon = imagebox(NONE, config.colors.fg_normal)
@@ -22,9 +23,9 @@ M.arc = wibox.widget {
 	--rounded_edge = true,
 	max_value = 100,
 	thickness = 2,-- 1.5,
-	start_angle = math.pi * 1.5,
-	forced_height = 17,
-	forced_width = 17,
+    start_angle = math.pi * 1.5,
+	forced_height = 19,--17,
+	forced_width = 19,--17,
 	bg = "#"..config.colors.base03,
 	colors = { "#"..config.colors.fg_focus },
 	paddings = 2,
@@ -88,7 +89,11 @@ function M.update()
 				end
 				if status == "Charging" then
 					data.pluggedin = true
-					M.icon:set_image(AC, config.colors.cyan)
+                    if data.charge >= FULL_PERCENT then
+					    M.icon:set_image(AC, config.colors.cyan)
+                    else
+					    M.icon:set_image(AC, config.colors.fg_gray)
+                    end
 				elseif status == "Full" then
 					data.pluggedin = true
 					color = config.colors.blue
@@ -99,7 +104,7 @@ function M.update()
 					elseif data.charge <= LOW_PERCENT and M.last.charge > LOW_PERCENT then
 						notify("Battery low!", time, config.colors.orange)
 					elseif M.last.pluggedin then
-						notify("On battery power!", time, config.colors.yellow)
+						notify("On battery power! ("..charge.."%)", time, config.colors.yellow)
 					end
 					data.pluggedin = false
 					M.icon:set_image(icon, config.colors.orange)

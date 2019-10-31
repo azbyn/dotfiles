@@ -167,7 +167,9 @@ function theme.at_screen_connect(s)
 			end
 			return true
 		end,
-		awful.util.taglist_buttons)
+		awful.util.taglist_buttons, {
+            font = config.top_font,
+        })
 	--awful.widget.taglist.filter.all, awful.util.taglist_buttons)
 
 	-- Create a tasklist widget
@@ -179,10 +181,13 @@ function theme.at_screen_connect(s)
 		--shape  = gears.shape.octogon,
 		align = 'center',
 		spacing = 10,
+        font = config.top_font,
 		})
 
 	-- Create the wibox
-	s.mywibox = awful.wibar({ position = "top", screen = s, height = 18, bg = theme.bg_normal, fg = "#"..config.colors.fg_normal })
+	--s.mywibox = awful.wibar({ position = "top", screen = s, height = 18, bg = theme.bg_normal, fg = "#"..config.colors.fg_normal })
+	s.mywibox = awful.wibar({ position = "top", screen = s, height = 22, bg = theme.bg_normal, fg = "#"..config.colors.fg_normal })
+
 
 	-- Add widgets to the wibox
 	s.mywibox:setup {
@@ -220,9 +225,9 @@ function theme.at_screen_connect(s)
 			spr,
 			theme.battery.widget,
 			spr,
-			theme.net.widget,
-			theme.net.indicator,
-			theme.net.thing,
+            --theme.net.widget,
+			--theme.net.indicator,
+			--theme.net.thing,
 			--sspr,
 			arrl_ld,
 			wibox.container.background(spr, theme.bg_focus),

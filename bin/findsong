@@ -56,7 +56,7 @@ if ($cyr ne "") {
     $cyr =~ s/u/у/gi;
     $cyr =~ s/f/ф/gi;
     $cyr =~ s/'/ь/gi;
-    $cyr =~ s/"/Ъ/gi;
+    $cyr =~ s/"/ъ/gi;
 }
 if ($cyr eq $org) {
     exit 0;

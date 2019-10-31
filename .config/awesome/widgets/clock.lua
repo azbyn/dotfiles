@@ -6,10 +6,9 @@ local naughty = require("naughty")
 local lain    = require("lain")
 
 require("utils")
-
 local M = {
 	widget = wibox.widget {
-		font = config.bar_font,
+		font = config.top_font,--bar_font,
 		widget = wibox.widget.textbox
 	}
 }

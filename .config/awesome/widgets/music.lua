@@ -23,14 +23,15 @@ local CMD_TEMPLATE = sprintf([[printf "%sstatus\ncurrentsong\nclose\n"]]..
 
 local M = {}
 M.text = wibox.widget {
-	font = config.bar_font,
+	font = config.top_font,
 	widget = wibox.widget.textbox
 }
 M.arc_text = wibox.widget {
 	--id = "txt",
-	font = "7",
+	font = "Ubuntu Mono 14",-- config.top_font,-- #"11",
 	align = "left",
-	valign = "center",
+	--valign = "center",
+	valign = "bottom",
 	widget = wibox.widget.textbox
 }
 M.arc = wibox.widget {
@@ -84,7 +85,7 @@ function M.update(cmd)
 					'(?:(.*?)/)?'..   --album dir
 					'(?:.*/)?'..      --misc dirs
 					'(?:(.*?) - )?'.. --artist
-					'(?:(\\d+)\\.)?'..--track
+					'(?:(\\d+) - )?'..--track
 					'(.*)'..          --title
 					'\\.(.*)')        --extension
 				if not artist then
@@ -106,14 +107,16 @@ function M.update(cmd)
 			if date then album = album.." - "..date end
 			local function get_arc_text(s)
 				local levels = { '█', '▉', '▊', '▋', '▌','▍', '▎', '▏', }
-				return levels[math.floor(s / 2) + 1]
+                return levels[math.floor(s / 2) + 1]
 			end
-			local time
+			--local time
+
 			if out.elapsed and out.duration then
 				local elapsed = tonumber(out.elapsed) or 0
 				local duration = tonumber(out.duration) or 1
 				M.arc.value = elapsed
 				M.arc.max_value = duration
+                --[[
 				if elapsed <= 16 then
 					M.arc_text.text = get_arc_text(elapsed)
 				elseif duration - elapsed <= 16 then
@@ -121,14 +124,18 @@ function M.update(cmd)
 				else
 					M.arc_text.text = ""
 				end
-				time = sec_to_min_sec(duration)
+				M.arc_text.text = ""
+                ]]--
+                --time = sec_to_min_sec(duration)
 				--time = sec_to_min_sec(elapsed).."/"..sec_to_min_sec(duration)
 			else
 				M.arc.value = 0
 				M.arc.max_value = 1
-				M.arc_text.text = ""
-				time = ""
+				--M.arc_text.text = ""
+				--time = ""
 			end
+
+            --M.arc_text.text = markup(config.colors.fg_focus, "█")
 
 			local colors = {
 				artist = config.colors.fg_normal,
@@ -155,7 +162,7 @@ function M.update(cmd)
 				artist = utf8.sub(artist, 0, ARTIST_MAX - 1).."…"
 			end
 			local rem = TITLE_MAX + ARTIST_MAX - utf8.len(artist)
-			if utf8.len(title) > rem then
+            if utf8.len(title) > rem then
 				title = utf8.sub(title, 0, rem - 1).."…"
 			end
 			M.text:set_markup(

@@ -56,8 +56,8 @@ function M.hide()
 	M.notification = nil
 end
 
-M.widget:connect_signal('mouse::enter', function() M.show(0) end)
-M.widget:connect_signal('mouse::leave', function() M.hide() end)
+--M.widget:connect_signal('mouse::enter', function() M.show(0) end)
+--M.widget:connect_signal('mouse::leave', function() M.hide() end)
 
 function M.update_big()--update name and signal quality
 	if M.dev == WIFI_DEV then
@@ -125,7 +125,7 @@ function M.update()
 		(now.received > TRESHOLD and RXTX or TX) or
 		(now.received > TRESHOLD and RX or IDLE)
 	M.widget:set_images({M.icon, state_icon}, {config.colors.fg_normal, config.colors.black})
-
+--[[
 	if not now.up and M.last.up then
 		M.update_big()
 		M.id = naughty.notify({
@@ -139,7 +139,7 @@ function M.update()
 			font        = "DejaVu Sans Mono 14",
 		}).id
 	end
-	
+	]]--
 	M.last = now
 end
 M.update()--get a baseline for rx and tx

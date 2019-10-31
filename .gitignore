@@ -2,3 +2,5 @@
 .config/nvim/undodir/*
 .config/nvim/plugged/*
 .config/nvim/.netrwhist
+.config/ranger/bookmarks
+.config/ranger/history

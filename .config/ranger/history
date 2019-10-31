@@ -1,50 +1,50 @@
-rename Colectionarul de Oase
-rename The.Bone.Collector.srt
-rename The.Bone.Collector.1999.mp4
-rename The.Bone.Collector.mp4
-rename method.d[
-rename method.d
-rename Lovitura de pistol
-shell unzip www_RegieLive_ro_PISTOL_WHIPPED_STV_DVDRIP_XVID_PREVAIL_1CD_1.zip 
-rename PW.srt
-rename PW.avi
-shell ln -s carpixel.net-1988-volkswagen-golf-gti-g60-3-door-46542-hd.jpg Wallpaper
-rename lib.d
-shell unzip www_RegieLive_ro_DJANGO_1966_REMASTERED_720P_BRRIP_X264_AAC_OZLEM_1CD.zip 
-shell unzip www_RegieLive_ro_DJANGO_1966_720P_BLURAY_X264_CINEFILE_1CD.zip 
-shell unzip www_RegieLive_ro_DJANGO_1966_REMASTERED_BRRIP_XVID_MP3_RARBG_1CD_1.zip 
-rename D.mkv
-rename D.srt
-rename Django
-shell unzip www_RegieLive_ro_LES_MISERABLES_1998_BLURAY_720P_1CD.zip 
-rename Les.Miserables.1998.mp4
-rename Les.Miserables.1998.srt
-rename Les Miserables - 1998 - Liam Neeson
-rename www_RegieLive_ro_LES_MIS_RABLES_2012_720P_BRRIP_X264_GAZ_YIFY_1CD.zip
-shell unzip www_RegieLive_ro_LES_MIS_RABLES_2012_720P_BRRIP_X264_GAZ_YIFY_1CD.zip 
-rename Les.Miserables.2012.720p.BRrip.x264.GAZ.YIFY.srt
-rename Les.Miserables.srt
-rename Les.Misérables.mp4
-rename Les Misérables - 2012 - Hugh Jackman
-rename Les Miserables - 2012 - Hugh Jackman
-open_with 
-rename block.d
-rename compiler.d
-rename block._d
-rename compiler._d
-find 
-shell mkdir fundamentele
-rename base.cpp
-shell e README
-rename READ
-wq
-open_with e
-shell mkdir RCR
-shell unrar Retro.City.Rampage.DX.v1.56.rar 
-find F
-shell mkdir Music
-shell 
-delete
-shell mkrdir "Ucide sau mori (Western) (Dublat rusa)"
-shell mkdir "Ucide sau mori (Western) (Dublat rusa)"
+rename test.h
 shell q
+search tex
+open_withq 
+find i
+rename wpa.conf_b
+rename wpa.conf
+shell unzip wargames.\(1983\).eng.1cd.\(5340164\).zip 
+rename WarGames.1983.1080p.BluRay.x264-[YTS.AG].srt
+search 
+search qa
+shell unzip qasm.zip 
+search tasm
+shell unzip tasm32.zip 
+shell mkdir tasm
+search multia
+shell mkdir multiasm
+shell unzip multiasm.zip 
+
+open_with y
+open_with e
+search mr rob
+search rob
+shell unzip mr.robot.s04.e04.404.not.found.\(2019\).eng.1cd.\(7946955\).zip 
+rename 
+shell tbl 
+rename lists.h
+shell mkdir jwasm
+search jwasm
+shell unzip JWasm211as.zip 
+rename jwasm-inst.exe
+search exe
+search wcl
+search wasm
+search ,p
+search mp
+rename Pino D'Angiò
+search jwa
+shell unzip jwasm.zip 
+search debug
+q
+shell mkdir lab
+rename base_dos
+rename lab_4_05_base.asm
+rename lab4_05_base.asm
+rename lab4_04_base.asm
+rename test.com
+search spacemacs
+open_with 
+delete

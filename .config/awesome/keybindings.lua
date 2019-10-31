@@ -34,6 +34,9 @@ local launcher1 = {"Program", "Program Launcher",
 local launcher2  = {"Program", "Command Launcher",
 	exec("rofi -modi run -show run")}--awful.screen.focused().mypromptbox:run()
 
+local file_explorer = {"Program", "GUI - File Explorer - thunar",
+	    exec("thunar")}
+
 
 local music = {
 	next = {"Music", "Next Song",
@@ -213,13 +216,22 @@ local function switch_kb_layout()
 end
 
 M.globalkeys = awful.util.table.join(
-    awful.key({}, "Menu", exec("xdotool click 3")),
-	awful.key({shift}, "Menu", exec("xdotool click 1")),
-	awful.key({alt}, "Menu", exec("xdotool click 2")),
-	awful.key({ctrl}, "Menu", exec("xdotool click 3")),
+    --awful.key({}, "Menu", exec("xdotool click 3")),
+    --awful.key({shift}, "Menu", exec("xdotool click 1")),
+	--awful.key({alt}, "Menu", exec("xdotool click 2")),
+	--awful.key({ctrl}, "Menu", exec("xdotool click 3")),
 	key("Mod3", mod, "grave", {"Misc", "Caps Lock",
 		exec("xdotool key Caps_Lock")}),
 
+    key(mod, shift, "v", {"Misc", "Use mrww from",
+        exec("mrww from")}),
+    key(mod, shift, "c", {"Misc", "Use mrww to",
+        exec("mrww to")}),
+    key(mod, shift, "x", {"Misc", "Use mrww torofi",
+        exec("mrww torofi")}),
+
+	key(mod, "r", {"Misc", " Small Dropdown Terminal",
+		function() toggle_dropdown("transliterate") end}),
 
 	awful.key({mod, shift}, "Menu", function() switch_kb_layout() end),
 	key(mod, "F1", {"Misc", "Show Help",
@@ -384,11 +396,13 @@ M.globalkeys = awful.util.table.join(
 	key(mod, ctrl, "e", {"Tag", "Toggle tag E",
 		function() toggle_tag("E") end}),
 
-	key(mod, "v", {"Program", "Vlc",
+	--[[key(mod, "v", {"Program", "Vlc",
 		exec_tag_special("V")}),
 	key(mod, ctrl, "v", {"Tag", "Toggle tag V",
-		function() toggle_tag("V") end}),
+		function() toggle_tag("V") end}),]]--
 
+	key(mod, shift, "s", {"Program", "Android Studio",
+		exec_tag_special("S")}),
 
 	key(mod, "a", {"Misc", "Big Dropdown Terminal",
 		function() toggle_dropdown("big") end}),
@@ -552,7 +566,8 @@ M.clientkeys = awful.util.table.join(
 		function(c) lain.util.magnify_client(c); c:raise() end }),
 
 	key(mod, "f", maximize),
-	key(mod, shift, "f", fullscreen),
+	--key(mod, shift, "f", fullscreen),
+	key(mod, shift, "f", file_explorer),
 
 	key(mod, "q", {"Client", "Close",
 		function(c) c:kill() end}),

@@ -48,12 +48,12 @@ my $db = $databases[rand @databases];
 my $daymsg = "";
 
 sswitch ($day) {
-	case 1: { $daymsg = ""; }
+    case 1: { $daymsg = "Mr robot+vsauce"; }
 	case 2: { $daymsg = ""; }
 	case 3: { $daymsg = ""; }
 	case 4: { $daymsg = ""; }
 	case 5: { $daymsg = "It's Update Friday!"; }
-	case 6: { $daymsg = ""; }
+	case 6: { $daymsg = "Dr stone"; }
 	case 7: { $daymsg = ""; }
 }
 
@@ -64,3 +64,4 @@ if ($daymsg ne "") {
 print "($db)\n";
 #print $CYAN, "Daily message:\n", $RESET;
 system("fortune -ascn 500 $db | lolcat");
+#system("xmodmap /home/azbyn/.xmodmaprc");# -verbose");

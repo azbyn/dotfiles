@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+playonlinux --run "Microsoft Word 2016" $@

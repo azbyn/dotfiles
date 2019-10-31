@@ -8,7 +8,7 @@ require("utils")
 local M = {}
 --M.icon = imagebox(config.icons_dir.."temp.png", config.colors.fg_normal)
 M.text = wibox.widget {
-	font = config.bar_font,
+	font = config.top_font,
 	widget = wibox.widget.textbox
 }
 M.nr_cores = 2

@@ -1,0 +1,119 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use utf8;
+use Getopt::Long;
+use Data::Dumper;
+use Pod::Usage;
+use File::Basename;
+use Cwd qw(cwd);
+use Encode qw(decode encode find_encoding);
+use open ':std', ':encoding(UTF-8)';
+
+my $verbose = 0;
+my $mock = 0;
+my $artist;
+#my $year;
+#my $album;
+my $help = 0;
+
+binmode STDIN, ':utf8';
+binmode STDOUT, ':utf8';
+GetOptions(
+	"verbose!"=>\$verbose,
+	"mock!"=>\$mock,
+	"artist=s"=>\$artist,
+#	"year=s"=>\$year,
+#	"album=s"=>\$album,
+	"help|?"=>\$help) or pod2usage(2);
+
+pod2usage(0) if $help;
+$verbose = 1 if $mock;
+my $enc = find_encoding("UTF-8");
+my $hasArtist = 0;
+if ($artist) {
+    $hasArtist = 1;
+    $artist = $enc->decode($artist);
+}
+
+while (1) {
+    my $year;
+    my $album="";
+    #my $artist=undef;
+    my $path = shift;
+    my $title = undef;
+    my $args = undef;
+    unless ($path) {
+        system("mpc update");
+        exit;
+    }
+    opendir(DIR, $path) or die $!;
+    $path = $enc->decode($path);
+    print "PATH: $path\n";
+    my $extensions = "\\.(m4a|mp3|flac|wma|wav|3gp|aac|m4b|mpc|ogg|oga|raw|ra|rm|webm|wv)";
+
+
+
+    if ($path =~ m/(.*\/)?(\d+) - (.+)/) {
+        $year = $2;
+        print("Year: '$year'\n");
+        $album = $3;
+        $album =~ s/\/$//;
+        #$album = $enc->decode($album);
+        print("Album: '$album'\n");
+    } else {
+        print("Not in album?\n");
+    }
+
+    #$artist = $enc->decode($artist) if $album;
+    while (my $p = readdir(DIR)) {
+        if ($p =~ m/(?:(.+?) - )?(?:(\d+) - )?(.*)$extensions/) {
+            $p = $enc->decode($p);
+            print "$p\n" if $verbose;
+
+            #unless(exists $mp3->{ID3v1}) {
+            #    print "NO ID3v1 DATA";
+                #$mp3->new_tag("ID3v1")
+                #}
+            $args="";
+            if ($1) {
+                #print
+                unless ($hasArtist) {
+                    $artist = $enc->decode($1);
+                }
+                print("\tartist: '$artist'\n") if $verbose;
+                $args .= "--artist=\"$artist\" ";
+                #decode
+                #$artist_ = $enc->encode($artist_);
+            }
+            if ($year) {
+                print("\tyear: '$year'\n") if $verbose;
+                #$mp3->year_set($year, 1);
+                $args .= "--year=\"$year\" ";
+            }
+            if ($album) {
+                print("\talbum: '$album'\n") if $verbose;
+                #$mp3->album_set($album, 1);
+                $args .= "--album=\"$album\" ";
+            }
+            if ($2) {
+                print("\ttrack '$2'\n") if $verbose;
+                $args .= "--track=\"$2\" ";
+            }
+            if ($3) {
+                $title = $enc->decode($3);
+                print("\tname: '$title'\n") if $verbose;
+                #$mp3->title_set($title,1 );
+                $args .= "--title=\"$title\" ";
+                #$mp3->{ID3v1}->title($title) unless $mock;
+            }
+            unless ($mock) {
+                print("id3ted $args $path/$p\n");
+                system("id3ted $args \"$path/$p\"");
+            }
+            print("\n") if $verbose;
+        }
+    }
+
+    closedir(DIR);
+}

@@ -4,10 +4,12 @@ call plug#begin(expand('~/.config/nvim/plugged'))
 
 "Plug 'tpope/vim-speeddating'
 Plug 'farmergreg/vim-lastplace'
+Plug 'udalov/kotlin-vim'
 "Plug 'nathanaelkane/vim-indent-guides'
 "Plug 'bronson/vim-trailing-whitespace'
 "Plug 'vim-scripts/Smart-Tabs', {'for': ['c', 'cpp']}
 Plug 'scrooloose/nerdtree'
+Plug 'Shirk/vim-gas'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'

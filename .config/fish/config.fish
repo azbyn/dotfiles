@@ -7,6 +7,7 @@ fish_default_key_bindings
 
 set -x RANGER_LOAD_DEFAULT_RC FALSE
 set -x DC_BASE ldc
+set -x WINEARCH win32
 
 set -g theme_display_date no
 set -g theme_nerd_fonts yes
@@ -16,9 +17,6 @@ set -g theme_color_scheme terminal2
 set -g theme_display_cmd_duration no
 set -g theme_project_dir_length 3
 set -g theme_title_use_abbreviated_path no
-
-alias apacman="apacman --noedit"
-alias apacmann="apacman --noconfirm"
 
 alias g="cd"
 alias gE="cd ~/.emacs.d/"
@@ -52,7 +50,7 @@ alias rG="r ~/Git/"
 alias rM="r ~/Music/"
 alias rP="r ~/Projects/"
 alias rB="r ~/bin/"
-alias rW="r /mnt/windows/"
+alias rW="r /mnt/windows/Users/Azbyn/Desktop"
 alias rH="r /mnt/hdd/"
 alias rQ="r ~/.config/qutebrowser/"
 
