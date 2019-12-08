@@ -222,6 +222,8 @@ M.globalkeys = awful.util.table.join(
 	--awful.key({ctrl}, "Menu", exec("xdotool click 3")),
 	key("Mod3", mod, "grave", {"Misc", "Caps Lock",
 		exec("xdotool key Caps_Lock")}),
+	--key(mod, "grave", term),
+	key(mod, "grave", theme.mymainmenu:show()),
 
     key(mod, shift, "v", {"Misc", "Use mrww from",
         exec("mrww from")}),
@@ -230,8 +232,11 @@ M.globalkeys = awful.util.table.join(
     key(mod, shift, "x", {"Misc", "Use mrww torofi",
         exec("mrww torofi")}),
 
-	key(mod, "r", {"Misc", " Small Dropdown Terminal",
+	key(mod, "r", {"Misc", "Transliterate",
 		function() toggle_dropdown("transliterate") end}),
+
+	key(mod, "l", {"Misc", "LaTeX",
+		function() toggle_dropdown("latex") end}),
 
 	awful.key({mod, shift}, "Menu", function() switch_kb_layout() end),
 	key(mod, "F1", {"Misc", "Show Help",
@@ -265,8 +270,8 @@ M.globalkeys = awful.util.table.join(
 
 	key(mod, "h", {"Movement", "Previous Tag",
 		function() inc_tag(-1) end}),--awful.tag.viewprev}),
-	key(mod, "l", {"Movement", "Next Tag",
-		function() inc_tag(1) end}),--awful.tag.viewnext}),
+	--key(mod, "l", {"Movement", "Next Tag",
+	--	function() inc_tag(1) end}),--awful.tag.viewnext}),
 	key(mod, "j", {"Movement", "Next Window",
 		function() awful.client.focus.byidx(1) end}),
 	key(mod, "k", {"Movement", "Previous Window",

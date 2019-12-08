@@ -81,14 +81,16 @@ M.autorun = {
 	{ "once", "unclutter -root" },
 	{ "once", "compton -b --config ~/.config/compton.conf" },
 	{ "once", "mpd ; mpc pause" },
-    -- { "once", "emacs --daemon"},
+   -- { "once", "emacs --daemon"},
 	-- { "start", "mpc pause" },
 	{ "start_fn", function()
-		awful.spawn(sprintf("%s -e sh -c '~/bin/daily_msg; %s'",
+		awful.spawn(sprintf("%s -e sh -c '~/.local/bin/daily_msg; %s'",
 			M.term, os.getenv("SHELL")))
 		end},
-
 }
+
+awful.spawn.with_shell("~/.config/awesome/autorun.sh")
+
 M.program_rules = {
 	{ rule_any = { type = { "dialog", "normal" } },
 	  properties = { titlebars_enabled = true } },
@@ -160,12 +162,12 @@ function exec_tag_special(tag)
 end
 --table.insert(M.tags, "Hidden")
 
-local alpha_bg = "-bg [90]#"..M.colors.black
+local alpha_bg = "-bg [90]#"..M.colors.black..""
 function M.get_dropdowns()
 	return {
 		small = lain.util.quake({
 			app = M.term,
-			extra = alpha_bg.." -cd ~/Projects/ocr",
+			extra = alpha_bg.." -cd /home/azbyn/Projects/",
 			name = "QuakeDD_small",
 			height = 0.7,
 			width = 0.7,
@@ -174,7 +176,7 @@ function M.get_dropdowns()
 		}),
 		big = lain.util.quake({
 			app = M.term,
-			extra = alpha_bg.." -cd ~/",
+			extra = alpha_bg,--.." -cd ~/",
 			name = "QuakeDD_big",
 			height = 0.9,
 			width = 0.9,
@@ -199,12 +201,21 @@ function M.get_dropdowns()
 			vert = "center",
 			horiz = "center",
 		}),
+		latex = lain.util.quake({
+			app = M.term,
+			extra = alpha_bg.." -e sh -c 'sh ~/.colors/shell; latexClip -keep'",
+			name = "QuakeDD_LaTeX",
+			height = 0.9,
+			width = 0.55,
+			vert = "center",
+			horiz = "center",
+		}),
 		transliterate = lain.util.quake({
 			app = M.term,
-            extra = alpha_bg.." -e '/home/azbyn/bin/transliterate'",
+            extra = alpha_bg.." -e '/home/azbyn/.local/bin/transliterate'",
 			name = "QuakeDD_transliterate",
 			height = 120,
-			width = 1005,--0.6,
+			width = 1100,--0.6,
 			vert = "center",
 			horiz = "center",
 		}),

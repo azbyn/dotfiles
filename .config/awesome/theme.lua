@@ -135,6 +135,43 @@ function theme.get_titlebar(c)
 	}
 end
 
+local terminal = "urxvt"
+local gui_editor = "neovim"
+local menubar = require("menubar")
+local freedesktop = require("freedesktop")
+
+-- {{{ Menu
+-- Create a launcher widget and a main menu
+myawesomemenu = {
+    { "hotkeys", function() return false, hotkeys_popup.show_help end, menubar.utils.lookup_icon("preferences-desktop-keyboard-shortcuts") },
+    { "manual", terminal .. " -e man awesome", menubar.utils.lookup_icon("system-help") },
+    { "edit config", gui_editor .. " " .. awesome.conffile,  menubar.utils.lookup_icon("accessories-text-editor") },
+}
+myexitmenu = {
+    { "log out", function() awesome.quit() end, menubar.utils.lookup_icon("system-log-out") },
+    { "suspend", "systemctl suspend", menubar.utils.lookup_icon("system-suspend") },
+    { "hibernate", "systemctl hibernate", menubar.utils.lookup_icon("system-suspend-hibernate") },
+    { "reboot", "systemctl reboot", menubar.utils.lookup_icon("system-reboot") },
+    { "shutdown", "poweroff", menubar.utils.lookup_icon("system-shutdown") }
+}
+theme.mymainmenu = freedesktop.menu.build({
+    icon_size = 32,
+    before = {
+        --{ "Terminal", terminal, menubar.utils.lookup_icon("utilities-terminal") },
+        --{ "Browser", browser, menubar.utils.lookup_icon("internet-web-browser") },
+        --{ "Files", filemanager, menubar.utils.lookup_icon("system-file-manager") },
+        -- other triads can be put here
+    },
+    after = {
+        { "Restart Awesome", awesome.restart, menubar.utils.lookup_icon("system-restart") },
+        { "Exit", myexitmenu, menubar.utils.lookup_icon("system-shutdown") },
+        -- other triads can be put here
+    }
+})
+mylauncher = awful.widget.launcher({ image = "/usr/share/awesome/icons/awesome32.png", --beautiful.awesome_icon,
+                                     menu = theme.mymainmenu })
+
+--mykeyboardlayout = awful.widget.keyboardlayout()
 
 function theme.at_screen_connect(s)
 	-- Quake applications
@@ -194,6 +231,7 @@ function theme.at_screen_connect(s)
 		layout = wibox.layout.align.horizontal,
 		{ -- Left widgets
 			layout = wibox.layout.fixed.horizontal,
+            mylauncher,
 			--spr,
 			s.mytaglist,
 			--s.mypromptbox,
@@ -203,6 +241,7 @@ function theme.at_screen_connect(s)
 		{ -- Right widgets
 			layout = wibox.layout.fixed.horizontal,
 			wibox.widget.systray(),
+--            mykeyboardlayout,
 			spr,
 			arrl_ld,
 			--wibox.container.background(theme.music.icon, theme.bg_focus),

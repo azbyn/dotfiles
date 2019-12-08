@@ -3,6 +3,7 @@
 URxvt.font: xft:DejaVuSansMono Nerd Font:size=11
 !URxvt.font: xft:UbuntuMono Nerd Font:pixelsize=20
 !URxvt.background: [60]#050205
+!URxvt.background: #050205
 !
 URxvt.intensityStyles:	false
 URxvt.depth:		32

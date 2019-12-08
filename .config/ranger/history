@@ -1,50 +1,50 @@
-rename test.h
-shell q
-search tex
-open_withq 
-find i
-rename wpa.conf_b
-rename wpa.conf
-shell unzip wargames.\(1983\).eng.1cd.\(5340164\).zip 
-rename WarGames.1983.1080p.BluRay.x264-[YTS.AG].srt
+rename Mirazh - Мираж
+search cho
 search 
-search qa
-shell unzip qasm.zip 
-search tasm
-shell unzip tasm32.zip 
-shell mkdir tasm
-search multia
-shell mkdir multiasm
-shell unzip multiasm.zip 
-
-open_with y
-open_with e
-search mr rob
-search rob
-shell unzip mr.robot.s04.e04.404.not.found.\(2019\).eng.1cd.\(7946955\).zip 
-rename 
-shell tbl 
-rename lists.h
-shell mkdir jwasm
-search jwasm
-shell unzip JWasm211as.zip 
-rename jwasm-inst.exe
-search exe
-search wcl
-search wasm
-search ,p
-search mp
-rename Pino D'Angiò
-search jwa
-shell unzip jwasm.zip 
-search debug
-q
-shell mkdir lab
-rename base_dos
-rename lab_4_05_base.asm
-rename lab4_05_base.asm
-rename lab4_04_base.asm
-rename test.com
-search spacemacs
+search mirazh
+shell mkdir exploit
+rename Makefile
+search chor
 open_with 
+search mira
+search mir
+search kor
+rename 2018 - Kulkija
+shell e
+edit .colors
+shell e .gdbinit
+shell u
+shell unzip once.upon.a.time.in.hollywood.\(2019\).rum.1cd.\(8000634\).zip 
+rename A fost odata la Hollywood
+search the iri
+rename Irlandezul
+wq
+rename gparted.iso
+rename gparted-32.iso
+rename ArchDownloads
+rename ArchPictures
+rename ArchGit
+rename ArchProjects
+rename V
+rename Virtual-Machines
+rename ArchDesktop
+shell mkdir ArchStuff
+shell mkdir dArtagnan
+search dar
+rename Roki Vulović - 05 - Generale, generale.mp3
+search pino
+search filme
+search murd
+rename Murdoch.Mysteries.S09E01.mp4
+rename Murdoch.Mysteries.S09E01.srt
+search fil
+search mur
+search righ
+search mirazj
+search miraz
+e script.
+Q
+rename latexClip
+search local
+search mrww
 delete

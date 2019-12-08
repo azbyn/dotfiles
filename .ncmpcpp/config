@@ -1,7 +1,7 @@
 #visualizer_type = "wave"
 external_editor = vim
 use_console_editor = yes
-#ignore_diacritics = yes
+ignore_diacritics = yes
 
 #visualizer_color = blue, cyan, green, yellow, magenta, red
 #

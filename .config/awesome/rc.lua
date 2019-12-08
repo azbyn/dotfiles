@@ -247,6 +247,6 @@ for _, x in ipairs(config.autorun) do
 	end
 end
 
-awful.spawn.with_shell(sprintf("sleep 1; rm %s", start_file))
+awful.spawn.with_shell(sprintf("sleep 1; rm -f %s", start_file))
 
 

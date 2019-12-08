@@ -1,0 +1,48 @@
+#!/usr/bin/env perl
+use warnings;
+use strict;
+
+my $dir = "/tmp/latexClip";
+my $file = "$dir/f.latex";
+my $pdf = "$dir/f.pdf";
+my $png = "$dir/f.png";
+if (-e $dir) {
+    system("mkdir $dir");
+
+    system("vim +5 $file");
+    system("pdflatex -halt-on-error -output-directory=$dir -interaction=nonstopmode $file");
+    system("convert -alpha remove -density 300 $pdf -quality 100 -colorspace RGB $png");
+    system("xclip -selection clip -t image/png $png");
+    system("feh $png");
+
+    #print("\n\nPlease don't exit till you're done\n");
+    #print("Press 'r' to redit\n");
+#system("rm -r $dir");
+} else {
+
+#my $dir = `mktemp -d /tmp/latexClip.XXXXX`;
+#chomp $dir;
+system("mkdir $dir");
+open(my $FH, ">", $file);
+print $FH <<END;
+\\documentclass[border=2pt,varwidth]{standalone}
+\\usepackage{standalone}
+\\usepackage{mathtools}
+\\usepackage{amssymb}
+\\usepackage{amsfonts}
+\\usepackage[T1]{fontenc}
+\\usepackage[utf8]{inputenc}
+\\begin{document}
+
+\\end{document}
+END
+
+# -n = noswap
+# +5 = line 5
+system("vim -n +5 $file");
+system("pdflatex -halt-on-error -output-directory=$dir -interaction=nonstopmode $file");
+system("convert -alpha remove -density 500 $pdf -quality 100 -colorspace RGB $png");
+system("xclip -selection clip -t image/png $png");
+system("feh $png");
+}
+

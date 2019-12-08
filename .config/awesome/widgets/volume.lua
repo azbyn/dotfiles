@@ -34,6 +34,7 @@ M.widget = wibox.container.mirror(M.arc, { horizontal = true })
 
 function M.call(cmd)
 	return function() M.update(cmd) end
+	--return function() exec(cmd) end
 end
 
 function M.update(cmd)

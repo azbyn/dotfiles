@@ -31,6 +31,8 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     octave
+     go
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -59,6 +61,7 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(base16-theme
+                                      dirtree
                                       company-auctex
                                       highlight-escape-sequences)
    ;; A list of packages that cannot be updated.
@@ -123,8 +126,8 @@ values."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((recents . 5)
-                                (projects . 5))
+   dotspacemacs-startup-lists '((recents . 7)
+                                (projects . 6))
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
@@ -256,7 +259,7 @@ values."
    ;; If set to `t' or `relative' line numbers are turned on in all `prog-mode' and
    ;; `text-mode' derivatives. If set to `relative', line numbers are relative.
    ;; This variable can also be set to a property list for finer control:
-   ;; '(:relative nil
+   ;; '(:relative t
    ;;   :disabled-for-modes dired-mode
    ;;                       doc-view-mode
    ;;                       markdown-mode
@@ -265,7 +268,7 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers '(:relative t
+   dotspacemacs-line-numbers '(:relative nil
                                :disabled-for-modes
                                          dired-mode
                                          doc-view-mode
@@ -449,6 +452,7 @@ you should place your code here."
   (global-set-key (kbd "H-SPC") 'flyspell-region)
   (global-set-key (kbd "H-M-SPC") 'flyspell-buffer)
   (global-set-key (kbd "H-S-SPC") 'ispell-buffer)
+  (global-set-key (kbd "H-t") 'neotree-toggle)
 
 
   ;(setq-default compilation-read-command nil)
@@ -464,6 +468,7 @@ you should place your code here."
   ;; (global-set-key (kbd "M-<tab>") 'projectile-find-other-file)
   (global-set-key (kbd "C-<tab>") 'clang-format-region)
   (global-set-key (kbd "<C-iso-lefttab>") 'clang-format-buffer)
+  (global-set-key (kbd "H-j") 'counsel-imenu)
   
   (defun open-projects ()
     (interactive)
@@ -497,6 +502,10 @@ you should place your code here."
         scroll-conservatively 9999
         scroll-step 1)
 
+  (setq x86-lookup-pdf "~/Documents/x86-ref.pdf")
+
+  (add-hook 'nasm-mode-hook
+            (lambda () (local-set-key (kbd "H-l") 'x86-lookup)))
 
   (setq-default tab-width 4)
   ;(setq-default dfmt-command "dfmt")
