@@ -79,7 +79,7 @@ M.geditor = "tvim"
 --     always_fn: call function always
 M.autorun = {
 	{ "once", "unclutter -root" },
-	{ "once", "compton -b --config ~/.config/compton.conf" },
+	{ "once", "picom -b --config ~/.config/picom.conf" },
 	{ "once", "mpd ; mpc pause" },
    -- { "once", "emacs --daemon"},
 	-- { "start", "mpc pause" },

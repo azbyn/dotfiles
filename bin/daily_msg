@@ -48,12 +48,12 @@ my $db = $databases[rand @databases];
 my $daymsg = "";
 
 sswitch ($day) {
-    case 1: { $daymsg = "Mr robot+ silicon valley + r&m"; }
+    case 1: { $daymsg = ""; }
 	case 2: { $daymsg = ""; }
 	case 3: { $daymsg = ""; }
 	case 4: { $daymsg = ""; }
 	case 5: { $daymsg = "It's Update Friday!"; }
-	case 6: { $daymsg = "Dr stone"; }
+	case 6: { $daymsg = ""; }
 	case 7: { $daymsg = ""; }
 }
 
