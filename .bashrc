@@ -20,6 +20,7 @@ PERL_LOCAL_LIB_ROOT="/home/azbyn/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_R
 PERL_MB_OPT="--install_base \"/home/azbyn/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/home/azbyn/perl5"; export PERL_MM_OPT;
 export BASE16_SHELL_SET_BACKGROUND=false
+export DOTNET_CLI_TELEMETRY_OPTOUT=true
 
 
 if [[ "$TERM" != *linux* ]]; then

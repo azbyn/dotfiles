@@ -3,16 +3,39 @@
     <location key="WELCOME_SCREEN.0.0.1920.1080@120dpi" x="960" y="551" />
     <location key="FileChooserDialogImpl.0.0.1920.1080@120dpi" x="690" y="252" />
     <location key="com.intellij.ide.util.TipDialog.0.0.1920.1080@120dpi" x="527" y="358" />
-    <location key="search.everywhere.popup.0.0.1920.1080@120dpi" x="2" y="24" />
+    <location key="search.everywhere.popup.0.0.1920.1080@120dpi" x="21" y="43" />
     <location key="SettingsEditor.0.0.1920.1080@120dpi" x="296" y="48" />
     <location key="#Vim_Emulation.0.0.1920.1080@120dpi" x="460" y="146" />
+    <location key="AndroidCreateResourceFileDialog.0.0.1920.1080@120dpi" x="545" y="317" />
+    <location key="#PSD.0.0.1920.1080@120dpi" x="361" y="223" />
+    <location key="run.anything.popup.0.0.1920.1080@120dpi" x="550" y="267" />
+    <location key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog.0.0.1920.1080@120dpi" x="695" y="317" />
+    <location key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser.0.0.1920.1080@120dpi" x="406" y="130" />
+    <location key="#Intentions.0.0.1920.1080@120dpi" x="460" y="146" />
+    <location key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog.0.0.1920.1080@120dpi" x="643" y="147" />
+    <location key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog.0.0.1920.1080@120dpi" x="640" y="277" />
+    <location key="AndroidCreateXmlResourceDialog.0.0.1920.1080@120dpi" x="779" y="323" />
+    <location key="#Notifications.0.0.1920.1080@120dpi" x="455" y="131" />
     <size key="FileChooserDialogImpl.0.0.1920.1080@120dpi" width="532" height="570" />
     <size key="search.everywhere.popup.0.0.1920.1080@120dpi" width="840" height="1034" />
     <size key="SettingsEditor.0.0.1920.1080@120dpi" width="1392" height="1032" />
-    <size key="GridCell.Tab.0.left.0.0.1920.1080@120dpi" width="1862" height="276" />
-    <size key="GridCell.Tab.0.center.0.0.1920.1080@120dpi" width="1862" height="276" />
-    <size key="GridCell.Tab.0.right.0.0.1920.1080@120dpi" width="1862" height="276" />
-    <size key="GridCell.Tab.0.bottom.0.0.1920.1080@120dpi" width="1862" height="276" />
+    <size key="GridCell.Tab.0.left.0.0.1920.1080@120dpi" width="1864" height="276" />
+    <size key="GridCell.Tab.0.center.0.0.1920.1080@120dpi" width="1864" height="276" />
+    <size key="GridCell.Tab.0.right.0.0.1920.1080@120dpi" width="1864" height="276" />
+    <size key="GridCell.Tab.0.bottom.0.0.1920.1080@120dpi" width="1864" height="276" />
     <size key="#Vim_Emulation.0.0.1920.1080@120dpi" width="1002" height="811" />
+    <size key="AndroidCreateResourceFileDialog.0.0.1920.1080@120dpi" width="832" height="470" />
+    <size key="#PSD.0.0.1920.1080@120dpi" width="1190" height="627" />
+    <size key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog.0.0.1920.1080@120dpi" width="532" height="470" />
+    <size key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser.0.0.1920.1080@120dpi" width="1109" height="844" />
+    <size key="GridCell.Tab.1.left.0.0.1920.1080@120dpi" width="1864" height="276" />
+    <size key="GridCell.Tab.1.center.0.0.1920.1080@120dpi" width="1864" height="276" />
+    <size key="GridCell.Tab.1.right.0.0.1920.1080@120dpi" width="1864" height="276" />
+    <size key="GridCell.Tab.1.bottom.0.0.1920.1080@120dpi" width="1864" height="276" />
+    <size key="#Intentions.0.0.1920.1080@120dpi" width="1002" height="811" />
+    <size key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog.0.0.1920.1080@120dpi" width="713" height="809" />
+    <size key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog.0.0.1920.1080@120dpi" width="632" height="520" />
+    <size key="AndroidCreateXmlResourceDialog.0.0.1920.1080@120dpi" width="353" height="427" />
+    <size key="#Notifications.0.0.1920.1080@120dpi" width="1002" height="811" />
   </component>
 </application>

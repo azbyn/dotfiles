@@ -3,19 +3,18 @@ set nocompatible
 call plug#begin(expand('~/.config/nvim/plugged'))
 
 "Plug 'tpope/vim-speeddating'
-Plug 'farmergreg/vim-lastplace'
 Plug 'udalov/kotlin-vim'
 "Plug 'nathanaelkane/vim-indent-guides'
 "Plug 'bronson/vim-trailing-whitespace'
 "Plug 'vim-scripts/Smart-Tabs', {'for': ['c', 'cpp']}
-Plug 'scrooloose/nerdtree'
 Plug 'Shirk/vim-gas'
+Plug 'farmergreg/vim-lastplace'
 
+Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'Raimondi/delimitMate'
 Plug 'ajh17/VimCompletesMe'
-
 Plug 'dag/vim-fish'
 
 call plug#end()

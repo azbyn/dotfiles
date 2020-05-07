@@ -24,7 +24,7 @@ local function color(name)
 end
 
 theme.dir                = here
-theme.wallpaper          = os.getenv("HOME").."/Pictures/Wallpaper"
+theme.wallpaper          = home.."/Pictures/Wallpaper"
 theme.font               = config.bar_font
 theme.fg_normal          = color("fg_gray")
 theme.fg_focus           = color("fg_focus")
@@ -71,6 +71,9 @@ local ram   = require("widgets.ram")
 local cpu   = require("widgets.cpu")
 local temp  = require("widgets.temp")
 local ld    = require("widgets.load")
+local email = require("widgets.email")
+
+local weather = require("widgets.weather")
 
 theme.music   = require("widgets.music")
 theme.volume  = require("widgets.volume")
@@ -262,8 +265,21 @@ function theme.at_screen_connect(s)
 			spr,
 			temp.text,
 			spr,
+
+			arrl_ld,
+            wibox.container.background(email.widget, theme.bg_focus),
+            wibox.container.background(email.text, theme.bg_focus),
+            --wibox.container.background(spr, theme.bg_focus),
+            --wibox.container.background(weather.text, theme.bg_focus),
+            wibox.container.background(sspr, theme.bg_focus),
+			arrl_dl,
+
+			sspr,
 			theme.battery.widget,
 			spr,
+			theme.battery.text,
+			spr,
+
             --theme.net.widget,
 			--theme.net.indicator,
 			--theme.net.thing,

@@ -54,14 +54,16 @@ sswitch ($day) {
 	case 4: { $daymsg = ""; }
 	case 5: { $daymsg = "It's Update Friday!"; }
 	case 6: { $daymsg = ""; }
-	case 7: { $daymsg = ""; }
+	case 7: { $daymsg = "Westworld"; }
 }
+
 
 print $BLUE, "Welcome back $ENV{USER}", $RESET, "\n";
 if ($daymsg ne "") {
 	print "\t", $RED, $daymsg, $RESET, "\n";
 }
-print "($db)\n";
+#system("curl", "wttr.in/?format=%l:+%c+%t+%w");
+print "\n($db)\n";
 #print $CYAN, "Daily message:\n", $RESET;
 system("fortune -ascn 500 $db | lolcat");
 #system("xmodmap /home/azbyn/.xmodmaprc");# -verbose");

@@ -13,7 +13,7 @@ GetOptions(
 ) or pod2usage(1);
 
 pod2usage(0) if $help;
-print "find '~/Music/$directory' '".join('|', @ARGV)."'\n";
+print "find '~/Music/$directory' '".join('|', @ARGV)."'\n" if defined $ARGV[0];
 
 system "find", "$ENV{HOME}/Music/$directory",
     "-type", "f",

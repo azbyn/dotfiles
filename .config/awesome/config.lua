@@ -58,8 +58,8 @@ M.bar_font = "UbuntuMono Nerd Font 9"
 
 M.kb_led = "3"
 --                   {layout, variant}
-M.main_kb_layout   = {"ro", "std" }
-M.secondary_layout = {"ro", "std"}
+--M.main_kb_layout   = {"azb", "std" }
+--M.secondary_layout = {"azb", "std"}
 --M.secondary_layout = {"ru", "phonetic"}
 
 M.term = "urxvt"
@@ -81,7 +81,7 @@ M.autorun = {
 	{ "once", "unclutter -root" },
 	{ "once", "picom -b --config ~/.config/picom.conf" },
 	{ "once", "mpd ; mpc pause" },
-   -- { "once", "emacs --daemon"},
+    --{ "once", "emacs --daemon"},
 	-- { "start", "mpc pause" },
 	{ "start_fn", function()
 		awful.spawn(sprintf("%s -e sh -c '~/.local/bin/daily_msg; %s'",
@@ -89,17 +89,26 @@ M.autorun = {
 		end},
 }
 
-awful.spawn.with_shell("~/.config/awesome/autorun.sh")
+--awful.spawn.with_shell("~/.config/awesome/autorun.sh")
 
 M.program_rules = {
 	{ rule_any = { type = { "dialog", "normal" } },
-	  properties = { titlebars_enabled = true } },
-    { rule = { class = "mos" },
-      properties = { floating=true } },
+	  properties = { titlebars_enabled = false } },
+    --{ rule = { name = "ComplexExplorer" },
+    --  properties = { floating = true } },
+    { rule = { name = "complexexplorer.curbelissajous" },
+      properties = { floating = true } },
+    { rule = { class = "screenshotifinator" },
+      properties = {
+          floating = true,
+          above = true,
+          --for border see rc.lua ~ line 208
+          --focus = function(c) return awful.client.focus.filter(c) end
+      } },
 }
 
 M.nr_normal_tags = 5
-M.special_tags_order = { "S", "W", "G", "P", "T", "E" } --"V"
+M.special_tags_order = { "E", "S", "W", "G", "P", "T" } --"V"
 M.special_tags = {
 	--tag = {command, class, role-for-primary}
 	W = {"qutebrowser", "qutebrowser"},
@@ -183,6 +192,16 @@ function M.get_dropdowns()
 			vert = "center",
 			horiz = "center",
 		}),
+		emacs = lain.util.quake({--TODO FIX THIS
+			app = M.term,
+			extra = alpha_bg.." -e sh -c \"sh ~/.colors/shell; emacsclient -nw -e '(azb/terminal)'\"",
+            --extra = alpha_bg.." -e \"emacsclient -nw -e '(switch-to-buffer \\'*scratch*\\')'\"",
+			name = "QuakeDD_emacs",
+			height = 0.7,
+			width = 0.7,
+			vert = "center",
+			horiz = "center",
+		}),
 		music = lain.util.quake({
 			app = M.term,
 			name = "QuakeDD_music",
@@ -201,9 +220,10 @@ function M.get_dropdowns()
 			vert = "center",
 			horiz = "center",
 		}),
+
 		latex = lain.util.quake({
 			app = M.term,
-			extra = alpha_bg.." -e sh -c 'sh ~/.colors/shell; latexClip -keep'",
+			extra = alpha_bg.." -cd /tmp -e sh -c 'sh ~/.colors/shell; latexClip -keep'",
 			name = "QuakeDD_LaTeX",
 			height = 0.9,
 			width = 0.55,

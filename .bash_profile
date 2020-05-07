@@ -3,6 +3,7 @@
 #
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
+sh ~/.profile
 
 #PATH=~/bin:$PATH
 

@@ -4,31 +4,30 @@
 # documentation.  Do NOT add them all here, or you may end up with defunct
 # commands when upgrading ranger.
 
-# You always need to import ranger.api.commands here to get the Command class:
-from ranger.api.commands import *
-
 # A simple command for demonstration purposes follows.
 # -----------------------------------------------------------------------------
+
+from __future__ import (absolute_import, division, print_function)
 
 # You can import any python module as needed.
 import os
 
+# You always need to import ranger.api.commands here to get the Command class:
+from ranger.api.commands import Command
+
+
 # Any class that is a subclass of "Command" will be integrated into ranger as a
 # command.  Try typing ":my_edit<ENTER>" in ranger!
-
-
-class my_edit(Command):
+class yeet(Command):
     # The so-called doc-string of the class will be visible in the built-in
     # help that is accessible by typing "?c" inside ranger.
-    """:my_edit <filename>
+    """:yeet <filename>
 
-    A sample command for demonstration purposes that opens a file in an editor.
+    Yeet file to clipboard
     """
 
     # The execute method is called when you run this command in ranger.
     def execute(self):
-        # self.arg(1) is the first (space-separated) argument to the function.
-        # This way you can write ":my_edit somefilename<ENTER>".
         if self.arg(1):
             # self.rest(1) contains self.arg(1) and everything that follows
             target_filename = self.rest(1)
@@ -39,18 +38,14 @@ class my_edit(Command):
             # reference to the currently selected file.
             target_filename = self.fm.thisfile.path
 
-        # This is a generic function to print text in ranger.
-        self.fm.notify("Let's edit the file " + target_filename + "!")
-
-        # Using bad=True in fm.notify allows you to print error messages:
         if not os.path.exists(target_filename):
             self.fm.notify("The given file does not exist!", bad=True)
             return
+        #self.fm.edit_file(target_filename)
+        import subprocess
+        subprocess.call(["yeet", target_filename], universal_newlines=True)
 
-        # This executes a function from ranger.core.acitons, a module with a
-        # variety of subroutines that can help you construct commands.
-        # Check out the source, or run "pydoc ranger.core.actions" for a list.
-        self.fm.edit_file(target_filename)
+        self.fm.notify("Copied " + target_filename + " to clipboard.")
 
     # The tab method is called when you press tab, and should return a list of
     # suggestions that the user will tab through.

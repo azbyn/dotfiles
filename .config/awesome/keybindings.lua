@@ -81,11 +81,11 @@ local brightness = {
 		exec("light -S 100")},
 }
 local function set_titlebar(c, val)
-	if val then
-		awful.titlebar(c, {size = theme.titlebar_height})
-	else
+	--if val then
+	--	awful.titlebar(c, {size = theme.titlebar_height})
+	--else
 		awful.titlebar(c, {size = 0})
-	end
+	--end
 end
 
 local last_layout
@@ -104,7 +104,7 @@ local maximize = { "Client", "Maximize Window",
 		end
 		local layout = awful.layout.get(c.screen)
 		local is_maximized = layout == awful.layout.suit.max
-		set_titlebar(c, is_maximized)
+		--set_titlebar(c, is_maximized)
 		if is_maximized then
 			awful.layout.set(last_layout)
 		else
@@ -189,7 +189,8 @@ local function inc_tag(inc)
 	s.tags[i].selected = true
 end
 local home = os.getenv("HOME")
-local function switch_kb_layout()
+
+--[[local function switch_kb_layout()
 	awful.spawn.easy_async({"setxkbmap", "-query"},
 		function(out, _, _, _)
 			local curr = string.match(out, "layout:%s*(.-)\n")
@@ -214,16 +215,33 @@ local function switch_kb_layout()
 			awful.spawn({"xmodmap", home.."/.xmodmaprc"})
 		end)
 end
+]]--
 
 M.globalkeys = awful.util.table.join(
     --awful.key({}, "Menu", exec("xdotool click 3")),
     --awful.key({shift}, "Menu", exec("xdotool click 1")),
 	--awful.key({alt}, "Menu", exec("xdotool click 2")),
 	--awful.key({ctrl}, "Menu", exec("xdotool click 3")),
-	key("Mod3", mod, "grave", {"Misc", "Caps Lock",
-		exec("xdotool key Caps_Lock")}),
+	--key("Mod3", mod, "grave", {"Misc", "Caps Lock",
+	--	exec("xdotool key Caps_Lock")}),
 	--key(mod, "grave", term),
 	key(mod, "grave", theme.mymainmenu:show()),
+	key(mod, hyper, "Return", {"Misc", "emacs window",
+        exec("emacsclient -c -n -e")}),
+
+	key(mod, hyper, "e", {"Misc", "emacs window",
+		function() toggle_dropdown("emacs") end}),
+
+	key(mod, hyper, "p", {"misc", "Sstfy Print screen",
+        function()
+            awful.spawn("sstfy")
+            --naughty.notify({text="took screenshot"})
+        end}),
+	key(mod, alt, "p", {"misc", "Print screen",
+        function()
+            awful.spawn("scrot -e 'mv $f ~/Pictures/screenshots 2>/dev/null'")
+            naughty.notify({text="took screenshot"})
+        end}),
 
     key(mod, shift, "v", {"Misc", "Use mrww from",
         exec("mrww from")}),
@@ -238,7 +256,8 @@ M.globalkeys = awful.util.table.join(
 	key(mod, "l", {"Misc", "LaTeX",
 		function() toggle_dropdown("latex") end}),
 
-	awful.key({mod, shift}, "Menu", function() switch_kb_layout() end),
+
+	--awful.key({mod, shift}, "Menu", function() switch_kb_layout() end),
 	key(mod, "F1", {"Misc", "Show Help",
 		hotkeys_popup.show_help}),
 
@@ -320,26 +339,26 @@ M.globalkeys = awful.util.table.join(
 	key("XF86MonBrightnessUp", brightness["up"]),
 	key("XF86MonBrightnessDown", brightness["down"]),
 
-	key(mod, "Insert", music["prev"]),
-	key(mod, shift, "Insert", music["beg"]),
-	key(mod, "Home", music["next"]),
+	--key(mod, "Insert", music["prev"]),
+	--key(mod, shift, "Insert", music["beg"]),
+	--key(mod, "Home", music["next"]),
 
-	key(mod, "Delete", music["bwd"]),
-	key(mod, shift, "Delete", music["bbwd"]),
-	key(mod, "End", music["fwd"]),
-	key(mod, shift, "End", music["bfwd"]),
+	--key(mod, "Delete", music["bwd"]),
+	--key(mod, shift, "Delete", music["bbwd"]),
+	--key(mod, "End", music["fwd"]),
+	--key(mod, shift, "End", music["bfwd"]),
 
-	key(mod, "Print", music["toggle"]),
-	key(mod, shift, "Print", music["pause"]),
-	key(mod, "Pause", vol["mute"]),
-	key(mod, "Scroll_Lock", {"Misc", "Dropdown music player",
-		function() toggle_dropdown("music") end}),
+	--key(mod, "Print", music["toggle"]),
+	--key(mod, shift, "Print", music["pause"]),
+	--key(mod, "Pause", vol["mute"]),
+	--key(mod, "Scroll_Lock", {"Misc", "Dropdown music player",
+	--	function() toggle_dropdown("music") end}),
 
 
-	key(mod, "Prior", vol["up"]),
-	key(mod, shift, "Prior", vol["sup"]),
-	key(mod, "Next", vol["down"]),
-	key(mod, shift, "Next", vol["sdown"]),
+	-- key(mod, "Prior", vol["up"]),
+	-- key(mod, shift, "Prior", vol["sup"]),
+	-- key(mod, "Next", vol["down"]),
+	-- key(mod, shift, "Next", vol["sdown"]),
 
 	key(mod, "bracketleft", music["bwd"]),
 	key(mod, shift, "bracketleft", music["bbwd"]),
@@ -367,7 +386,12 @@ M.globalkeys = awful.util.table.join(
 	key(mod, "u", {"Movement", "Jump to urgent client",
 		awful.client.urgent.jumpto}),
 	key(mod, "space", {"Layout", "Select next layout",
-		function() switch_layout(1) end}),
+		function() 
+            switch_layout(1)
+            --naughty.notify({text="OIDA"})
+	        --gears.wallpaper.maximized(os.getenv("HOME").. "/Pictures/bear.jpg", 
+            --    awful.screen.focused(), true)
+        end}),
 
 	key(mod, "w", browser1),
 	key(mod, ctrl, "w", {"Tag", "Toggle tag W",
@@ -431,7 +455,38 @@ M.globalkeys = awful.util.table.join(
 	key(mod, ctrl, "equal", {"Misc", "Increment gaps",
 		function() lain.util.useless_gaps_resize(1) end}),
 	key(mod, ctrl, "minus", {"Misc", "Decrement gaps",
-		function() lain.util.useless_gaps_resize(-1) end})
+		function() lain.util.useless_gaps_resize(-1) end}),
+
+	key(mod, ctrl, "e", {"Misc", "Emacs toggle",
+		function ()
+				local screen = awful.screen.focused()
+				local tag = screen.tags[6]
+				if tag then
+					awful.tag.viewtoggle(tag)
+				end
+			end }),
+	key(mod, shift, "e", {"Misc", "Emacs move",
+		function ()
+			if client.focus then
+				local tag = client.focus.screen.tags[6]
+				if tag then
+					client.focus:move_to_tag(tag)
+					tag:view_only()
+				end
+			end
+		end}),
+	key(mod, ctrl, shift, "e", {"Misc", "Emacs toggle_focus",
+		function ()
+			if client.focus then
+				local tag = client.focus.screen.tags[6]
+				if tag then
+					client.focus:toggle_tag(tag)
+				end
+			end
+		end}),
+	key(mod, shift, "f", file_explorer)
+	--key(mod, alt}, "n", {"Test - Client", "Minimize",
+	--	function(c) c.minimized = true end}),
 )
 
 
@@ -572,7 +627,6 @@ M.clientkeys = awful.util.table.join(
 
 	key(mod, "f", maximize),
 	--key(mod, shift, "f", fullscreen),
-	key(mod, shift, "f", file_explorer),
 
 	key(mod, "q", {"Client", "Close",
 		function(c) c:kill() end}),
@@ -587,10 +641,6 @@ M.clientkeys = awful.util.table.join(
 		function(c) c:move_to_screen() end}),
 	key(mod, ctrl, "a", {"Client", "Toggle keep on top",
 		function(c) c.ontop = not c.ontop end})
-
-	--key(mod, alt}, "n", {"Test - Client", "Minimize",
-	--	function(c) c.minimized = true end}),
-
 )
 
 for i = 1, 9 do

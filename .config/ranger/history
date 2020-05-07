@@ -1,50 +1,50 @@
-rename sheet_LINE1
-rename sheet_LINE3
-rename sheet_LINE4
-rename sheet_LINE5_BIS1
-rename sheet_LINE5_BIS2
-rename sheet_LINE6
-rename sheet_LINE7
-rename sheet_FULL
-rename sheetparser_no_bass
-rename sheet_full
-rename sheet_f
-rename sheet
-rename adli_tc.c_back
-rename adli_tc.h__back
-search rih
-search rig
-search anni
-shell unzip Mr.\ Robot_2x11_HDTV.x264-KILLERS.en.zip 
-rename tree.m
-w
-rename flower.m
-search po
-search ast
-search a
-rename pd
-shell a
-search astre
-rename 68 Astre pe-o balanta.docx
-shell 
-search righ
-search anz
-search mat
-search 
-shell chown azbyn *
-shell sudo chown azbyn *
-rename main.m
-search tre
-shell mkdir opencv
-search open
-shell unzip opencv-4.2.0-android-sdk.zip 
-shell mkdir opencv2
+rename Mese și scaune
+rename Sufragerii
+search mobi
+shell m
+rename products
+shell mkdir descriere
+shell e descriere
+
+rename Sufragerie Franciszek - 3500.jpg
+shell e gen-sql.py
+shell e gen-sql.sh
+shell e gen-sql
+rename 2020-05-04-092610_1920x1080_scrot.png
+shell e email
+search my
+rename Prezenta-M523-Geometrie-Diferentiala-4-mai-2020.png
+rename 1 Suflete-n batista
+shell e 1 Curiculum Vitae.ptr
+e:
+shell e '1 Curiculum Vitae.ptr'
+rename 2 Cerul pe turturi de gheata
+rename 3 Nuferi astrali
+edit 1 Inimă de caine.doc
+s 
+shell e 1\ Inimă\ de\ caine.ptr
+rename 1 Curiculum Vitae.ptr
+shell e 1\ Curiculum\ Vitae.ptr 
+shell mkdir dx
+rename old_ptry
+rename buffer
 open_with 
-search ba
-rename ocr-old
-rename java
-rename MainActivity_done.kt
-rename drawable
-rename values
+rename style.css_0
+rename cont_nou.php
+rename 
+search prod
+rename app
+shell e  index.html 
+search log
+shell 
+rename index.html
+rename header.php
+rename style.css
+rename dotgrid.png
+rename Birou Słońca - 650.jpg
+shell yee
+yeet ArchGit
+e yeet
+yeet
+search ye
 delete
-rename main_activity_done.xml

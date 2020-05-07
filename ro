@@ -15,6 +15,7 @@
 // Completed by Misu Moldovan, <dumol@gnome.ro> (C) 2001, 2004-2008.
 // Modified to suit needs by azbyn
 // v 1.4
+// link this to /usr/share/X11/xkb/symbols/azb
 
 
 default  partial alphanumeric_keys
@@ -64,7 +65,13 @@ xkb_symbols "basic" {
     key <AD07> { [ u,          U, udiaeresis, Udiaeresis ] };
     key <AD09> { [ o,          O, odiaeresis, Odiaeresis ] };
     key <AC04> { [ f,          F, adiaeresis, Adiaeresis ] };
-    key <AD02> { [ w,          W,  ssharp	 	         ] };
+    key <AD02> { [ w,          W,  ssharp                ] };
+
+    key <AB04> { [ v,          V, ccaron, Ccaron  ] };
+    key <AB05> { [ b,          B, zcaron, Zcaron  ] };
+    key <AD04> { [ r,          R, scaron, Scaron  ] };
+
+    key <AB07> { [ m,          M, ntilde, Ntilde  ] };
 
     include "level3(ralt_switch)"
 };

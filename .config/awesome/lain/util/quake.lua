@@ -87,7 +87,7 @@ function quake:display()
             ctags[i] = nil
         end
         --client:tags({awful.tag.find_by_name(self.screen, "Hidden")})
-		client:tags(ctags)
+        client:tags(ctags)
     end
 
     return client

@@ -1,0 +1,31 @@
+<application>
+  <component name="ParameterNameHintsSettings">
+    <blacklists>
+      <blacklist language="Java" />
+      <blacklist language="Groovy" />
+      <blacklist language="Kotlin">
+        <added pattern="org.opencv.core.Scalar(v0,v1,v2)" />
+        <added pattern="com.azbyn.chess_solver.SliderData(name,default,min,max,stepSize,showFloat)" />
+        <added pattern="com.azbyn.chess_solver.LineFragment.VM.logi(s)" />
+        <added pattern="kotlin.math.abs(n)" />
+        <added pattern="org.opencv.core.Point(x,y)" />
+        <added pattern="kotlin.math.abs(x)" />
+        <added pattern="com.azbyn.chess_solver.ContoursFragment.VM.logi(s)" />
+        <added pattern="com.azbyn.chess_solver.SuperQuadsFragment.VM.logi(s)" />
+        <added pattern="*.logi(s)" />
+        <added pattern="kotlin.math.atan2(y,x)" />
+        <added pattern="org.opencv.core.Scalar(v0)" />
+        <added pattern="kotlin.Suppress(names)" />
+        <added pattern="com.azbyn.chess_solver.Misc.logi(msg,e,offset)" />
+        <added pattern="kotlin.math.max(a,b)" />
+        <added pattern="kotlin.math.sqrt(x)" />
+        <added pattern="org.opencv.core.Point(vals)" />
+        <added pattern="com.azbyn.chess_solver.capture.CaptureFragment.logd(s)" />
+        <added pattern="kotlin.math.pow(x)" />
+        <added pattern="com.azbyn.chess_solver.Colors.getNiceColor(i)" />
+        <added pattern="com.azbyn.chess_solver.step1.ProbabilisticLineMergeFragment.VM.logd(s)" />
+        <added pattern="com.azbyn.chess_solver.Misc.logd(msg,e,offset)" />
+      </blacklist>
+    </blacklists>
+  </component>
+</application>

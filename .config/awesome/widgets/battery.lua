@@ -33,6 +33,12 @@ M.arc = wibox.widget {
 }
 M.widget = wibox.container.mirror(M.arc, { horizontal = true })
 
+M.text = wibox.widget {
+	font = config.top_font,
+	widget = wibox.widget.textbox,
+    color = config.colors.fg_normal
+}
+
 function M.show(timeout)
 	M.update()
 	M.hide()
@@ -118,6 +124,7 @@ function M.update()
 			M.last = data
 			M.arc.value = data.charge
 			M.arc.colors = {"#"..color}
+			M.text:set_text(sprintf("%s%%", data.charge))
 		end)
 end
 helpers.newtimer("bat_", 20, M.update)

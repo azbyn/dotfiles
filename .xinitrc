@@ -1,7 +1,7 @@
 # vim:filetype=sh
 xrdb -load $HOME/.Xresources
 xrdb -merge $HOME/.colors/xresources
-setxkbmap ro
+setxkbmap azb
 #numlockx &
 xmodmap $HOME/.xmodmaprc
 #
@@ -10,7 +10,7 @@ xset s off
 # turn off default standby, hibernate, ... after n minutes
 xset -dpms
 
-session=${1:-awesome}
+session=awesome
 
 case $session in
 	awesome|awesomewm )

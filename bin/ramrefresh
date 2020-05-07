@@ -1,2 +1,4 @@
 #!/bin/sh
 sync; echo 1 > /proc/sys/vm/drop_caches
+swapoff /swapfile
+swapon /swapfile
