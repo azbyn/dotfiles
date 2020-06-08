@@ -1,6 +1,6 @@
 # vim:filetype=sh
 xrdb -load $HOME/.Xresources
-xrdb -merge $HOME/.colors/xresources
+#xrdb -merge $HOME/.colors/xresources
 setxkbmap azb
 #numlockx &
 xmodmap $HOME/.xmodmaprc

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 my $arg = $ARGV[0];
 if ($arg =~ /.*\.(png|jpg|jpeg)/) {
-    system("xclip -selection clip -t image/png $arg");
+    system("xclip -selection clip -t image/png '$arg'");
 } else {
-    system("xclip -selection clip $arg");
+    system("xclip -selection clip '$arg'");
 }

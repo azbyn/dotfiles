@@ -60,13 +60,13 @@ local music = {
 }
 local vol = {
 	up = {"Volume", "Volume Up",
-		theme.volume.call("amixer sset Master 5%+")},
+		theme.volume.call("amixer sset Master 10%+")},
 	sup = {"Volume", "Volume Small Up",
-		theme.volume.call("amixer sset Master 1%+")},
+		theme.volume.call("amixer sset Master 5%+")},
 	down = {"Volume", "Volume Down",
-		theme.volume.call("amixer sset Master 5%-")},
+		theme.volume.call("amixer sset Master 10%-")},
 	sdown = {"Volume", "Volume Small Down",
-		theme.volume.call("amixer sset Master 1%-")},
+		theme.volume.call("amixer sset Master 5%-")},
 	mute = {"Volume", "Volume Mute",
 		theme.volume.call("amixer sset Master toggle")},
 }
@@ -229,8 +229,8 @@ M.globalkeys = awful.util.table.join(
 	key(mod, hyper, "Return", {"Misc", "emacs window",
         exec("emacsclient -c -n -e")}),
 
-	key(mod, hyper, "e", {"Misc", "emacs window",
-		function() toggle_dropdown("emacs") end}),
+	key(mod, "f", {"Misc", "signal window",
+		function() toggle_dropdown("signal") end}),
 
 	key(mod, hyper, "p", {"misc", "Sstfy Print screen",
         function()
@@ -370,6 +370,12 @@ M.globalkeys = awful.util.table.join(
 	key(mod, "minus", vol["down"]),
 	key(mod, shift, "minus", vol["sdown"]),
 
+    key(mod, "apostrophe", vol["up"]),
+    key(mod, shift, "apostrophe", vol["sup"]),
+    key(mod, "semicolon", vol["down"]),
+    key(mod, shift, "semicolon", vol["sdown"]),
+
+
 	key(mod, "p", music["toggle"]),
 	key(mod, shift, "m", vol["mute"]),
 	key(mod, shift, "z", music["beg"]),
@@ -483,8 +489,8 @@ M.globalkeys = awful.util.table.join(
 					client.focus:toggle_tag(tag)
 				end
 			end
-		end}),
-	key(mod, shift, "f", file_explorer)
+		end})
+	--key(mod, shift, "f", file_explorer)
 	--key(mod, alt}, "n", {"Test - Client", "Minimize",
 	--	function(c) c.minimized = true end}),
 )
@@ -625,8 +631,8 @@ M.clientkeys = awful.util.table.join(
 	key(mod, shift, "space", {"Client", "Toggle floating",
 		function(c) lain.util.magnify_client(c); c:raise() end }),
 
-	key(mod, "f", maximize),
-	--key(mod, shift, "f", fullscreen),
+	key(mod, hyper, "f", maximize),
+	key(mod, shift, "f", fullscreen),
 
 	key(mod, "q", {"Client", "Close",
 		function(c) c:kill() end}),

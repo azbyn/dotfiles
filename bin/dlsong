@@ -37,7 +37,7 @@ sub download {
 		system $cmd;
 	}
 	else {#ignore output
-		`ydl --extract-audio --audio-format mp3 '$song' -o '$output/%(title)s.%(ext)s'`
+		`youtube-dl --extract-audio --audio-format mp3 '$song' -o '$output/%(title)s.%(ext)s'`
 	}
 }
 

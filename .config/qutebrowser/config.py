@@ -1055,6 +1055,7 @@ c.fonts.tabs = '12pt monospace'
 ## list) will work.
 ## Type: List of String
 # c.qt.args = []
+c.qt.args = [ "blink-settings=darkMode=4" ]  
 
 ## Force a Qt platform to use. This sets the `QT_QPA_PLATFORM`
 ## environment variable and is useful to force using the XCB plugin when

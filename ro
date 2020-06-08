@@ -70,6 +70,7 @@ xkb_symbols "basic" {
     key <AB04> { [ v,          V, ccaron, Ccaron  ] };
     key <AB05> { [ b,          B, zcaron, Zcaron  ] };
     key <AD04> { [ r,          R, scaron, Scaron  ] };
+    key <AD06> { [ y,          Y, omacron, Omacron  ] };
 
     key <AB07> { [ m,          M, ntilde, Ntilde  ] };
 

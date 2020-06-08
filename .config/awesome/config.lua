@@ -96,7 +96,7 @@ M.program_rules = {
 	  properties = { titlebars_enabled = false } },
     --{ rule = { name = "ComplexExplorer" },
     --  properties = { floating = true } },
-    { rule = { name = "complexexplorer.curbelissajous" },
+    { rule = { name = "Form1" },
       properties = { floating = true } },
     { rule = { class = "screenshotifinator" },
       properties = {
@@ -192,13 +192,13 @@ function M.get_dropdowns()
 			vert = "center",
 			horiz = "center",
 		}),
-		emacs = lain.util.quake({--TODO FIX THIS
+		signal = lain.util.quake({
 			app = M.term,
-			extra = alpha_bg.." -e sh -c \"sh ~/.colors/shell; emacsclient -nw -e '(azb/terminal)'\"",
+			extra = alpha_bg.." -e sh -c \"sh ~/.colors/shell; scli -N \\\"notify-send -t 5000 scli '%s - %m'\\\" --save-history --enable-notifications --use-formatting\"",
             --extra = alpha_bg.." -e \"emacsclient -nw -e '(switch-to-buffer \\'*scratch*\\')'\"",
-			name = "QuakeDD_emacs",
-			height = 0.7,
-			width = 0.7,
+			name = "QuakeDD_signal",
+			height = 0.8,
+			width = 0.75,
 			vert = "center",
 			horiz = "center",
 		}),

@@ -74,6 +74,7 @@ values."
                                       shackle
                                       openwith
                                       ranger
+                                      lsp-mode
                                       ;;frames-only-mode
                                       ;;auctex
                                       flycheck-kotlin
@@ -452,7 +453,7 @@ you should place your code here."
   (global-set-key (kbd "<H-S-return>") 'split-window-right-and-focus)
 
 
-  (global-set-key (kbd "M-c") 'kill-ring-save)
+  ;(global-set-key (kbd "M-c") 'kill-ring-save)
   (global-set-key (kbd "M-v") 'yank)
   ;;(define-key evil-visual-state-map (kbd "M-c") 'kill-ring-save)
   (define-key evil-visual-state-map (kbd "C-x") 'kill-region)
@@ -507,6 +508,7 @@ you should place your code here."
 
   (defun azb-make (args)
     (interactive)
+    (save-buffer)
     (compile (concat "make -C '"
                      (azb-project-dir (azb-find-root (buffer-file-name)))
                      "' " args)))
@@ -523,7 +525,7 @@ you should place your code here."
 
   (defmacro local-compile (key func)
     `(local-set-key (kbd ,key)
-                    (lambda () (interactive) (compile ,func))))
+                    (lambda () (interactive) (save-buffer) (compile ,func))))
 
   ;; (defun make-proj (cmd)
   ;;   (interactive)
@@ -593,41 +595,54 @@ you should place your code here."
   ;;                               (save-buffer)
   ;;                               ))
 
-  (global-set-key (kbd "M-n")
-                  (lambda ()
-                    (interactive)
-                    (unless (search-backward "}" nil t)
-                      (compile (concat "poetrizer '"
-                                         (buffer-file-name) "'"))
-                      (save-buffer)
-                      (evil-ex (concat "e " (read-file-name "File: ")))
-                      (compile (concat "poetrizer '"
-                                             (buffer-file-name) "'"))
-                      (end-of-buffer)
-                      )
-                    ))
+  ;; (global-set-key (kbd "M-n")
+  ;;                 (lambda ()
+  ;;                   (interactive)
+  ;;                   (unless (search-backward "}" nil t)
+  ;;                     (compile (concat "poetrizer '"
+  ;;                                        (buffer-file-name) "'"))
+  ;;                     (save-buffer)
+  ;;                     (evil-ex (concat "e " (read-file-name "File: ")))
+  ;;                     (compile (concat "poetrizer '"
+  ;;                                            (buffer-file-name) "'"))
+  ;;                     (end-of-buffer)
+  ;;                     )
+  ;;                   ))
 
-  (global-set-key (kbd "M-d")
-                  (lambda ()
-                    (interactive)
-                    (shell-command
-                     (concat "firefox "
-                             "https://dexonline.ro/definitie/"
-                             (read-string "Dex: ")
-                             "/paradigma"))))
-  (global-set-key (kbd "H-M-d")
-                  (lambda ()
-                    (interactive)
-                    (shell-command
-                     (concat "firefox "
-                             "http://www.silabe.ro/desparte-in-silabe-"
-                             (read-string "Silabe: ")
-                             ".html"))))
+  ;; (global-set-key (kbd "M-d")
+  ;;                 (lambda ()
+  ;;                   (interactive)
+  ;;                   (shell-command
+  ;;                    (concat "firefox "
+  ;;                            "https://dexonline.ro/definitie/"
+  ;;                            (read-string "Dex: ")
+  ;;                            "/paradigma"))))
+  ;; (global-set-key (kbd "H-M-d")
+  ;;                 (lambda ()
+  ;;                   (interactive)
+  ;;                   (shell-command
+  ;;                    (concat "firefox "
+  ;;                            "http://www.silabe.ro/desparte-in-silabe-"
+  ;;                            (read-string "Silabe: ")
+  ;;                            ".html"))))
 
 
   (global-set-key (kbd "M-c") (lambda ()
                                 (interactive)
                                 (execute-kbd-macro (read-kbd-macro "H-c"))))
+
+  (global-set-key (kbd "M-h") (lambda ()
+                                (interactive)
+                                (execute-kbd-macro (read-kbd-macro "<left>"))))
+  (global-set-key (kbd "M-j") (lambda ()
+                                (interactive)
+                                (execute-kbd-macro (read-kbd-macro "<down>"))))
+  (global-set-key (kbd "M-k") (lambda ()
+                                (interactive)
+                                (execute-kbd-macro (read-kbd-macro "<up>"))))
+  (global-set-key (kbd "M-l") (lambda ()
+                              (interactive)
+                                (execute-kbd-macro (read-kbd-macro "<right>"))))
 
 
   ;; (add-hook 'poetry-mode-hook
@@ -648,7 +663,10 @@ you should place your code here."
   (global-set-key (kbd "M-m") 'counsel-M-x)
   ;; (spacemacs/set-leader-keys "SPC" 'find-file)
   (spacemacs/set-leader-keys "SPC" 'ivy-switch-buffer)
-  (global-set-key (kbd "M-e") 'counsel-M-x)
+  (global-set-key (kbd "M-r") 'counsel-M-x)
+  (global-set-key (kbd "M-e") 'end-of-line)
+  (add-hook 'c-mode-hook (lambda ()
+                           (local-set-key (kbd "M-e") 'c-end-of-statement)))
   (global-set-key (kbd "H-a") 'apropos)
 
   (defun open-projects ()
@@ -660,6 +678,7 @@ you should place your code here."
   ;;  (evil-edit (expand-file-name "~/.spacemacs")))
   (global-set-key (kbd "H-d") 'spacemacs/find-dotfile)
   (global-set-key (kbd "H-k") 'kill-buffer)
+  (setq-default sp-escape-quotes-after-insert nil)
 
   ;;; Config
   (c-add-style "my-style"
@@ -667,7 +686,11 @@ you should place your code here."
                  (c-basic-offset . 4)
                  (indent-tabs-mode . nil)
                  (c-offsets-alist
+                  (inlambda . 0) ; no extra indent for lambda
+                  ;; (member-init-intro . '++)
+                  (member-init-intro . 8)
                   (innamespace . -))))
+
   (push '(other . "my-style") c-default-style)
 
   (setq-default dfmt-flags '("--brace_style=stroustrup"))
@@ -676,6 +699,7 @@ you should place your code here."
     (local-set-key (kbd "<C-iso-lefttab>") 'dfmt-buffer))
   (add-hook 'd-mode-hook 'dformat)
 
+  ;; (c-set-offset 'member-init-intro '++)
   (setq-default comment-column 15)
   (setq-default evil-vsplit-window-right t)
   (setq-default undo-tree-auto-save-history t)
@@ -701,14 +725,28 @@ you should place your code here."
     (set-face-attribute 'default
                         nil
                         :height
-                        (floor (* 0.9
+                        (floor (* 0.90
                                   (face-attribute 'default :height)))))
+
+  (defun default-font-size()
+    (interactive)
+    (set-face-attribute 'default
+                        nil
+                        :height
+                        107))
+
+
   (add-hook 'org-mode-hook
             (lambda ()
               (local-set-key (kbd "H-SPC") 'org-toggle-latex-fragment)))
 
+  (global-set-key (kbd "C-=") 'default-font-size)
   (global-set-key (kbd "C-+") 'increase-font-size)
   (global-set-key (kbd "C--") 'decrease-font-size)
+
+  (global-set-key (kbd "H-M-f") 'counsel-semantic)
+
+
 
   ;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
@@ -720,6 +758,8 @@ you should place your code here."
                   '(c/c++-cppcheck c/c++-gcc)))
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
   (add-to-list 'auto-mode-alist '("\\.tpp\\'" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
+
   ;;(add-hook 'c++-mode-hook 'ggtags-mode)
   ;;(add-hook 'c-mode-hook 'ggtags-mode)
   (add-hook 'c++-mode-hook 'irony-mode)
@@ -742,6 +782,7 @@ you should place your code here."
   (setq-default fill-column 2000)
   (setq-default doc-view-continuous t)
   (add-hook 'csharp-mode-hook #'flycheck-mode)
+  (add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
 
 
   ;; (defun toggle-php-html-mode ()
@@ -763,7 +804,8 @@ you should place your code here."
       (setq web-mode-markup-indent-offset tw)
       (setq web-mode-css-indent-offset tw)
       ;;(setq web-mode-code-indent-offset tw)
-      (setq web-mode-indent-style tw)))
+      (setq web-mode-indent-style tw)
+      ))
   (add-hook 'web-mode-hook (lambda ()
                              (local-set-key (kbd "H-p") 'php-mode)
                              (azb/set-tabs)))
@@ -787,12 +829,15 @@ you should place your code here."
   (add-hook 'eshell-preoutput-filter-functions
             'ansi-color-filter-apply)
 
-  (add-to-list 'magic-mode-alist '("<!DOCTYPE html>" . web-mode) )
+  (add-to-list 'magic-mode-alist '("<!DOCTYPE html>" . web-mode))
+  (add-to-list 'magic-mode-alist '("<?php" . php-mode))
 
   (put 'flycheck-clang-args 'safe-local-variable (lambda (xx) t))
   (with-eval-after-load "flycheck"
     (setq flycheck-clang-warnings `(,@flycheck-clang-warnings
                                     "no-pragma-once-outside-header")))
+  (add-hook 'c++-mode-hook (lambda ()
+                             (setq flycheck-clang-language-standard "c++20")))
 
   (setq openwith-associations '(
                                 ("\\.pdf\\'" "zathura" (file))

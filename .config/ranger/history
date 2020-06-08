@@ -1,50 +1,50 @@
-rename Mese și scaune
-rename Sufragerii
-search mobi
-shell m
-rename products
-shell mkdir descriere
-shell e descriere
+search keey
+search pas
+rename Program.cs_
+rename Program.cs__
+rename Program.cs
+rename BigIntInterface.csproj___
+rename BigIntInterface.csproj
+search sodom
+q
 
-rename Sufragerie Franciszek - 3500.jpg
-shell e gen-sql.py
-shell e gen-sql.sh
-shell e gen-sql
-rename 2020-05-04-092610_1920x1080_scrot.png
-shell e email
-search my
-rename Prezenta-M523-Geometrie-Diferentiala-4-mai-2020.png
-rename 1 Suflete-n batista
-shell e 1 Curiculum Vitae.ptr
-e:
-shell e '1 Curiculum Vitae.ptr'
-rename 2 Cerul pe turturi de gheata
-rename 3 Nuferi astrali
-edit 1 Inimă de caine.doc
-s 
-shell e 1\ Inimă\ de\ caine.ptr
-rename 1 Curiculum Vitae.ptr
-shell e 1\ Curiculum\ Vitae.ptr 
-shell mkdir dx
-rename old_ptry
-rename buffer
+rename Земляне - Каскадёры.mp3
+shell mkdir 
+shell mkdir tofu
+rename WT01-oop.pdf
+rename WBarem-oop.pdf
+search leni
+search find
+search len
+search alb
+search mos
+search ves
+search .ne
+search land
+search hard
+search game
+rename Quake 2 - Big Gun.mp3
+search misc
+search coun
+search G
+search dei
+search para
+search che
+search ost
+search rap
+search gri
+search dl
+search ceas
+shell unrar e Ceas.rar 
+shell unrar x Ceas.rar
 open_with 
-rename style.css_0
-rename cont_nou.php
-rename 
-search prod
-rename app
-shell e  index.html 
-search log
-shell 
-rename index.html
-rename header.php
-rename style.css
-rename dotgrid.png
-rename Birou Słońca - 650.jpg
-shell yee
-yeet ArchGit
-e yeet
-yeet
-search ye
+search 
+search exo
+shell unzip x win95.zip 
+shell unzip -e win95.zip 
+shell unzip win98.zip 
+shell unzip -x win98.zip
+shell e 
+shell e 2.bat 
 delete
+search oop

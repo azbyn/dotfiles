@@ -22,6 +22,7 @@ print $FH <<END;
 \\usepackage{minted}
 \\usepackage[T1]{fontenc}
 \\usepackage[utf8]{inputenc}
+\\newcommand*{\\R}{\\mathbb{R}}
 \\begin{document}
 
 \\end{document}
@@ -31,10 +32,10 @@ END
 
 # -n = noswap
 # +5 = line 5
-system("vim +9 $file");
+system("vim +10 $file");
 system("pdflatex --shell-escape -output-directory=$dir $file");
 #system("cd $dir");
-system("convert -alpha remove -density 500 $pdf -quality 100 -colorspace RGB $png");
+system("convert -alpha remove -density 320 $pdf -quality 100 -colorspace RGB $png");
 system("xclip -selection clip -t image/png $png");
 system("feh $png");
 
