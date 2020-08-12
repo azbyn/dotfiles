@@ -216,8 +216,82 @@ local home = os.getenv("HOME")
 		end)
 end
 ]]--
+--[[
+awful.keygrabber {
+    export_keybindings = true,
+    autostart = true,
+    keyreleased_callback = function(kg, mod, key, event)
+        naughty.notify({text="release"})
+    end,
+    keypressed_callback = function(kg, mod, key, event)
+        naughty.notify({text="press"})
+    end
+}]]--
+
+--[[
+for i = 1, 9 do
+	f13keys = awful.util.table.join(f13keys,
+		-- View tag only.
+		awful.key("#" .. i + 9,
+				function ()
+					local screen = awful.screen.focused()
+					local tag = screen.tags[i]
+					if tag then
+						tag:view_only()
+					end
+				end,
+				descr_view))
+end
+]]--
 
 M.globalkeys = awful.util.table.join(
+--[[
+    key("Hyper_L", {"Misc", "Über-nice keybindings", awful.keygrabber {
+        keybindings = {
+            {{}, "r", function() toggle_dropdown("transliterate") end}
+        },-- f13keys,
+        stop_key = "Escape",
+        --timeout = -1,
+        start_callback = function(self)
+            --self.timeout = -1,
+            theme.modkeys.setKey("H")
+        end,
+        stop_callback = function()
+            theme.modkeys.setKey(" ")
+        end,
+        mask_modkeys = true,
+        --keyreleased_callback = function(self, mods, key)
+        --    theme.modkeys.setKey("rkey:"..key)
+        --end,
+        keypressed_callback = function(self, mods, key)
+            if key == "r" then
+                toggle_dropdown("transliterate")
+            elseif key == "s" then
+                toggle_dropdown("small")
+            elseif key == "a" then
+                toggle_dropdown("big")
+            elseif key == "m" then
+                toggle_dropdown("music")
+            elseif key == "Return" then
+                term()
+            elseif key == "e" then
+                exec_tag_special("E")
+            elseif key == "equal" then
+                vol["up"]()
+            elseif key == "minus" then
+                vol["down"]()
+            elseif key >= '1' and key <= '9' then
+                i = key:byte() - string.byte('0')
+                local screen = awful.screen.focused()
+                local tag = screen.tags[i]
+                if tag then
+                    tag:view_only()
+                end
+            end
+            --theme.modkeys.setKey("key:"..key)
+            self:stop()
+        end,
+    }}),]]--
     --awful.key({}, "Menu", exec("xdotool click 3")),
     --awful.key({shift}, "Menu", exec("xdotool click 1")),
 	--awful.key({alt}, "Menu", exec("xdotool click 2")),
@@ -225,100 +299,35 @@ M.globalkeys = awful.util.table.join(
 	--key("Mod3", mod, "grave", {"Misc", "Caps Lock",
 	--	exec("xdotool key Caps_Lock")}),
 	--key(mod, "grave", term),
-    --
-  -- for the transition to new layout
-
-	key(hyper, "bracketleft", music["bwd"]),
-	key(hyper, ctrl, "bracketleft", music["bbwd"]),
-	key(hyper, "bracketright", music["fwd"]),
-	key(hyper, ctrl, "bracketright", music["bfwd"]),
-
-	--key(hyper, "equal", vol["up"]),
-	--key(hyper, ctrl, "equal", vol["sup"]),
-	--key(hyper, "minus", vol["down"]),
-	--key(hyper, ctrl, "minus", vol["sdown"]),
-
-    key(mod, "i", vol["up"]),
-    key(mod, "j", vol["down"]),
-    --key(mod, "i", music["next"]),
-    --key(mod, "j", music["prev"]),
-
-    key(hyper, "o", vol["up"]),
-    key(hyper, "k", vol["down"]),
-    --key(hyper, "i", {"misc", "send up",
-    --                 function() awful.spawn({"xdotool", "key", "Up"}) end}),
-    --key(hyper, "j", {"misc", "send down",
-    --                 function() awful.spawn({"xdotool", "key", "Down"}) end}),
-    --key(hyper, "i", music["next"]),
-    --key(hyper, "j", music["prev"]),
-    key(hyper, "r", {"Misc", "Small Dropdown Terminal",
-                     function() toggle_dropdown("small") end}),
-
-  key(hyper, "e", {"Program", "Emacs",
-                 exec_tag_special("E")}),
-  key(hyper, "w", {"Misc", "Emacs Dropdown Terminal",
-                   function() toggle_dropdown("emacs") end}),
-
-  --key(hyper, "t", {"Misc", "Emacs Dropdown Terminal",
-  --                 function() toggle_dropdown("emacs") end}),
-
-	--key(hyper, "p", music["toggle"]),
-
-
-	--key(hyper, "", vol["down"]),
-	--key(hyper, "o", vol["up"]),
-  key(hyper, "m", {"Misc", "Dropdown music player",
-                 function() toggle_dropdown("music") end}),
-
-	--key(alt, "minus", vol["down"]),
-  --key(hyper, "k", {"Misc", "switch alt",
-   --                function()
-    --                 awful.spawn.with_shell({"/home/azbyn/.local/bin/switchalt"})
-  --end}),
-	key(alt, ctrl, "minus", vol["sdown"]),
-
-    -- key(alt, "apostrophe", vol["up"]),
-    -- key(alt, ctrl, "apostrophe", vol["sup"]),
-    -- key(alt, "semicolon", vol["down"]),
-    -- key(alt, ctrl, "semicolon", vol["sdown"]),
-
-	key(alt, "Left", {"Movement", "Focus Left",
-		function() focus_direction("left") end}),
-	key(alt, "Right", {"Movement", "Focus Right",
-		function() focus_direction("right") end}),
-
-
-	key(alt, "grave", theme.mymainmenu:show()),
-	key(mod, ctrl, "Return", {"Misc", "emacs window",
+	key(mod, "grave", theme.mymainmenu:show()),
+	key(mod, hyper, "Return", {"Misc", "emacs window",
         exec("emacsclient -c -n -e")}),
 
-	key(mod, "w", {"Misc", "emacs window",
-		function() toggle_dropdown("emacs") end}),
 	key(mod, "f", {"Misc", "signal window",
 		function() toggle_dropdown("signal") end}),
 
-	key(mod, ctrl, "p", {"misc", "Sstfy Print screen",
+	key(mod, hyper, "p", {"misc", "Sstfy Print screen",
         function()
             awful.spawn("sstfy")
             --naughty.notify({text="took screenshot"})
         end}),
-    key(mod, alt, "p", {"misc", "Print screen",
+	key(mod, alt, "p", {"misc", "Print screen",
         function()
             awful.spawn("scrot -e 'mv $f ~/Pictures/screenshots 2>/dev/null'")
             naughty.notify({text="took screenshot"})
         end}),
 
-    key(mod, ctrl, "v", {"Misc", "Use mrww from",
+    key(mod, shift, "v", {"Misc", "Use mrww from",
         exec("mrww from")}),
-    key(mod, ctrl, "c", {"Misc", "Use mrww to",
+    key(mod, shift, "c", {"Misc", "Use mrww to",
         exec("mrww to")}),
-    key(mod, ctrl, "x", {"Misc", "Use mrww torofi",
+    key(mod, shift, "x", {"Misc", "Use mrww torofi",
         exec("mrww torofi")}),
 
 	key(mod, "r", {"Misc", "Transliterate",
 		function() toggle_dropdown("transliterate") end}),
 
-	key(hyper, "l", {"Misc", "LaTeX",
+	key(mod, "l", {"Misc", "LaTeX",
 		function() toggle_dropdown("latex") end}),
 
 
@@ -331,45 +340,34 @@ M.globalkeys = awful.util.table.join(
 
 	key(mod, ctrl, "BackSpace", {"Misc", "Restart Awesome",
 		awesome.restart}),
-	
-	key(hyper, ctrl, "BackSpace", {"Misc", "Restart Awesome",
+	key(mod, ctrl, "r", {"Misc", "Restart Awesome",
 		awesome.restart}),
-    key(mod, ctrl, "r", {"Misc", "Restart Awesome",
-		awesome.restart}),
-	key(shift, hyper, alt, "BackSpace", {"Misc", "Restart",
+	key(mod, ctrl, shift, "BackSpace", {"Misc", "Restart",
 		exec("systemctl reboot")}),
 	key(mod, ctrl, "Escape", {"Misc", "Quit Awesome",
 		function() awesome.quit() end}),
-	key(shift, hyper, alt, "Escape", {"Misc", "Shutdown",
+	key(mod, ctrl, shift, "Escape", {"Misc", "Shutdown",
 		exec("systemctl poweroff")}),
 
-
-	--[[key(alt, "Tab", {"Movement", "View Last Window",
+	--[[
+	key(alt, "Tab", {"Movement", "View Last Window",
 		function()
 			awful.client.focus.history.previous()
 			if client.focus then
 				client.focus:raise()
 			end
 		end}),
-	--]]--
-	key(mod, "space", {"Movement", "Last Tags",
+	]]--
+	key(mod, "Tab", {"Movement", "Last Tags",
 		awful.tag.history.restore}),
 
-	key(alt, "tab", {"Layout", "Select next layout",
-		function()
-            switch_layout(1)
-            --naughty.notify({text="OIDA"})
-	        --gears.wallpaper.maximized(os.getenv("HOME").. "/Pictures/bear.jpg", 
-            --    awful.screen.focused(), true)
-        end}),
-
-	--key(mod, "h", {"Movement", "Previous Tag",
-	--	function() inc_tag(-1) end}),--awful.tag.viewprev}),
+	key(mod, "h", {"Movement", "Previous Tag",
+		function() inc_tag(-1) end}),--awful.tag.viewprev}),
 	--key(mod, "l", {"Movement", "Next Tag",
 	--	function() inc_tag(1) end}),--awful.tag.viewnext}),
-	key(mod, "o", {"Movement", "Next Window",
+	key(mod, "j", {"Movement", "Next Window",
 		function() awful.client.focus.byidx(1) end}),
-	key(mod, shift, "o", {"Movement", "Previous Window",
+	key(mod, "k", {"Movement", "Previous Window",
 		function() awful.client.focus.byidx(-1) end}),
 
 	key(mod, "Left", {"Movement", "Focus Left",
@@ -397,8 +395,8 @@ M.globalkeys = awful.util.table.join(
 		function() awful.tag.incnmaster(-1, nil, true) end}),
 	key(mod, ctrl, shift, "k", {"Layout", "Increase Number of columns",
 		function() awful.tag.incncol(1, nil, true) end}),
-	--key(mod, ctrl, shift, "j", {"Layout", "Decrease Number of columns",
-	--	function() awful.tag.incncol(-1, nil, true) end}),
+	key(mod, ctrl, shift, "j", {"Layout", "Decrease Number of columns",
+		function() awful.tag.incncol(-1, nil, true) end}),
 
 
 	key(mod, "b", {"Screen", "Focus Previous Screen",
@@ -412,8 +410,8 @@ M.globalkeys = awful.util.table.join(
 	key("XF86AudioRaiseVolume", vol["up"]),
 	key("XF86AudioLowerVolume", vol["down"]),
 	key("XF86AudioMute", vol["mute"]),
-	--key("XF86MonBrightnessUp", brightness["up"]),
-	--key("XF86MonBrightnessDown", brightness["down"]),
+	key("XF86MonBrightnessUp", brightness["up"]),
+	key("XF86MonBrightnessDown", brightness["down"]),
 
 	--key(mod, "Insert", music["prev"]),
 	--key(mod, shift, "Insert", music["beg"]),
@@ -437,68 +435,74 @@ M.globalkeys = awful.util.table.join(
 	-- key(mod, shift, "Next", vol["sdown"]),
 
 	key(mod, "bracketleft", music["bwd"]),
-	key(mod, ctrl, "bracketleft", music["bbwd"]),
+	key(mod, shift, "bracketleft", music["bbwd"]),
 	key(mod, "bracketright", music["fwd"]),
-	key(mod, ctrl, "bracketright", music["bfwd"]),
+	key(mod, shift, "bracketright", music["bfwd"]),
 
 	key(mod, "equal", vol["up"]),
-	key(mod, ctrl, "equal", vol["sup"]),
+	key(mod, shift, "equal", vol["sup"]),
 	key(mod, "minus", vol["down"]),
-	key(mod, ctrl, "minus", vol["sdown"]),
+	key(mod, shift, "minus", vol["sdown"]),
 
     key(mod, "apostrophe", vol["up"]),
-    key(mod, ctrl, "apostrophe", vol["sup"]),
+    key(mod, shift, "apostrophe", vol["sup"]),
     key(mod, "semicolon", vol["down"]),
-    key(mod, ctrl, "semicolon", vol["sdown"]),
+    key(mod, shift, "semicolon", vol["sdown"]),
 
 
 	key(mod, "p", music["toggle"]),
-	key(mod, ctrl, "m", vol["mute"]),
-	key(mod, ctrl, "z", music["beg"]),
+	key(mod, shift, "m", vol["mute"]),
+	key(mod, shift, "z", music["beg"]),
 	key(mod, "z", music["prev"]),
 	key(mod, "x", music["next"]),
 
-
 	key(mod, "period", brightness["up"]),
-	--key(mod, ctrl, "period", brightness["high"]),
+	key(mod, shift, "period", brightness["high"]),
 	key(mod, "comma", brightness["down"]),
-	--key(mod, ctrl, "comma", brightness["low"]),
+	key(mod, shift, "comma", brightness["low"]),
 
 	key(mod, "Return", term),
 
 	key(mod, "u", {"Movement", "Jump to urgent client",
 		awful.client.urgent.jumpto}),
+	key(mod, "space", {"Layout", "Select next layout",
+		function() 
+            switch_layout(1)
+            --naughty.notify({text="OIDA"})
+	        --gears.wallpaper.maximized(os.getenv("HOME").. "/Pictures/bear.jpg", 
+            --    awful.screen.focused(), true)
+        end}),
 
-	--key(mod, "w", browser1),
-	key(mod, alt, "w", {"Tag", "Toggle tag W",
+	key(mod, "w", browser1),
+	key(mod, ctrl, "w", {"Tag", "Toggle tag W",
 		function() toggle_tag("W") end}),
-	key(mod, ctrl, "w", browser2),
+	key(mod, shift, "w", browser2),
 
 	key(mod, "d", launcher1),
-    key(mod, ctrl, "d", launcher2),
+	key(mod, shift, "d", launcher2),
 
-	--key(mod, "i", {"Program", "Htop",
-	--	exec_term(config.term, "htop")}),
+	key(mod, "i", {"Program", "Htop",
+		exec_term(config.term, "htop")}),
 
-	key(hyper, ctrl, "p", {"Program", "KeePassXC",
+	key(mod, shift, "p", {"Program", "KeePass",
 		exec_tag_special("P")}),
-	--key(mod, alt, "p", {"Tag", "Toggle tag P",
-	--	function() toggle_tag("P") end}),
+	key(mod, ctrl, "p", {"Tag", "Toggle tag P",
+		function() toggle_tag("P") end}),
 
 
 	key(mod, "g", {"Program", "Gimp",
 		exec_tag_special("G")}),
-	key(mod, alt, "g", {"Tag", "Toggle tag G",
+	key(mod, ctrl, "g", {"Tag", "Toggle tag G",
 		function() toggle_tag("G") end}),
 
-	key(mod, ctrl, "t", {"Program", "qBittorrent",
+	key(mod, shift, "t", {"Program", "qBittorrent",
 		exec_tag_special("T")}),
-	key(mod, alt, "t", {"Tag", "Toggle tag T",
+	key(mod, ctrl, "t", {"Tag", "Toggle tag T",
 		function() toggle_tag("T") end}),
 
 	key(mod, "e", {"Program", "Emacs",
 		exec_tag_special("E")}),
-	key(mod, alt, "e", {"Tag", "Toggle tag E",
+	key(mod, ctrl, "e", {"Tag", "Toggle tag E",
 		function() toggle_tag("E") end}),
 
 	--[[key(mod, "v", {"Program", "Vlc",
@@ -506,7 +510,7 @@ M.globalkeys = awful.util.table.join(
 	key(mod, ctrl, "v", {"Tag", "Toggle tag V",
 		function() toggle_tag("V") end}),]]--
 
-	key(mod, ctrl, "s", {"Program", "Android Studio",
+	key(mod, shift, "s", {"Program", "Android Studio",
 		exec_tag_special("S")}),
 
 	key(mod, "a", {"Misc", "Big Dropdown Terminal",
@@ -520,10 +524,10 @@ M.globalkeys = awful.util.table.join(
 	key(mod, "m", {"Misc", "Dropdown music player",
 		function() toggle_dropdown("music") end}),
 
-	--key(mod, ctrl, "b", {"Widgets", "Show Battery Widget",
-	--	function() theme.battery.show(5) end}),
-	--key(mod, ctrl, "n", {"Widgets", "Show Network Widget",
-	--	function() theme.net.show(5) end}),
+	key(mod, ctrl, "b", {"Widgets", "Show Battery Widget",
+		function() theme.battery.show(5) end}),
+	key(mod, ctrl, "n", {"Widgets", "Show Network Widget",
+		function() theme.net.show(5) end}),
 	--key(mod, ctrl, "c", {"Widgets", "Show Calendar Widget",
 	--	function() lain.widget.calendar.show(5) end}),
 
@@ -533,7 +537,7 @@ M.globalkeys = awful.util.table.join(
 	key(mod, ctrl, "minus", {"Misc", "Decrement gaps",
 		function() lain.util.useless_gaps_resize(-1) end}),
 
-	key(mod, alt, "e", {"Misc", "Emacs toggle",
+	key(mod, ctrl, "e", {"Misc", "Emacs toggle",
 		function ()
 				local screen = awful.screen.focused()
 				local tag = screen.tags[6]
@@ -541,7 +545,7 @@ M.globalkeys = awful.util.table.join(
 					awful.tag.viewtoggle(tag)
 				end
 			end }),
-	key(mod, ctrl, "e", {"Misc", "Emacs move",
+	key(mod, shift, "e", {"Misc", "Emacs move",
 		function ()
 			if client.focus then
 				local tag = client.focus.screen.tags[6]
@@ -550,8 +554,8 @@ M.globalkeys = awful.util.table.join(
 					tag:view_only()
 				end
 			end
-        end}),
-    key(mod, alt, ctrl, "e", {"Misc", "Emacs toggle_focus",
+		end}),
+	key(mod, ctrl, shift, "e", {"Misc", "Emacs toggle_focus",
 		function ()
 			if client.focus then
 				local tag = client.focus.screen.tags[6]
@@ -567,7 +571,7 @@ M.globalkeys = awful.util.table.join(
 
 
 M.clientkeys = awful.util.table.join(
-	key(mod, ctrl, "Left", {"Movement", "Swap Left / Floating Move Left",
+	key(mod, shift, "Left", {"Movement", "Swap Left / Floating Move Left",
 		function(c)
 			if c.floating then
 				move_x(c, -0.025)
@@ -575,7 +579,7 @@ M.clientkeys = awful.util.table.join(
 				awful.client.swap.global_bydirection("left")
 			end
 		end}),
-	key(mod, ctrl, "Right", {"Movement", "Swap Right / Floating Move Right",
+	key(mod, shift, "Right", {"Movement", "Swap Right / Floating Move Right",
 		function(c)
 			if c.floating then
 				move_x(c, 0.025)
@@ -583,7 +587,7 @@ M.clientkeys = awful.util.table.join(
 				awful.client.swap.global_bydirection("right")
 			end
 		end}),
-	key(mod, ctrl, "Up", {"Movement", "Swap Up / Floating Move Up",
+	key(mod, shift, "Up", {"Movement", "Swap Up / Floating Move Up",
 		function(c)
 			if c.floating then
 				move_y(c, -0.025)
@@ -591,7 +595,7 @@ M.clientkeys = awful.util.table.join(
 				awful.client.swap.global_bydirection("up")
 			end
 		end}),
-	key(mod, ctrl, "Down", {"Movement", "Swap Down / Floating Move Down",
+	key(mod, shift, "Down", {"Movement", "Swap Down / Floating Move Down",
 		function(c)
 			if c.floating then
 				move_y(c, 0.025)
@@ -600,37 +604,37 @@ M.clientkeys = awful.util.table.join(
 			end
 		end}),
 
-	key(mod, ctrl, "h", {"Layout", "Floating Move Left",
+	key(mod, shift, "h", {"Layout", "Floating Move Left",
 		function(c)
 			if c.floating then
 				move_x(c, -0.025)
 			end
 		end}),
-	--key(mod, ctrl, "l", {"Layout", "Floating Move Right",
-	--	function(c)
-	--		if c.floating then
-	--			move_x(c, 0.025)
-	--		end
-	--	end}),
-	--key(mod, ctrl, "j", {"Layout", "Swap with next client by index / Floating Move Down",
-	--	function(c)
-	--		if c.floating then
-	--			move_y(c, 0.025)
-	--		else
-	--			awful.client.swap.byidx(1)
-	--		end
-	--	end}),
-	--key(mod, ctrl, "k", {"Layout", "Swap with next client by index / Floating Move Up",
-	--	function(c)
-	--		if c.floating then
-	--			move_y(c, -0.025)
-	--		else
-	--			awful.client.swap.byidx(-1)
-	--		end
-	--	end}),
+	key(mod, shift, "l", {"Layout", "Floating Move Right",
+		function(c)
+			if c.floating then
+				move_x(c, 0.025)
+			end
+		end}),
+	key(mod, shift, "j", {"Layout", "Swap with next client by index / Floating Move Down",
+		function(c)
+			if c.floating then
+				move_y(c, 0.025)
+			else
+				awful.client.swap.byidx(1)
+			end
+		end}),
+	key(mod, shift, "k", {"Layout", "Swap with next client by index / Floating Move Up",
+		function(c)
+			if c.floating then
+				move_y(c, -0.025)
+			else
+				awful.client.swap.byidx(-1)
+			end
+		end}),
 
 
-	key(mod, alt, "Left", {"Layout", "Decrease Master/Floating Width",
+	key(mod, ctrl, "Left", {"Layout", "Decrease Master/Floating Width",
 		function(c)
 			if c.floating then
 				inc_width(c, -0.05)
@@ -638,7 +642,7 @@ M.clientkeys = awful.util.table.join(
 				awful.tag.incmwfact(-0.05)
 			end
 		end}),
-	key(mod, alt, "Right", {"Layout", "Increase Master/Floating Width",
+	key(mod, ctrl, "Right", {"Layout", "Increase Master/Floating Width",
 		function(c)
 			if c.floating then
 				inc_width(c, 0.05)
@@ -646,7 +650,7 @@ M.clientkeys = awful.util.table.join(
 				awful.tag.incmwfact(0.05)
 			end
 		end}),
-	key(mod, alt, "Up", {"Layout", "Increase Client/Floating Height",
+	key(mod, ctrl, "Up", {"Layout", "Increase Client/Floating Height",
 		function(c)
 			if c.floating then
 				inc_height(c, 0.05)
@@ -654,7 +658,7 @@ M.clientkeys = awful.util.table.join(
 				awful.client.incwfact(0.05)
 			end
 		end}),
-	key(mod, alt, "Down", {"Layout", "Decrease Client/Floating Height",
+	key(mod, ctrl, "Down", {"Layout", "Decrease Client/Floating Height",
 		function(c)
 			if c.floating then
 				inc_height(c, -0.05)
@@ -663,53 +667,50 @@ M.clientkeys = awful.util.table.join(
 			end
 		end}),
 
-	--key(mod, alt, "h", {"Layout", "Decrease Master/Floating Width",
-	--	function(c)
-	--		if c.floating then
-	--			inc_width(c, -0.05)
-	--		else
-	--			awful.tag.incmwfact(-0.05)
-	--		end
-	--	end}),
-	--key(mod, alt, "l", {"Layout", "Increase Master/Floating Width",
-	--	function(c)
-	--		if c.floating then
-	--			inc_width(c, 0.05)
-	--		else
-	--			awful.tag.incmwfact(0.05)
-	--		end
-	--	end}),
-	--key(mod, alt, "k", {"Layout", "Increase Client/Floating Height",
-	--	function(c)
-	--		if c.floating then
-	--			inc_height(c, 0.05)
-	--		else
-	--			awful.client.incwfact(0.05)
-	--		end
-	--	end}),
-	--key(mod, alt, "j", {"Layout", "Decrease Client/Floating Height",
-	--	function(c)
-	--		if c.floating then
-	--			inc_height(c, -0.05)
-	--		else
-	--			awful.client.incwfact(-0.05)
-	--		end
-	--	end}),
+	key(mod, ctrl, "h", {"Layout", "Decrease Master/Floating Width",
+		function(c)
+			if c.floating then
+				inc_width(c, -0.05)
+			else
+				awful.tag.incmwfact(-0.05)
+			end
+		end}),
+	key(mod, ctrl, "l", {"Layout", "Increase Master/Floating Width",
+		function(c)
+			if c.floating then
+				inc_width(c, 0.05)
+			else
+				awful.tag.incmwfact(0.05)
+			end
+		end}),
+	key(mod, ctrl, "k", {"Layout", "Increase Client/Floating Height",
+		function(c)
+			if c.floating then
+				inc_height(c, 0.05)
+			else
+				awful.client.incwfact(0.05)
+			end
+		end}),
+	key(mod, ctrl, "j", {"Layout", "Decrease Client/Floating Height",
+		function(c)
+			if c.floating then
+				inc_height(c, -0.05)
+			else
+				awful.client.incwfact(-0.05)
+			end
+		end}),
 
-	key(mod, "F11", maximize),
-	key(mod, ctrl, "F11", fullscreen),
-	key(mod, ctrl, "space", {"Client", "Toggle floating",
+	key("F11", maximize),
+	key(shift, "F11", fullscreen),
+	key(mod, shift, "space", {"Client", "Toggle floating",
 		function(c) lain.util.magnify_client(c); c:raise() end }),
 
-	key(mod, alt, "f", maximize),
-	key(mod, ctrl, "f", fullscreen),
-
-	key(hyper, "f", maximize),
-	key(hyper, ctrl, "f", fullscreen),
+	key(mod, hyper, "f", maximize),
+	key(mod, shift, "f", fullscreen),
 
 	key(mod, "q", {"Client", "Close",
 		function(c) c:kill() end}),
-	key(mod, ctrl, "q", {"Client", "Kill", -- used in extreme cases
+	key(mod, shift, "q", {"Client", "Kill", -- used in extreme cases
 		function(c)
 			awful.spawn.with_shell("xkill -id `xprop -root _NET_ACTIVE_WINDOW | cut -d\\# -f2`")
 		end}),
@@ -732,53 +733,6 @@ for i = 1, 9 do
 		descr_toggle_focus = {description = "Toggle focused client on tag #", group = "Tag"}
 	end
 	M.globalkeys = awful.util.table.join(M.globalkeys,
-
-		awful.key({hyper}, "#" .. i + 9,
-				function ()
-					local screen = awful.screen.focused()
-					local tag = screen.tags[i]
-					if tag then
-						tag:view_only()
-						--[[if screen.clients[1] then
-							screen.clients[1]:raise()
-						end]]
-					end
-				end,
-				descr_view),
-		-- Toggle tag display.
-		awful.key({hyper, alt}, "#" .. i + 9,
-				function ()
-					local screen = awful.screen.focused()
-					local tag = screen.tags[i]
-					if tag then
-						awful.tag.viewtoggle(tag)
-					end
-				end,
-				descr_toggle),
-		-- Move client to tag.
-		awful.key({hyper, ctrl}, "#" .. i + 9,
-				function ()
-					if client.focus then
-						local tag = client.focus.screen.tags[i]
-						if tag then
-							client.focus:move_to_tag(tag)
-							tag:view_only()
-						end
-					end
-				end,
-				descr_move),
-		-- Toggle tag on focused client.
-		awful.key({hyper, alt, ctrl}, "#" .. i + 9,
-				function ()
-					if client.focus then
-						local tag = client.focus.screen.tags[i]
-						if tag then
-							client.focus:toggle_tag(tag)
-						end
-					end
-				end,
-				descr_toggle_focus),
-                                       ---REEEEEEEEEEEEEe
 		-- View tag only.
 		awful.key({mod}, "#" .. i + 9,
 				function ()
@@ -793,7 +747,7 @@ for i = 1, 9 do
 				end,
 				descr_view),
 		-- Toggle tag display.
-		awful.key({mod, alt}, "#" .. i + 9,
+		awful.key({mod, ctrl}, "#" .. i + 9,
 				function ()
 					local screen = awful.screen.focused()
 					local tag = screen.tags[i]
@@ -803,7 +757,7 @@ for i = 1, 9 do
 				end,
 				descr_toggle),
 		-- Move client to tag.
-		awful.key({mod, ctrl}, "#" .. i + 9,
+		awful.key({mod, shift}, "#" .. i + 9,
 				function ()
 					if client.focus then
 						local tag = client.focus.screen.tags[i]
@@ -815,7 +769,7 @@ for i = 1, 9 do
 				end,
 				descr_move),
 		-- Toggle tag on focused client.
-		awful.key({mod, alt, ctrl}, "#" .. i + 9,
+		awful.key({mod, ctrl, shift}, "#" .. i + 9,
 				function ()
 					if client.focus then
 						local tag = client.focus.screen.tags[i]

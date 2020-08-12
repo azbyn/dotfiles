@@ -72,6 +72,7 @@ local cpu   = require("widgets.cpu")
 local temp  = require("widgets.temp")
 local ld    = require("widgets.load")
 local email = require("widgets.email")
+local signal= require("widgets.signal")
 
 local weather = require("widgets.weather")
 
@@ -79,6 +80,9 @@ theme.music   = require("widgets.music")
 theme.volume  = require("widgets.volume")
 theme.battery = require("widgets.battery")
 theme.net     = require("widgets.net")
+
+
+theme.modkeys     = require("widgets.modkeys")
 --[[theme.calendar = lain.widget.calendar({
 	cal = "cal -m",
 	attach_to = { clock.widget },
@@ -246,6 +250,8 @@ function theme.at_screen_connect(s)
 			wibox.widget.systray(),
 --            mykeyboardlayout,
 			spr,
+            theme.modkeys.text,
+            spr,
 			arrl_ld,
 			--wibox.container.background(theme.music.icon, theme.bg_focus),
 			wibox.container.background(spr, theme.bg_focus),
@@ -271,6 +277,9 @@ function theme.at_screen_connect(s)
             wibox.container.background(email.text, theme.bg_focus),
             --wibox.container.background(spr, theme.bg_focus),
             --wibox.container.background(weather.text, theme.bg_focus),
+            wibox.container.background(spr, theme.bg_focus),
+            wibox.container.background(signal.widget, theme.bg_focus),
+            wibox.container.background(signal.text, theme.bg_focus),
             wibox.container.background(sspr, theme.bg_focus),
 			arrl_dl,
 

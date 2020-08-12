@@ -103,6 +103,7 @@ set laststatus=2
 set secure
 set modeline
 set modelines=10
+set clipboard=unnamedplus
 
 set title
 set titleold="Terminal"

@@ -8,8 +8,8 @@ my $help = 0;
 my $directory = "";
 
 GetOptions(
-	"help|?"=>\$help,
-	"directory=s"=>\$directory,
+    "help|?"=>\$help,
+    "directory=s"=>\$directory,
 ) or pod2usage(1);
 
 pod2usage(0) if $help;
@@ -17,8 +17,12 @@ print "find '~/Music/$directory' '".join('|', @ARGV)."'\n" if defined $ARGV[0];
 
 system "find", "$ENV{HOME}/Music/$directory",
     "-type", "f",
-	"-regextype", "posix-extended",
-	"-iregex", ".*(".join('|', @ARGV).").*$extensions";
+    "-regextype", "posix-extended",
+    "-iregex", ".*(".join('|', @ARGV).").*$extensions";
+print "find ", "$ENV{HOME}/Music/$directory",
+    "-type ", "f ",
+    "-regextype ", "posix-extended ",
+    "-iregex ", ".*(".join('|', @ARGV).").*$extensions";
 
 my $org = join('|', @ARGV);
 my $cyr = $org;

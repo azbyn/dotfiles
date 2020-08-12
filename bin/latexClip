@@ -3,7 +3,7 @@ use warnings;
 use strict;
 
 my $dir = "/tmp/latexClip";
-my $file = "$dir/f.latex";
+my $file = "$dir/f.tex";
 my $pdf = "$dir/f.pdf";
 my $png = "$dir/f.png";
 if (-e $dir) {
@@ -29,13 +29,17 @@ print $FH <<END;
 END
 
 }
+open(my $MF, ">", "$dir/Makefile");
+print $MF <<END;
+main:
+	pdflatex --shell-escape -output-directory=$dir $file
+	convert -alpha remove -density 320 $pdf -quality 100 -colorspace RGB $png
+	xclip -selection clip -t image/png $png
+	feh $png
+
+END
 
 # -n = noswap
 # +5 = line 5
-system("vim +10 $file");
-system("pdflatex --shell-escape -output-directory=$dir $file");
-#system("cd $dir");
-system("convert -alpha remove -density 320 $pdf -quality 100 -colorspace RGB $png");
-system("xclip -selection clip -t image/png $png");
-system("feh $png");
+    system("e +10 $file");
 

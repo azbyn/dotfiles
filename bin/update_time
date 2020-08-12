@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+ntpd -gq
+hwclock --systohc

@@ -1,1 +1,11 @@
-/bin/nvim
+#!/bin/sh
+
+echo "Editing $@."
+echo "When you're done do C-x #"
+
+#focus dropdown
+awesome-client 'require("awful.screen").focused().dropdown["emacs"]:select()'
+
+emacsclient "$@"
+#&
+# -a emacs -nw $@

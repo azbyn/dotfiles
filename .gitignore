@@ -5,3 +5,7 @@
 .config/ranger/bookmarks
 .config/ranger/history
 .config/awesome/count_unread_emails.py
+.emacs.d/*
+!.emacs.d/init.el
+!.emacs.d/lisp/*
+!.emacs.d/*.org

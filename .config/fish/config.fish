@@ -1,5 +1,5 @@
 if not status --is-interactive
-	exit 1
+    exit 1
 end
 fish_default_key_bindings
 #fish_vi_key_bindings
@@ -39,7 +39,7 @@ alias gP="cd ~/Projects/"
 alias gPs="cd ~/Pictures/screenshots/"
 alias gPA="cd ~/Projects/analiza_complexa"
 alias gPP="cd ~/Projects/_php"
-alias gB="cd ~/.local/bin/"
+alias gB="cd ~/bin/"
 alias gH="cd /mnt/hdd/"
 
 alias rh="r --cmd='set show_hidden true'"
@@ -56,9 +56,7 @@ alias rDf="r --cmd='set show_hidden true' ~/dotfiles/"
 alias rG="r ~/Git/"
 alias rM="r ~/Music/"
 alias rP="r ~/Projects/"
-alias rPA="r ~/Projects/analiza_complexa"
-alias rPP="r ~/Projects/_php"
-alias rB="r ~/.local/bin/"
+alias rB="r ~/bin/"
 alias rH="r /mnt/hdd/"
 alias rQ="r ~/.config/qutebrowser/"
 
@@ -111,4 +109,3 @@ alias eAWT="e ~/.config/awesome/widgets/titlebar.lua"
 alias eAWL="e ~/.config/awesome/widgets/load.lua"
 alias eAWB="e ~/.config/awesome/widgets/battery.lua"
 alias eAWN="e ~/.config/awesome/widgets/net.lua"
-

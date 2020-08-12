@@ -39,6 +39,8 @@ sub download {
 	else {#ignore output
 		`youtube-dl --extract-audio --audio-format mp3 '$song' -o '$output/%(title)s.%(ext)s'`
 	}
+    print "running mp3gain";
+    #system "mp3gain -r -c $output/*.mp3";
 }
 
 if ($file) {

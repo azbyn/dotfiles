@@ -556,6 +556,15 @@ def_key "j"
     scroll_down
 def_key "k"
     scroll_up
+def_key "i"
+    scroll_up
+
+
+
+def_key "ctrl-n"
+    scroll_down
+def_key "ctrl-p"
+    scroll_up
 
 def_key "ctrl-u"
     page_up
@@ -574,6 +583,12 @@ def_key "h"
 def_key "l"
     next_column
 
+
+def_key "ctrl-b"
+    previous_column
+def_key "ctrl-f"
+    next_column
+
 def_key "."
     show_lyrics
 
@@ -589,12 +604,23 @@ def_key "K"
     move_sort_order_up
 def_key "h"
   jump_to_parent_directory
+def_key "ctrl-b"
+  jump_to_parent_directory
 def_key "l"
   enter_directory
 def_key "l"
   run_action
 def_key "l"
   play_item
+
+
+def_key "ctrl-f"
+  enter_directory
+def_key "ctrl-f"
+  run_action
+def_key "ctrl-f"
+  play_item
+
 def_key "m"
   show_media_library
 def_key "m"
@@ -606,6 +632,11 @@ def_key "v"
 def_key "G"
   move_end
 def_key "g"
+  move_home
+
+def_key "alt->"
+  move_end
+def_key "alt-<"
   move_home
 #jump_to_position_in_song
 def_key "U"

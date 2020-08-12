@@ -31,6 +31,9 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     lua
+     ;;typescript
+     ;rust
      javascript
      sql
      d
@@ -39,6 +42,7 @@ values."
      go
      html
      php
+     java
      ;;kotlin
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -57,10 +61,12 @@ values."
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
-     ;; spell-checking
+     (spell-checking :variables spell-checking-enable-by-default nil)
+   ;;spell-checking
      syntax-checking
      (c-c++ :variables c-c++-enable-clang-support t)
      python
+     haskell
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -69,15 +75,19 @@ values."
    dotspacemacs-additional-packages '(base16-theme
                                       dirtree
                                       xterm-color
+                                      find-file-in-project
                                       ;; treemacs
                                       ;; treemacs-evil
                                       shackle
                                       openwith
                                       ranger
+                                      ;eyebrowse
                                       lsp-mode
+                                      nyan-mode
                                       ;;frames-only-mode
                                       ;;auctex
                                       flycheck-kotlin
+                                      typescript-mode
                                       kotlin-mode
                                       impatient-mode
                                       company-auctex
@@ -131,7 +141,7 @@ values."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'hybrid
+   dotspacemacs-editing-style 'emacs;;'hybrid
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
@@ -253,7 +263,7 @@ values."
    dotspacemacs-fullscreen-at-startup nil
    ;; If non nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
-   dotspacemacs-fullscreen-use-non-native nil
+   doGtspacemacs-fullscreen-use-non-native nil
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
@@ -340,25 +350,9 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-  (setq-default base16-google-dark-colors
-                '(:base00 "#1d1f21"
-                  :base01 "#282a2e"
-                  :base02 "#373b41"
-                  :base03 "#7E807E"
-                  :base04 "#b4b7b4"
-                  :base05 "#c5c8c6"
-                  :base06 "#e0e0e0"
-                  :base07 "#FFFFFF"
-                  :base08 "#CC342B"
-                  :base09 "#F96A38"
-                  :base0A "#FBA922"
-                  :base0B "#198844"
-                  :base0C "#3971ed" ;;:base0C "#12A59C"
-                  :base0D "#3971ED"
-                  :base0E "#A36AC7"
-                  :base0F "#FBA922"))
-  (setq-default evil-toggle-key "H-M-e")
+    (setq-default evil-toggle-key "H-M-e")
   (setq-default base16-theme-256-color-source "base16-shell")
+
   )
 
 (defun dotspacemacs/user-config ()
@@ -369,10 +363,41 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
  ;;; Visual
+  ;(setq debug-on-error t)
+  (require 'poetry-mode)
   ;;"terminal" "base16-shell" "colors"
   ;;(menu-bar-mode t)
   ;;(setq powerline-default-separator 'arrow)
   ;;we don't need this anymore since our emacs is 80 wide when in side by side mode
+
+  ;; (add-hook 'poetry-mode-hook
+  ;;           (lambda ()
+
+  ;;             (local-set-key (kbd "H-c")
+  ;;                            (lambda ()
+  ;;                              (interactive)
+  ;;                              ;;(save-buffer)
+  ;;                              (compile (message "poetrizer -c \"%s\" %d"
+  ;;                                                (buffer-file-name)
+  ;;                                                (line-number-at-pos)))
+  ;;                              ))
+
+  ;;             ))
+  (eyebrowse-mode t)
+  ;(setq eyebrowse-new-workspace t)
+  ;;todo pers-mode.el
+  (define-key winum-keymap (kbd "M-1") nil)
+  (define-key winum-keymap (kbd "M-2") nil)
+  (define-key winum-keymap (kbd "M-3") nil)
+  (define-key winum-keymap (kbd "M-4") nil)
+
+  (global-set-key (kbd "M-1") 'eyebrowse-switch-to-window-config-1)
+  (global-set-key (kbd "M-2") 'eyebrowse-switch-to-window-config-2)
+  (global-set-key (kbd "M-3") 'eyebrowse-switch-to-window-config-3)
+  (global-set-key (kbd "M-4") 'eyebrowse-switch-to-window-config-4)
+
+  ;;(global-set-key (kbd "C-c k")
+  ;;                 (lambda () (call-interactively 'eyebrowse-close-window-config)))
 
   (setq-default whitespace-line-column 180)
   (setq-default whitespace-style '(face
@@ -401,26 +426,7 @@ you should place your code here."
         (setq spaceline-window-numbers-unicode nil))
 
   ;;; Keys
-  (global-set-key (kbd "C-`") 'evil-search-highlight-persist-remove-all)
 
-  (defun get-deletion-count (arg)
-    "Return the amount of spaces to be deleted, ARG is indentation border."
-    (if (eq (current-column) 0) 0
-      (let ((result (mod (current-column) arg)))
-        (if (eq result 0) arg
-          result))))
-
-  (defun backspace-some (arg)
-    "Deletes some backspaces, ARG unused."
-    (interactive "*P")
-    (if (use-region-p) (backward-delete-char-untabify 1)
-      (let ((here (point)))
-        (if (eq 0 (skip-chars-backward " " (- (point) (get-deletion-count 4))))
-            (backward-delete-char-untabify 1)
-          (delete-region (point) here)))))
-  ;;(setq-default indent-tabs-mode t)
-  (global-set-key [backspace] 'backspace-some)
-  (setq backward-delete-char-untabify-method 'hungry)
 
   (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
   (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
@@ -431,10 +437,6 @@ you should place your code here."
   ;;(define-key browse-kill-ring-mode-map (kbd "<escape>") 'browse-kill-ring-quit)
   (global-set-key [escape] 'keyboard-quit)
 
-  (global-set-key (kbd "H-<up>") 'windmove-up)
-  (global-set-key (kbd "H-<down>") 'windmove-down)
-  (global-set-key (kbd "H-<left>") 'windmove-left)
-  (global-set-key (kbd "H-<right>") 'windmove-right)
 
   (global-set-key (kbd "H-M-<right>") 'enlarge-window-horizontally)
   (global-set-key (kbd "H-M-<left>") 'shrink-window-horizontally)
@@ -452,21 +454,20 @@ you should place your code here."
   (global-set-key (kbd "<H-return>") 'split-window-right)
   (global-set-key (kbd "<H-S-return>") 'split-window-right-and-focus)
 
-
   ;(global-set-key (kbd "M-c") 'kill-ring-save)
-  (global-set-key (kbd "M-v") 'yank)
+  ;(global-set-key (kbd "M-v") 'yank)
   ;;(define-key evil-visual-state-map (kbd "M-c") 'kill-ring-save)
   (define-key evil-visual-state-map (kbd "C-x") 'kill-region)
   ;;(define-key evil-visual-state-map (kbd "M-v") 'yank)
-  (define-key evil-hybrid-state-map (kbd "C-v") 'yank)
-  (global-set-key (kbd "H-r") 'dotspacemacs/sync-configuration-layers)
+  ;(define-key evil-hybrid-state-map (kbd "C-v") 'yank)
+  ;;(global-set-key (kbd "H-r") 'dotspacemacs/sync-configuration-layers)
   (global-set-key (kbd "H-M-v") 'browse-kill-ring)
   (global-set-key (kbd "H-s") 'save-buffer)
   ;(global-set-key (kbd "H-q") 'kill-emacs)
-  (global-set-key (kbd "H-M-r") 'spacemacs/restart-emacs-resume-layouts)
+  ;;(global-set-key (kbd "H-M-r") 'spacemacs/restart-emacs-resume-layouts)
   ;(global-set-key (kbd "H-t") 'spacemacs/cycle-spacemacs-theme)
-  (global-set-key (kbd "H-f") 'flycheck-list-errors)
-  (global-set-key (kbd "C-z") 'undo)
+  ;;(global-set-key (kbd "H-f") 'flycheck-list-errors)
+  ;(global-set-key (kbd "C-z") 'undo)
 
 
   (global-set-key (kbd "H-,") 'hide-subtree)
@@ -476,7 +477,6 @@ you should place your code here."
   (global-set-key (kbd "H-SPC") 'flyspell-region)
   (global-set-key (kbd "H-M-SPC") 'flyspell-buffer)
   (global-set-key (kbd "H-S-SPC") 'ispell-buffer)
-  (global-set-key (kbd "H-t") 'neotree-toggle)
 
   ;;make stuff
   ;;taken from neotree.el
@@ -503,8 +503,10 @@ you should place your code here."
           path (azb-project-dir (updir path)))))
 
   (defun azb-find-root (npath)
-    (if (file-directory-p npath)
-        npath (updir npath)))
+    (if npath
+        (if (file-directory-p npath)
+            npath (updir npath))
+      nil))
 
   (defun azb-make (args)
     (interactive)
@@ -549,18 +551,18 @@ you should place your code here."
   ;;                                 (interactive)
   ;;                                 (compile "make compile")))
 
-  (add-hook 'poetry-mode-hook
-            (lambda ()
-              (local-compile "H-c" (message "poetrizer -c \"%s\" %d"
-                                            (buffer-file-name)
-                                            (line-number-at-pos)))
-              (local-compile "H-M-c" (concat "poetrizer -p \"%s\" %d"
-                                             (buffer-file-name)
-                                             (line-number-at-pos)))
-              (local-compile "H-x" (concat "poetrizer -P \"%s\" %d"
-                                           (buffer-file-name)
-                                           (line-number-at-pos)))
-              ))
+
+  ;=; (local-compile "H-c" (message "poetrizer -c \"%s\" %d"
+  ;;                               (buffer-file-name)
+  ;;                               (line-number-at-pos)))
+  ;;(local-compile "H-M-c" (concat "poetrizer -p \"%s\" %d"
+  ;;                              (buffer-file-name)
+  ;;                              (line-number-at-pos)))
+  ;;(local-compile "H-x" (concat "poetrizer -P \"%s\" %d"
+  ;;                             (buffer-file-name)
+  ;;                             (line-number-at-pos)))
+  ;;(flycheck-mode)
+  ;;(spacemacs/toggle-spelling-checking-on)
 
   (add-hook 'emacs-lisp-mode-hook
             (lambda ()
@@ -594,21 +596,24 @@ you should place your code here."
   ;;                               (replace-string "’" "'")
   ;;                               (save-buffer)
   ;;                               ))
-
-  ;; (global-set-key (kbd "M-n")
-  ;;                 (lambda ()
-  ;;                   (interactive)
-  ;;                   (unless (search-backward "}" nil t)
-  ;;                     (compile (concat "poetrizer '"
-  ;;                                        (buffer-file-name) "'"))
-  ;;                     (save-buffer)
-  ;;                     (evil-ex (concat "e " (read-file-name "File: ")))
-  ;;                     (compile (concat "poetrizer '"
-  ;;                                            (buffer-file-name) "'"))
-  ;;                     (end-of-buffer)
-  ;;                     )
-  ;;                   ))
-
+  (global-set-key (kbd "M-n")
+                  (lambda ()
+                    (interactive)
+                    ;; (save-buffer)
+                    ;; (directory-files)
+                    (setq-default tmp (read-string "File :"))
+                    (find-file (concat tmp ".ptr"))
+                    (insert tmp)
+                    (call-interactively 'beginning-of-line)
+                    (call-interactively 'kill-word)
+                    (call-interactively 'delete-char)
+                    (call-interactively 'end-of-line)
+                    (flycheck-mode)
+                    (spacemacs/toggle-spelling-checking-on)
+                    (newline 3)
+                    (previous-line)
+                    ))
+  ;;  (global-set-key )
   ;; (global-set-key (kbd "M-d")
   ;;                 (lambda ()
   ;;                   (interactive)
@@ -631,20 +636,6 @@ you should place your code here."
                                 (interactive)
                                 (execute-kbd-macro (read-kbd-macro "H-c"))))
 
-  (global-set-key (kbd "M-h") (lambda ()
-                                (interactive)
-                                (execute-kbd-macro (read-kbd-macro "<left>"))))
-  (global-set-key (kbd "M-j") (lambda ()
-                                (interactive)
-                                (execute-kbd-macro (read-kbd-macro "<down>"))))
-  (global-set-key (kbd "M-k") (lambda ()
-                                (interactive)
-                                (execute-kbd-macro (read-kbd-macro "<up>"))))
-  (global-set-key (kbd "M-l") (lambda ()
-                              (interactive)
-                                (execute-kbd-macro (read-kbd-macro "<right>"))))
-
-
   ;; (add-hook 'poetry-mode-hook
   ;;           (lambda ()
   ;;             (local-set-key (kbd "H-c") (make
@@ -657,14 +648,14 @@ you should place your code here."
 
   (global-set-key (kbd "M-<tab>") 'ff-find-other-file)
   ;; (global-set-key (kbd "M-<tab>") 'projectile-find-other-file)
-  (global-set-key (kbd "C-<tab>") 'clang-format-region)
-  (global-set-key (kbd "<C-iso-lefttab>") 'clang-format-buffer)
+  (global-set-key (kbd "S-<tab>") 'clang-format-region)
+  ;;(global-set-key (kbd "<C-iso-lefttab>") 'clang-format-buffer)
   (global-set-key (kbd "H-j") 'counsel-imenu)
-  (global-set-key (kbd "M-m") 'counsel-M-x)
+  ;; (global-set-key (kbd "M-m") 'counsel-M-x)
   ;; (spacemacs/set-leader-keys "SPC" 'find-file)
-  (spacemacs/set-leader-keys "SPC" 'ivy-switch-buffer)
-  (global-set-key (kbd "M-r") 'counsel-M-x)
-  (global-set-key (kbd "M-e") 'end-of-line)
+  (spacemacs/set-leader-keys "SPC" 'find-file-in-project)
+  ;;(global-set-key (kbd "M-r") 'counsel-M-x)
+  ;;(global-set-key (kbd "M-e") 'end-of-line)
   (add-hook 'c-mode-hook (lambda ()
                            (local-set-key (kbd "M-e") 'c-end-of-statement)))
   (global-set-key (kbd "H-a") 'apropos)
@@ -695,10 +686,10 @@ you should place your code here."
 
   (setq-default dfmt-flags '("--brace_style=stroustrup"))
   (defun dformat ()
-    (local-set-key (kbd "C-<tab>") 'dfmt-region-or-buffer)
-    (local-set-key (kbd "<C-iso-lefttab>") 'dfmt-buffer))
-  (add-hook 'd-mode-hook 'dformat)
+     (local-set-key (kbd "S-<tab>") 'dfmt-region-or-buffer))
 
+  (add-hook 'd-mode-hook 'dformat)
+  
   ;; (c-set-offset 'member-init-intro '++)
   (setq-default comment-column 15)
   (setq-default evil-vsplit-window-right t)
@@ -743,8 +734,14 @@ you should place your code here."
   (global-set-key (kbd "C-=") 'default-font-size)
   (global-set-key (kbd "C-+") 'increase-font-size)
   (global-set-key (kbd "C--") 'decrease-font-size)
+  ;;(global-evil-mc-mode 1)
+  ;;(global-set-key (kbd "H-e") 'evil-mc-undo-all-cursors)
+  ;;(global-set-key (kbd "H-M-SPC") 'evil-mc-undo-last-added-cursor)
+  ;;(global-set-key (kbd "H-SPC") 'evil-mc-make-and-goto-next-match)
 
-  (global-set-key (kbd "H-M-f") 'counsel-semantic)
+  ;;(evil-define-key 'visual evil-mc-key-map
+  ;;  "A" #'evil-mc-make-cursor-in-visual-selection-end
+  ;;  "I" #'evil-mc-make-cursor-in-visual-selection-beg)
 
 
 
@@ -759,7 +756,6 @@ you should place your code here."
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
   (add-to-list 'auto-mode-alist '("\\.tpp\\'" . c++-mode))
   (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
-
   ;;(add-hook 'c++-mode-hook 'ggtags-mode)
   ;;(add-hook 'c-mode-hook 'ggtags-mode)
   (add-hook 'c++-mode-hook 'irony-mode)
@@ -843,17 +839,213 @@ you should place your code here."
                                 ("\\.pdf\\'" "zathura" (file))
                                 ("\\.docx\\'" "lowriter" (file))
                                 ))
-  (openwith-mode t)
-  (ranger-override-dired-mode t)
+  ;;(global-subword-mode 1)
+  (global-set-key (kbd "C-c e") 'spacemacs/find-dotfile)
+ ;; (global-set-key (kbd "C-c f") 'subword-forward)
+ ;; (global-set-key (kbd "C-c b") 'subword-backward);?
 
+  (global-set-key (kbd "C-c b") 'ivy-switch-buffer)
+
+
+  ;;(cursor setq-type )
+  (openwith-mode t)
+  (ranger-override-dired-mode t)        ;
+  ;;(setq dired-listing-switches "-aBhl  --group-directories-first")
 
   (add-hook 'eshell-before-prompt-hook
             (lambda ()
               (setq xterm-color-preserve-properties t)))
 
-  (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
+  ;; (setq-default ffip-ignore-filenames
+  ;;               (cons "*.*_" (remove "*.d" ffip-ignore-filenames)))
+
+  ;;kinda vim-y keys
+  ;;change is pointless since we're in 'normal mode' all the time
+  ;;(global-set-key (kbd "H-c") 'evil-change)
+  (global-set-key (kbd "H-M-v") 'evil-visual-line)
+  (global-set-key (kbd "H-v") 'rectangle-mark-mode)
+  ;;(global-set-key (kbd "M-l") (lambda)
+  (global-set-key (kbd "M-h") 'mark-paragraph)
+
+  (global-set-key (kbd "M-l") 'evil-visual-line)
+                               ;(lambda ()
+                               ; (interactive)
+                               ; (beginning-of-line)
+                               ; (call-interactively 'set-mark-command)
+                               ; (end-of-line)
+                               ; ))
+  ;;(global-set-key (kbd "M-r") 'set-mark-command)
+  (global-set-key (kbd "H-m") 'set-mark-command)
+
+  (global-set-key (kbd "M-w") 'kill-ring-save)
+  (global-set-key (kbd "C-w") 'kill-region)
+
+  (global-set-key (kbd "H-y") 'evil-yank)
+  (global-set-key (kbd "H-C-y") 'evil-yank-line)
+  ;; y is kinda far away from hyper and i use yank line more often
+  ;;(global-set-key (kbd "H-t") 'evil-yank-line)
+  (global-set-key (kbd "H-o") 'evil-yank-line)
+  (global-set-key (kbd "H-C-t") 'evil-yank)
+  (global-set-key (kbd "M-o") 'set-mark-command);;?
+
+  (defun move-line-up ()
+    "Move up the current line."
+    (interactive)
+    (transpose-lines 1)
+    (forward-line -2)
+    (indent-according-to-mode))
+
+  (defun move-line-down ()
+    "Move down the current line."
+    (interactive)
+    (forward-line 1)
+    (transpose-lines 1)
+    (forward-line -1)
+    (indent-according-to-mode))
+
+  (global-set-key [(control shift up)]  'move-line-up)
+  (global-set-key [(control shift down)]  'move-line-down)
+
+
+
+  (global-set-key (kbd "M-s") 'evil-visual-char)
+  ;;(global-set-key (kbd "M-r") 'azbyn/paste
+
+  (global-set-key (kbd "H-C-p") 'evil-search-before)
+
+  (global-set-key (kbd "H-g") 'evil-goto-first-line)
+  (global-set-key (kbd "H-C-g") 'evil-goto-line)
+  (global-set-key (kbd "H-8") 'spacemacs/enter-ahs-forward)
+  (global-set-key (kbd "H-3") 'spacemacs/enter-ahs-backward)
+
+  (global-set-key (kbd "H-5") 'evil-jump-item)
+
+  (global-set-key (kbd "C-8") 'spacemacs/enter-ahs-forward)
+  (global-set-key (kbd "C-3") 'spacemacs/enter-ahs-backward)
+
+
+  (global-set-key (kbd "H-r") 'undo-tree-redo)
+  (global-set-key (kbd "C-z") 'avy-goto-char)
+  (global-set-key (kbd "H-u") 'undo-tree-undo)
+  (global-set-key (kbd "H-.") 'evil-repeat)
+  (global-set-key (kbd "H-n") 'evil-search-next)
+  (global-set-key (kbd "H-N") 'evil-search-previous)
+  (global-set-key (kbd "H-C-n") 'evil-search-previous)
+  (global-set-key (kbd "H-C-d") 'evil-delete-whole-line)
+  (global-set-key (kbd "H-l") 'evil-delete-whole-line)
+  (global-set-key (kbd "H-C-l") 'evil-delete-line)
+
+  (global-set-key (kbd "H-f") 'evil-find-char)
+  (global-set-key (kbd "H-C-f") 'evil-find-char-backward)
+  (defun azbyn/ffip ()
+    (interactive)
+    ;; find-file-in-project doesn't really work for directories with a
+    ;; lot of files
+    (if (member (azb-find-root (buffer-file-name))
+                '(nil "/" "/home/azbyn/Projects" "/home/azbyn"))
+        (ivy-switch-buffer)
+      (progn
+        (find-file-in-project)
+        ;(insert-char ?/)
+        )))
+
+  (global-set-key (kbd "H-b") 'azbyn/ffip)
+  (global-set-key (kbd "H-C-b") 'ivy-switch-buffer)
+  (global-set-key (kbd "H-e") 'spacemacs/find-dotfile)
+  (global-set-key (kbd "H-\\") 'evil-emacs-state)
+  (global-set-key (kbd "H-/") 'evil-search-forward)
+  (global-set-key (kbd "H-SPC") (lambda ()
+                                  (interactive)
+                                  (execute-kbd-macro (read-kbd-macro "M-m"))))
+  ;; vim's definition of the being of the line is more useful
+  (global-set-key (kbd "C-a") 'evil-first-non-blank)
+  (global-set-key (kbd "C-;") 'comment-dwim)
+  (global-set-key (kbd "M-;") 'comment-line)
+  (global-set-key (kbd "H-h") 'help-command)
+  (global-set-key (kbd "C-s-,") 'beginning-of-buffer)
+  (global-set-key (kbd "C-s-.") 'end-of-buffer)
+  ;(global-set-key (kbd "C-t") 'transpose-lines)
+  (global-set-key (kbd "M-t") 'transpose-words)
+  (global-set-key (kbd "H-g") 'exchange-point-and-mark)
+  (global-set-key (kbd "H-C-g") 'goto-line)
+
+
+  ;;(global-set-key (kbd "M-e") 'c-end-of-statement)
+  (global-set-key (kbd "C-y") (lambda ()
+                                (interactive)
+                                (mark-word)
+                                (call-interactively 'kill-ring-save)))
+  (global-set-key (kbd "M-y") (lambda ()
+                                (interactive)
+                                (kill-ring-save (point) (line-end-position))))
+
+
+  ;;TODO M-t -show killring
+  ;;(global-set-key (kbd "M-f") 'evil-forward-subwo-begin)
+  ;; todo
+  ;;(global-set-key (kbd "<f1>") (lambda ()
+  ;                               (interactive)
+  ;                               (setq-local azb/save-point (point))))
+
+  ;(global-set-key (kbd "<f2>") (lambda ()
+  ;                               (interactive)
+  ;                               (let (p azb/save-point)
+  ;                                 (setq-local azb/save-point (point))
+  ;                                 (push-mark p)
+  ;                                 (exchange-point-and-mark)
+  ;                                 (pop-mark)
+  ;                                 )))
+
+  (define-key evil-visual-state-map (kbd "C-w") nil)
+  (define-key evil-motion-state-map (kbd "C-w") nil)
+
+  (define-key evil-motion-state-map (kbd "C-b") nil)
+  (define-key evil-motion-state-map (kbd "C-f") nil)
+  (define-key evil-motion-state-map (kbd "C-o") nil)
+  (define-key evil-motion-state-map (kbd "C-e") nil)
+  (define-key evil-motion-state-map (kbd "C-y") nil)
+  (define-key evil-motion-state-map (kbd "C-i") nil)
+  (define-key evil-motion-state-map (kbd "C-u") nil)
+  (define-key evil-motion-state-map (kbd "C-d") nil)
+  
+
+  ;; (setq-default evil-emacs-state-cursor '("#CC342B" bar))
+
+  ;; (global-set-key (kbd "C-;") (lambda ()
+  ;;                               (interactive)
+  ;;                               (execute-kbd-macro (read-kbd-macro "M-;"))))
+
+  ;;(add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
   ;;(setq eshell-output-filter-functions
-  ;;      (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
+   ;;     (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
+  ;;(setenv "TERM" "xterm-256color")
+  (setq comint-output-filter-functions
+        (remove 'ansi-color-process-output comint-output-filter-functions))
+  (setq xterm-color-use-bold-for-bright t)
+  
+  (add-hook 'shell-mode-hook
+          (lambda ()
+            ;; Disable font-locking in this buffer to improve performance
+            (font-lock-mode -1)
+            ;; Prevent font-locking from being re-enabled in this buffer
+            (make-local-variable 'font-lock-function)
+            (setq font-lock-function (lambda (_) nil))
+            (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter nil t)))
+
+;; Also set TERM accordingly (xterm-256color) in the shell itself.
+
+;; An example configuration for eshell
+
+;;(require 'eshell) ; or use with-eval-after-load
+
+  (add-hook 'eshell-before-prompt-hook
+            (lambda ()
+              (setq xterm-color-preserve-properties t)))
+
+  ;;(add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
+  ;;(setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
+  (setq eshell-output-filter-functions
+        '(xterm-color-filter ansi-color-filter-apply))
   (setenv "TERM" "xterm-256color")
   ;;todo use the base16-google-dark-colors?
   ;; (setq xterm-color-names
@@ -866,8 +1058,7 @@ you should place your code here."
   ;;        "#12A59C" ; cyan
   ;;        "#E0E0E0" ; white
   ;;        ])
-
-  ;; (setq xterm-color-names-bright
+   ;; (setq xterm-color-names-bright
   ;;       ["#969896" ; black
   ;;        "#CC342B" ; red
   ;;        "#198844" ; green
@@ -877,8 +1068,17 @@ you should place your code here."
   ;;        "#12A59C" ; cyan
   ;;        "#FFFFFF" ; white
   ;;        ])
+  ;(setq-default ispell-dictionary "english")
 
-  (require 'poetry-mode)
+  ;;scroll screen not point
+  (global-set-key "\M-N"  (lambda () (interactive) (scroll-up   1)))
+  (global-set-key "\M-P"  (lambda () (interactive) (scroll-down 1)))
+
+  ;;(add-hook poetry-mode-hook 'flyspell-mode)
+                                        ;(setq-default dotspacemacs-configuration-layers
+                                        ;              '(()))
+
+  ;;(require 'auto-capitalize);?
   )
 
 (defun azb/terminal()
@@ -894,6 +1094,8 @@ you should place your code here."
 (add-hook 'window-setup-hook 'on-after-init)
 (setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
 
+;;(setq cap-mode-file (expand-file-name "~/.emacs.d/auto-capitalize.el"))
+;;(load cap-mode-file 'no-error 'no-message)
 (setq poetry-mode-file (expand-file-name "~/.emacs.d/poetry-mode.el"))
 (load poetry-mode-file 'no-error 'no-message)
 ;;(setq custom-file (expand-file-name "~/.spacemacs.d/custom.el"))
