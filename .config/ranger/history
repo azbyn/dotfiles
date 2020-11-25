@@ -1,4 +1,3 @@
-rename Время и Стекло - Песня про лицо.mp3
 rename Dac-am plecat, Ardealule, din tine.mp3
 search 
 search t
@@ -48,3 +47,4 @@ rename ex.xlsxout.zip
 rename ex2.xlsx
 open_with 
 delete
+shell e file 
