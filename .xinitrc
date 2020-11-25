@@ -4,7 +4,7 @@ xrdb -load $HOME/.Xresources
 setxkbmap azb
 #numlockx &
 xmodmap $HOME/.xmodmaprc
-xcape -e 'ISO_Level3_Shift=backslash' -t 170
+#xcape -e 'ISO_Level3_Shift=backslash' -t 170
 #
 # turn off default screensaver
 xset s off

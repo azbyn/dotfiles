@@ -2,7 +2,7 @@
 
      Licensed under GNU General Public License v2
       * (c) 2016, Luke Bonham
-      * (c) 2015, unknown
+     * (c) 2015, unknown
 
 --]]
 
@@ -139,6 +139,8 @@ function quake:new(config)
     conf.geometry   = {}                           -- internal use
 
     local dropdown = setmetatable(conf, { __index = quake })
+
+    --naughty.notify({text="Perkele: extra = '"..conf.extra.."'"})
 
     capi.client.connect_signal("manage", function(c)
         if c.instance == dropdown.name and c.screen == dropdown.screen then

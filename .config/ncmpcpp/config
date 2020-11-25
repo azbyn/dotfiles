@@ -1,7 +1,7 @@
 #visualizer_type = "wave"
 external_editor = e
 # vim
-use_console_editor = no
+use_console_editor = yes
 # yes
 ignore_diacritics = yes
 

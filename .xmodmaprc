@@ -42,22 +42,23 @@ keycode 64 = Control_L
 
 ! !alt, ctrl, super
 ! keycode 108 = Alt_R
-! !keycode 135 = ISO_Level3_Shift
-! keycode 135 = Control_R
-! keycode 105 = Super_R
-
-
-!ctrl, alt, super
-keycode 108 = Control_R
-!keycode 135 = ISO_Level3_Shift
-keycode 135 = Alt_R
+keycode 108 = ISO_Level3_Shift
+! keycode 135 = ISO_Level5_Shift
+keycode 135 = Control_R
 keycode 105 = Super_R
 
 
-keycode 116 = Down
-keycode 111 = Up
-keycode 113 = Left
-keycode 114 = Right
+!ctrl, alt, super
+! keycode 108 = Control_R
+! !keycode 135 = ISO_Level3_Shift
+! keycode 135 = Alt_R
+! keycode 105 = Super_R
+
+
+! keycode 116 = Down
+! keycode 111 = Up
+! keycode 113 = Left
+! keycode 114 = Right
 !keycode 111 = ISO_Level3_Shift
 !keycode 113 = ISO_Level3_Shift
 !keycode 116 = ISO_Level3_Shift
@@ -69,9 +70,11 @@ keycode 173 = Left
 keycode 171 = Right
 
 !f12 as altgr
-keycode 96 = ISO_Level3_Shift
+! keycode 96 = ISO_Level3_Shift
 ! backslash as altgr, but as normal backslash using xcape
-keycode 51 = ISO_Level3_Shift
+!keycode 51 = ISO_Level3_Shift
+!keycode 51 = backslash 
+! ISO_Level3_Shift
 
 
 !hyper, super, ctrl; caps=alt
@@ -90,10 +93,13 @@ keycode 51 = ISO_Level3_Shift
 !keycode 135 = Super_R
 
 add Mod1 = Alt_L Alt_R
-add Control = Control_L Control_R
+! add Control = Control_L Control_R
+add Control = Control_L
 add Mod3 = Hyper_L
 add Mod4 = Super_L Super_R
 add Mod5 = ISO_Level3_Shift
+! add Mod2 = ISO_Level5_Shift
+
 
 ! pause break/ print scr = pg up/pg down
 keycode 127 = Prior

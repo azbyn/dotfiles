@@ -115,6 +115,7 @@
   (define-key 'fill-key-map (kbd "P") 'fill-paragraph)
 #+END_SRC
 ** azbyn's custom map
+*** common
 #+BEGIN_SRC emacs-lisp
   (define-prefix-command 'azbyn-key-map)
   (defun azbyn/eval-region ()
@@ -137,6 +138,7 @@
 
   (define-key 'azbyn-key-map (kbd "u") 'upcase-dwim)
   (define-key 'azbyn-key-map (kbd "d") 'downcase-dwim)
+  (define-key 'azbyn-key-map (kbd "l") 'downcase-dwim)
 
   (define-key 'azbyn-key-map (kbd "TAB") 'ff-find-other-file)
   (define-key 'azbyn-key-map (kbd "SPC") 'counsel-switch-buffer)
@@ -227,10 +229,21 @@
   (define-key 'azbyn/goto-map (kbd "p") 'azbyn/goto-projects)
   (define-key 'azbyn/goto-map (kbd "m") 'azbyn/goto-music)
 
-  (define-key 'azbyn/goto-map (kbd "C-c") 'config-visit)
-  (define-key 'azbyn/goto-map (kbd "C-S-c") 'config-visit-readonly)
-  (define-key 'azbyn/goto-map (kbd "C-k") 'keybindings-visit)
-  (define-key 'azbyn/goto-map (kbd "C-S-k") 'keybindings-visit-readonly)
+  (define-key 'azbyn-key-map (kbd "C-c") 'config-visit)
+  (define-key 'azbyn-key-map (kbd "C-S-c") 'config-visit-readonly)
+  (define-key 'azbyn-key-map (kbd "C-e") 'config-visit)
+  (define-key 'azbyn-key-map (kbd "C-S-e") 'config-visit-readonly)
+
+  (define-key 'azbyn-key-map (kbd "C-k") 'keybindings-visit)
+  (define-key 'azbyn-key-map (kbd "C-S-k") 'keybindings-visit-readonly)
+  (defun azbyn/edit-todo () (interactive) (find-file "~/todo.org"))
+  (define-key 'azbyn-key-map (kbd "M-t") 'azbyn/edit-todo)
+  (defun azbyn/edit-food () (interactive) (find-file "~/food.org"))
+  (define-key 'azbyn-key-map (kbd "M-f") 'azbyn/edit-food)
+
+  (defun azbyn/edit-movies () (interactive) (find-file "~/movies.org"))
+  (define-key 'azbyn-key-map (kbd "m") 'azbyn/edit-movies)
+
 #+END_SRC
 *** spell checking bindings
 #+BEGIN_SRC emacs-lisp
@@ -244,6 +257,24 @@
   (define-key 'azbyn/spellcheck-map (kbd "d") 'ispell-change-dictionary)
   (define-key 'azbyn/spellcheck-map (kbd "s") 'flyspell-mode)
   (define-key 'azbyn/spellcheck-map (kbd "k") 'ispell-kill-ispell)
+#+END_SRC
+*** input methods
+#+BEGIN_SRC emacs-lisp
+  (define-prefix-command 'azbyn/input-method-map)
+
+  (define-key 'azbyn-key-map (kbd "C-\\") azbyn/input-method-map)
+
+  (defun azbyn/set-input-russian() (interactive) (set-input-method "azbyn-russian-translit"))
+  (defun azbyn/set-input-tex() (interactive) (set-input-method "azbyn-TeX"))
+  (defun azbyn/set-input-hiragana() (interactive) (set-input-method "japanese-hiragana"))
+  (defun azbyn/set-input-katakana() (interactive) (set-input-method "japanese-katakana"))
+  (defun azbyn/set-input-japanese() (interactive) (set-input-method "japanese"))
+
+  (define-key 'azbyn/input-method-map (kbd "r") 'azbyn/set-input-russian)
+  (define-key 'azbyn/input-method-map (kbd "t") 'azbyn/set-input-tex)
+  (define-key 'azbyn/input-method-map (kbd "h") 'azbyn/set-input-hiragana)
+  (define-key 'azbyn/input-method-map (kbd "k") 'azbyn/set-input-katakana)
+  (define-key 'azbyn/input-method-map (kbd "j") 'azbyn/set-input-japanese)
 #+END_SRC
 
 * weird movement
@@ -267,21 +298,18 @@
 #+BEGIN_SRC emacs-lisp
   (defun azbyn/scroll-up() (interactive) (forward-line -10))
   (defun azbyn/scroll-down() (interactive) (forward-line 10))
-
-  (global-set-key (kbd "M-j") 'azbyn/scroll-down)
-  (global-set-key (kbd "M-i") 'azbyn/scroll-up)
 #+END_SRC
 ** force myself to not use the arrow keys
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<left>") nil)
-  (global-set-key (kbd "<right>") nil)
-  (global-set-key (kbd "<up>") nil)
-  (global-set-key (kbd "<down>") nil)
+  ;; (global-set-key (kbd "<left>") nil)
+  ;; (global-set-key (kbd "<right>") nil)
+  ;; (global-set-key (kbd "<up>") nil)
+  ;; (global-set-key (kbd "<down>") nil)
 
-  (global-set-key (kbd "C-<left>") nil)
-  (global-set-key (kbd "C-<right>") nil)
-  (global-set-key (kbd "C-<up>") nil)
-  (global-set-key (kbd "C-<down>") nil)
+  ;; (global-set-key (kbd "C-<left>") nil)
+  ;; (global-set-key (kbd "C-<right>") nil)
+  ;; (global-set-key (kbd "C-<up>") nil)
+  ;; (global-set-key (kbd "C-<down>") nil)
 #+END_SRC
 ** delete window
 #+BEGIN_SRC emacs-lisp
@@ -351,7 +379,6 @@
 ** set keys which are often overwritten by modes *cough org*
 *** infrastructure
 #+BEGIN_SRC emacs-lisp
-
   (defvar azbyn/key-bindings-table
     (make-hash-table :test 'equal))
   (defun azbyn/define-key (key value)
@@ -396,7 +423,7 @@
     ;;               (if (key-binding [f14]) "Y" "N")))
     (unless (key-binding [f14])
       ;;(princ "!!!!!!setkey!\n")
-      ;;(setq azbyn/thing 
+      ;;(setq azbyn/thing
       (local-set-key [f14] (current-local-map));)
       (azbyn/force-key-bindings)
     ;; (unless azbyn/original-keys
@@ -404,6 +431,13 @@
     ;;   (setq-local azbyn/original-keys (current-local-map)))
     ;;(princ (format "after? %s\n" (if (key-binding [f14]) "Y" "N")))
       ))
+  (defun azbyn/key-bindings-uberforce ()
+    (interactive)
+    ;; shouldn't really be used
+    ;; only when C-q gets goofd to backward-char
+      (local-set-key [f14] nil)
+      (azbyn/force-key-bindings)
+      )
 
 
   (add-hook 'after-change-major-mode-hook 'azbyn/key-bindings)
@@ -443,6 +477,9 @@
   (azbyn/define-key (kbd "C-a") 'backward-char)
   (azbyn/define-key (kbd "C-f") 'forward-char)
 
+  ;;M-j is set by c++-mode
+  (azbyn/define-key (kbd "M-j") 'azbyn/scroll-down)
+  (azbyn/define-key (kbd "M-i") 'azbyn/scroll-up)
   (azbyn/define-key (kbd "M-I") (azbyn/gen-call-original "M-p" 'move-lines-up))
   (azbyn/define-key (kbd "M-J") (azbyn/gen-call-original "M-n" 'move-lines-down))
 
@@ -465,6 +502,8 @@
   (global-set-key (kbd "C-d") 'azbyn/delete-char-or-region)
   (global-set-key (kbd "M-d") 'azbyn/kill-word)
   (global-set-key (kbd "C-M-d") 'azbyn/kill-subword)
+  (global-set-key (kbd "C-S-d") 'azbyn/kill-subword)
+  (global-set-key (kbd "M-D") 'azbyn/kill-subword)
 
 
   (azbyn/define-key (kbd "C-n") 'evil-find-char)
@@ -495,8 +534,8 @@
   (azbyn/define-key (kbd "M-p") 'azbyn/paste)
   (azbyn/define-key (kbd "M-P") 'azbyn/paste-before)
 
-  (azbyn/define-key (kbd "M-n") 'evil-search-next)
-  (azbyn/define-key (kbd "M-b") 'evil-search-previous)
+  (azbyn/define-key (kbd "M-b") 'evil-search-next)
+  (azbyn/define-key (kbd "M-n") 'evil-search-previous)
 
   (global-set-key (kbd "C-M-f") 'forward-sexp)
   (global-set-key (kbd "C-M-a") 'backward-sexp)

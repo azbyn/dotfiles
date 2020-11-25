@@ -1,50 +1,50 @@
-rename Shah - Шах
-deletey
-rename 1 - Total Devastation.mp3
-rename 01 - Total Devastation.mp3
-rename Bloodgod - Valar Morghulis (Official Lyric Video), taken from the 'Catharsis' EP (2017).mp3
-search dream
-shell mkdir vol1
-shell unzip Volume\ 01\ -\ September\ 5th,\ 1890\ San\ Diego\ Beach.rar 
-shell unrar Volume\ 01\ -\ September\ 5th,\ 1890\ San\ Diego\ Beach.rar 
-shell unrar x Volume\ 01\ -\ September\ 5th,\ 1890\ San\ Diego\ Beach.rar 
-shell unrar x Volume\ 02\ -\ First\ Stage,\ 15,000\ Meters.rar 
-shell touch "v01c02
-shell touch "v01c02"
-search sepu
-shell mkdir soulfly
-rename Soulfly
-search ost
-rename Augen geradeaus [GDR song][+English translation].mp3
-search count
-search rap
-search ro
-search illu
-search len
-search amon
-search righ
-search verk
-search ukr
-search some
-search disc
-rename dArtagnan
-rename dArtagnan - Ehre wem Ehre gebühret.mp3
-
-shell ln ~/Dowlo
-search jojo
-rename v01c04
-rename _v01c04
-shell mkdir tskr
-shell unzip Thus_Spoke_Kishibe_Rohan_v01_\[HWMN\].zip 
-search thus
-shell m
-shell unzip Chapter\ 06\ Episode\ \#04\ -\ Mochizuki\ Family\ Moon\ Viewing.zip 
-rename ncmpcpp
-search emacs
-search dot
-rename .emacs.d
-search mp3
+rename Время и Стекло - Песня про лицо.mp3
+rename Dac-am plecat, Ardealule, din tine.mp3
 search 
-search conf
-search ran
+search t
+search t.txt
+search txt
+search mrw
+search trans
+shell e main.cpp 
+search space
+search dance
+rename Татьяна Овсиенко - Колечко.mp3
+rename Rokiczanka - W moim ogródecku.mp3
+rename Gracia - Linđo.mp3
+search save
+search s5
+rename but i have an idea.png
+rename The secret is.png
+search poe
+rename Negraite soapte.pdf
+rename Negraite soapte s.pdf
+rename Negraite soapte f.pdf
+search mnt
+search thing
+search another
+shell vlc 2020-11-23\ 14-02-17.mp4 
+shell mkdir exceptions
+rename i was there 3000 years ago.jpg
+rename alexei, .webp
+rename its all connected.jpg
+rename this is where the pfand begins.webp
+rename you had my curiosity, now you have my attention.gif
+rename your next line jojo.webp
+search prez
+shell mkdir xlsx
+shell y
+search thr
+search isu
+shell unzip ex.xlsx 
+rename ex.xlsx_bak_0
+rename ex.xlsx_bak_0.zip
+shell 
+rename ex.xlsx.zip
+rename ex.xlsx
+rename ex.xlsx_
+shell unzip ex.xlsxout.zip 
+rename ex.xlsxout.zip
+rename ex2.xlsx
+open_with 
 delete

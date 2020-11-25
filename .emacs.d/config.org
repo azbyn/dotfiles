@@ -1,4 +1,3 @@
-
 * Theme
 ** colors
 #+BEGIN_SRC emacs-lisp
@@ -106,7 +105,7 @@
 #+END_SRC
 ** common lisp stuff
 #+BEGIN_SRC emacs-lisp
-  (require 'cl)
+  (require 'cl-lib)
 #+END_SRC
 ** find file in project
 #+BEGIN_SRC emacs-lisp
@@ -413,40 +412,42 @@ for org mode conversions
 #+END_SRC
 ** xterm color
 #+BEGIN_SRC emacs-lisp
-  (use-package xterm-color
-    :ensure t
-    :config
-    (require 'eshell) ; or use with-eval-after-load
+  ;; (use-package xterm-color
+  ;;   :ensure t
+  ;;   :config
+  ;;   (require 'eshell) ; or use with-eval-after-load
 
-    (add-hook 'eshell-before-prompt-hook
-              (lambda ()
-                (setq xterm-color-preserve-properties t)))
+  ;;   (add-hook 'eshell-before-prompt-hook
+  ;;             (lambda ()
+  ;;               (setq xterm-color-preserve-properties t)))
+  ;;   (unless (boundp 'eshell-output-filter-functions)
+  ;;     (defvar eshell-preoutput-filter-functions nil))
+  ;;   ;;(add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
+  ;;   ;;(setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
+  ;;   (setq-default 'eshell-preoutput-filter-functions 'xterm-color-filter)
 
-    (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
-    (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
-
-    (setq xterm-color-names
-          (vector base16-col-base00 ; black
-           base16-col-base08 ; red
-           base16-col-base0B ; green
-           base16-col-base0A ; yellow
-           base16-col-base0D ; blue
-           base16-col-base0C ; magenta
-           base16-col-base0E ; cyan
-           base16-col-base05 ; white
-           ))
-    (setq xterm-color-names-bright
-          (vector base16-col-base03 ; black
-           base16-col-base08 ; red
-           base16-col-base0B ; green
-           base16-col-base0A ; yellow
-           base16-col-base0D ; blue
-           base16-col-base0E ; magenta
-           base16-col-base0C ; cyan
-           base16-col-base07 ; white
-          ))
-    (setenv "TERM" "xterm-256color")
-    )
+  ;;   (setq xterm-color-names
+  ;;         (vector base16-col-base00 ; black
+  ;;          base16-col-base08 ; red
+  ;;          base16-col-base0B ; green
+  ;;          base16-col-base0A ; yellow
+  ;;          base16-col-base0D ; blue
+  ;;          base16-col-base0C ; magenta
+  ;;          base16-col-base0E ; cyan
+  ;;          base16-col-base05 ; white
+  ;;          ))
+  ;;   (setq xterm-color-names-bright
+  ;;         (vector base16-col-base03 ; black
+  ;;          base16-col-base08 ; red
+  ;;          base16-col-base0B ; green
+  ;;          base16-col-base0A ; yellow
+  ;;          base16-col-base0D ; blue
+  ;;          base16-col-base0E ; magenta
+  ;;          base16-col-base0C ; cyan
+  ;;          base16-col-base07 ; white
+  ;;         ))
+  ;;   (setenv "TERM" "xterm-256color")
+  ;;   )
 #+END_SRC
 ** fix my bindings
 #+BEGIN_SRC emacs-lisp
@@ -570,8 +571,8 @@ for org mode conversions
                    :priority 9)
       (mu4e-alert-segment :when active)
       (erc-track :when active)
-      (version-control :when active
-                       :priority 78)
+      ;;(version-control :when active
+      ;;                 :priority 78)
       (org-pomodoro :when active)
       (org-clock :when active)
       nyan-cat)
@@ -607,7 +608,11 @@ for org mode conversions
     (diminish 'flyspell-mode)
     (diminish 'yas-minor-mode)
     (diminish 'yas-mode)
-    (diminish 'eldoc-mode))
+    (diminish 'eldoc-mode)
+    (diminish 'flyspell-mode "s")
+    (diminish 'flymake-mode "fm")
+    (diminish 'flycheck-mode "fc")
+    (diminish 'defining-kbd-macro "Macro"))
 #+END_SRC
 * magit
 #+BEGIN_SRC emacs-lisp
@@ -703,13 +708,15 @@ buffer is not visiting a file."
 #+END_SRC
 ** smarter paste
 #+BEGIN_SRC emacs-lisp
-    (defun azbyn/paste ()
-      (interactive "")
-      (let ((el (first kill-ring)))
-        (when (cl-search "\n" el)
-          (end-of-line)
-          (newline))
-        (yank)))
+  (defun azbyn/paste ()
+    (interactive "")
+    (let ((el (first kill-ring)))
+      (when (cl-search "\n" el)
+        (end-of-line)
+        (newline))
+      (yank)
+      (delete-char 1)
+      (backward-char)))
 
   (defun azbyn/paste-before ()
       (interactive "")
@@ -890,7 +897,7 @@ Repeated invocations toggle between the two most recently open buffers."
      (interactive)
      (if mark-active
          (call-interactively 'kill-region)
-       (append-next-kill)
+       ;;(append-next-kill) ;;TODO
        (kill-whole-line)))
   (defun azbyn/delete-char-or-region ()
     (interactive)
@@ -1363,6 +1370,7 @@ also use =C-n=, =C-p= for movement
 ** common
 #+BEGIN_SRC emacs-lisp
   ;;(global-set-key (kbd "M-m") 'yas-expand)
+  (setq compilation-scroll-output t)
 #+END_SRC
 ** c-style
 #+BEGIN_SRC emacs-lisp
@@ -1382,9 +1390,9 @@ also use =C-n=, =C-p= for movement
 #+END_SRC
 ** elisp
 #+BEGIN_SRC emacs-lisp
-
   (define-key emacs-lisp-mode-map (kbd "M-q") 'backward-sexp)
   (define-key emacs-lisp-mode-map (kbd "M-r") 'forward-sexp)
+  ;(add-hook 'emacs-lisp-mode-hook 'semantic-mode)
   (add-hook 'emacs-lisp-mode-hook 'company-mode)
   (add-hook 'emacs-lisp-mode-hook (lambda ()
                                     (interactive)
@@ -1392,6 +1400,28 @@ also use =C-n=, =C-p= for movement
                                     ;(with-eval-after-load 'flycheck
                                     (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc))
                                     (setq-local azbyn/make-thing-function 'eval-last-sexp)))
+#+END_SRC
+** org
+#+BEGIN_SRC emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages '(
+                               (C . t)
+                               (octave . t)))
+  (setq org-confirm-babel-evaluate nil)
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (setq-local azbyn/make-thing-function 'org-latex-export-to-pdf)))
+
+  (setq org-latex-listings 'minted
+        org-latex-packages-alist '(("" "minted"))
+        org-latex-pdf-process
+        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+#+END_SRC
+** ptry
+#+BEGIN_SRC emacs-lisp
+  (require 'poetry-mode)
+  (add-hook 'poetry-mode-hook 'display-line-numbers-mode)
 #+END_SRC
 ** dlang
 #+BEGIN_SRC emacs-lisp
@@ -1424,8 +1454,12 @@ also use =C-n=, =C-p= for movement
 ** lua
 #+BEGIN_SRC emacs-lisp
   (use-package lua-mode
-    :ensure t)
-  (setq lua-indent-size 4)
+    :ensure t
+    :defer 1
+    )
+  ;; (use-package lua-mode
+  ;;   :ensure t)
+  ;; (setq lua-indent-size 4)
   (add-hook 'lua-mode-hook 'company-mode)
   (add-hook 'lua-mode-hook 'flycheck-mode)
 #+END_SRC
@@ -1447,8 +1481,15 @@ also use =C-n=, =C-p= for movement
 #+END_SRC
 ** nasm
 #+BEGIN_SRC emacs-lisp
-(use-package nasm-mode
-  :ensure t)
+  (use-package nasm-mode
+    :ensure t
+    :config
+    (setq nasm-basic-offset 4)
+    (define-key nasm-mode-map (kbd ";") nil)
+    (add-to-list 'auto-mode-alist '("\\.asm\\'" . nasm-mode))
+    (add-hook 'nasm-mode-hook 'company-mode)
+    )
+
 #+END_SRC
 ** python
 #+BEGIN_SRC emacs-lisp
@@ -1494,6 +1535,8 @@ also use =C-n=, =C-p= for movement
 
   (define-key elpy-mode-map (kbd "<C-return>") 'azbyn/python-eval-stmt)
   (define-key elpy-mode-map (kbd "<M-return>") 'elpy-shell-send-defun)
+  (define-key elpy-mode-map (kbd "<M-S-return>") 'elpy-shell-send-defclass)
+  (define-key elpy-mode-map (kbd "<C-S-return>") 'elpy-shell-send-defclass)
 
 
   ;;(setq python-shell-interpreter "jupyter"
@@ -1534,6 +1577,8 @@ also use =C-n=, =C-p= for movement
   (add-hook 'c++-mode-hook (lambda ()
     (setq flycheck-clang-language-standard "c++20")))
 
+  ;;(add-hook 'c++-mode-hook 'semantic-mode)
+  ;;(add-hook 'c-mode-hook 'semantic-mode)
 
   (add-hook 'c-mode-hook 'azbyn/remove-sp)
   (add-hook 'c-mode-hook 'company-mode)
@@ -1556,6 +1601,72 @@ also use =C-n=, =C-p= for movement
                   '(c/c++-cppcheck c/c++-gcc)))
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+#+END_SRC
+** java
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-mode
+    :ensure t
+    :init
+    (setq lsp-prefer-flymake nil)
+    :demand t
+    :after jmi-init-platform-paths)
+
+  (use-package lsp-ui
+    :ensure t
+    :config
+    (setq lsp-ui-doc-enable nil
+          lsp-ui-sideline-enable nil
+          lsp-ui-flycheck-enable t)
+    :after lsp-mode)
+
+  (use-package dap-mode
+    :ensure t
+    :config
+    (dap-mode t)
+    (dap-ui-mode t))
+  (defun azbyn/java-mode-config ()
+      (setq-local tab-width 4
+                  c-basic-offset 4)
+      (toggle-truncate-lines 1)
+      (setq-local tab-width 4)
+      (setq-local c-basic-offset 4)
+      (company-mode)
+      (flycheck-mode)
+      (yas-minor-mode)
+      (lsp))
+  (add-hook 'java-mode-hook 'azbyn/java-mode-config)
+  (use-package lsp-java
+    :ensure t
+
+    :config
+    ;; Enable dap-java
+    (require 'dap-java)
+
+    ;; Support Lombok in our projects, among other things
+    ;; (setq lsp-java-vmargs
+    ;;       (list "-noverify"
+    ;;             "-Xmx2G"
+    ;;             "-XX:+UseG1GC"
+    ;;             "-XX:+UseStringDeduplication"
+    ;;             (concat "-javaagent:" jmi/lombok-jar)
+    ;;             (concat "-Xbootclasspath/a:" jmi/lombok-jar))
+    ;;       lsp-file-watch-ignored
+    ;;       '(".idea" ".ensime_cache" ".eunit" "node_modules"
+    ;;         ".git" ".hg" ".fslckout" "_FOSSIL_"
+    ;;         ".bzr" "_darcs" ".tox" ".svn" ".stack-work"
+    ;;         "build")
+
+    ;;       lsp-java-import-order '["" "java" "javax" "#"]
+    ;;       ;; Don't organize imports on save
+    ;;       lsp-java-save-action-organize-imports nil
+
+    ;;       ;; Formatter profile
+    ;;       lsp-java-format-settings-url
+    ;;       (concat "file://" jmi/java-format-settings-file))
+
+
+    :demand t
+    :after (lsp lsp-mode dap-mode jmi-init-platform-paths))
 #+END_SRC
 ** haskell
 #+BEGIN_SRC emacs-lisp
@@ -1696,3 +1807,4 @@ also use =C-n=, =C-p= for movement
 #+END_SRC
 * todo
 fix compile
+

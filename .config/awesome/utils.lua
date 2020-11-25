@@ -37,6 +37,16 @@ function exec(cmd)
 	return function() awful.spawn(cmd) end
 end
 
+function has_value (tab, val)
+    for index, value in ipairs(tab) do
+        if value == val then
+            return true
+        end
+    end
+
+    return false
+end
+
 -- Get a function that spawns cmd with shell
 function sh_exec(cmd)
 	return function() awful.spawm.with_shell(cmd) end

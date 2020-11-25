@@ -9,6 +9,7 @@ def main():
     # check command line for original file and track list file
     if len(sys.argv) != 3:
         print('usage: split <original_track> <track_list>')
+        print('00:00:00 00:04:43 Somebody - 01 - blah')
         exit(1)
 
     # record command line args
