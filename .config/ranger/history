@@ -1,5 +1,3 @@
-rename Dac-am plecat, Ardealule, din tine.mp3
-search 
 search t
 search t.txt
 search txt
@@ -46,5 +44,7 @@ shell unzip ex.xlsxout.zip
 rename ex.xlsxout.zip
 rename ex2.xlsx
 open_with 
+search conf
+shell mkdir emacs-windows
 delete
-shell e file 
+shell e config.org 
