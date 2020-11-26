@@ -415,10 +415,11 @@ for org mode conversions
 * Terminal and eshell
 ** Use fish by default
 #+BEGIN_SRC emacs-lisp
-(defadvice ansi-term (before force-bash)
-  (interactive (list "/usr/bin/fish")))
+  (unless azbyn/windows-mode
+    (defadvice ansi-term (before force-bash)
+      (interactive (list "/usr/bin/fish")))
 
-(ad-activate 'ansi-term)
+    (ad-activate 'ansi-term))
 #+END_SRC
 ** aliases
 #+BEGIN_SRC emacs-lisp
@@ -563,7 +564,8 @@ for org mode conversions
              (line-num (format-mode-line "%l"))
              (perc (/ (* 100 (string-to-number line-num))
                       (string-to-number total-lines)))
-             (col (format-mode-line "%2C")))
+             ;;(col (format-mode-line "%2C")))
+             (col (format-mode-line "%2c")))
         (format "%s:%s | %3d%%%%" line-num col perc);; total-lines)
         )))
 
@@ -1531,7 +1533,9 @@ also use =C-n=, =C-p= for movement
   (add-hook 'python-mode-hook 'company-mode)
   (add-hook 'python-mode-hook 'jedi-mode)
   ;;(add-hook 'python-mode-hook 'jedi:setup)
-
+  (setq python-scripts-path "C:\\Users\\azbyn\\AppData\\Local\\Programs\\Python\\Python37\\Scripts\\")
+  (setq python-environment-virtualenv (list (concat python-scripts-path "virtualenv.exe")))
+  (setq python-shell-interpreter (concat python-scripts-path "ipython.exe"))
   (use-package elpy
     :ensure t
     :diminish elpy-mode
@@ -1570,7 +1574,7 @@ also use =C-n=, =C-p= for movement
   ;    python-shell-prompt-detect-failure-warning nil)
   ;(add-to-list 'python-shell-completion-native-disabled-interpreters
   ;           "jupyter")
-  (setq python-shell-interpreter "ipython"
+  (setq ;;python-shell-interpreter "ipython"
         python-shell-interpreter-args "-i --simple-prompt")
 
   (setq python-indent-guess-indent-offset t)
@@ -1580,7 +1584,8 @@ also use =C-n=, =C-p= for movement
   (setq-default python-indent-offset 4)
   (add-hook 'python-mode-hook
             (lambda ()
-              (setq azbyn/make-file-function 'elpy-shell-send-buffer)
+              (local-set-key (kbd "M-c") (lambda () (interactive) (compile (format "py \"%s\"" (buffer-file-name)))))
+              ;; 'elpy-shell-send-buffer)
 
               (setq azbyn/goto-definition-function
                     'jedi:goto-definition)
@@ -1806,4 +1811,3 @@ also use =C-n=, =C-p= for movement
 #+END_SRC
 * todo
 fix compile
-

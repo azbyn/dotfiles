@@ -53,7 +53,7 @@ sswitch ($day) {
 	case 3: { $daymsg = ""; }
 	case 4: { $daymsg = ""; }
 	case 5: { $daymsg = "It's Update Friday!"; }
-	case 6: { $daymsg = ""; }
+	case 6: { $daymsg = "Update, remember?"; }
 	case 7: { $daymsg = ""; }
 }
 
