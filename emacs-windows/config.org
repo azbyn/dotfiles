@@ -1,7 +1,7 @@
 * windows mode define
 #+BEGIN_SRC emacs-lisp
     (setq-default azbyn/windows-mode (string-equal system-type "windows-nt"))
-
+        (setq shell-file-name "cmdproxy.exe")
         (setq w32-pass-lwindow-to-system nil
               w32-pass-rwindow-to-system nil
               w32-pass-apps-to-system nil
@@ -1811,3 +1811,4 @@ also use =C-n=, =C-p= for movement
 #+END_SRC
 * todo
 fix compile
+
