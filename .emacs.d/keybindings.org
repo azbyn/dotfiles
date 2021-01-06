@@ -202,7 +202,7 @@
   (define-key 'azbyn-key-map (kbd "M-s") 'azbyn/open-scratch)
   (define-key 'azbyn-key-map (kbd "M-c") 'azbyn/open-compilation)
   (define-key 'azbyn-key-map (kbd "M-r") 'azbyn/open-repl)
-  (define-key 'azbyn-key-map (kbd "M-m") 'azbyn/open-messages)
+  (define-key 'azbyn-key-map (kbd "m") 'azbyn/open-messages)
 
 #+END_SRC
 *** goto
@@ -242,7 +242,7 @@
   (define-key 'azbyn-key-map (kbd "M-f") 'azbyn/edit-food)
 
   (defun azbyn/edit-movies () (interactive) (find-file "~/movies.org"))
-  (define-key 'azbyn-key-map (kbd "m") 'azbyn/edit-movies)
+  (define-key 'azbyn-key-map (kbd "M-m") 'azbyn/edit-movies)
 
 #+END_SRC
 *** spell checking bindings
@@ -546,7 +546,7 @@
   (global-set-key (kbd "C-v") 'yank);; azbyn/paste)
   (global-set-key (kbd "C-S-v") 'azbyn/paste-before)
 
-  (global-set-key (kbd "M-v") 'counsel-yank-pop)
+  (global-set-key (kbd "M-v") 'popup-kill-ring);; 'counsel-yank-pop)
 
   ;; ;(global-set-key (kbd "M-y") 'evil-join)
 
@@ -685,6 +685,82 @@
   (global-set-key (kbd "H--") 'decrease-font-size)
 
 #+END_SRC
+* code folding
+  #+begin_src emacs-lisp  
+    (define-key undo-tree-map (kbd "C-_") nil)
+    (global-set-key (kbd "C-+") 'evil-open-folds) ;; ctrl+shift+=
+    (global-set-key (kbd "C-_") 'evil-close-folds)   ;; ctrl+shift+-
+    (global-set-key (kbd "C-=") 'evil-open-fold)
+    (global-set-key (kbd "C--") 'evil-close-fold)
+  #+end_src
+* < and > to indent when mark is active mode
+#+begin_src emacs-lisp
+  (defun azbyn/expand-region-to-lines ()
+    (interactive)
+    (when (region-active-p)
+      (let ((beg (region-beginning))
+            (end (region-end)))
+        (if (>= beg (point));; point is the at the beginning of the selection
+            (progn
+              (beginning-of-line)
+              (set-mark (save-excursion
+                          (goto-char end)
+                          (point-at-eol))))
+            (end-of-line)
+            (set-mark (save-excursion
+                        (goto-char beg)
+                        (point-at-bol)))
+            ))))
+
+  (defun azbyn/indent-base (fun)
+    (azbyn/expand-region-to-lines)
+    (let* ((mark (mark))
+           (beg (region-beginning))
+           (end (region-end))
+           (begln (line-number-at-pos beg))
+           (endln (line-number-at-pos end))
+           (is-at-beg (>= beg (point))) ;; point is the at the beginning of the selection
+          )
+      (save-excursion
+        (funcall fun beg end)
+        (push-mark mark t t)
+        ;; Tell the command loop not to deactivate the mark
+        ;; for transient mark mode
+        (setq deactivate-mark nil))
+      (if is-at-beg
+          (progn
+            (goto-line begln)
+            (beginning-of-line)
+            (set-mark (save-excursion
+                        (goto-line endln)
+                        (point-at-eol))))
+        (goto-line endln)
+        (end-of-line)
+        (set-mark (save-excursion
+                    (goto-line begln)
+                    (point-at-bol))))
+      ))
+
+
+  (defun indent-or-< (cnt)
+    (interactive "p")
+    (if (region-active-p)
+        (azbyn/indent-base 'evil-shift-left)
+      ;; (indent-rigidly-left-to-tab-stop (region-beginning) (region-end))
+      (self-insert-command cnt ?<)))
+
+  (global-set-key (kbd "<") 'indent-or-<)
+
+  (defun indent-or-> (cnt)
+    (interactive "p")
+    (if (region-active-p)
+        (azbyn/indent-base 'evil-shift-right)
+      (self-insert-command cnt ?>)))
+
+  (global-set-key (kbd "<") 'indent-or-<)
+  (global-set-key (kbd ">") 'indent-or->)
+
+#+end_src
 * other bindings
 ** repeat
 #+BEGIN_SRC emacs-lisp

@@ -69,17 +69,18 @@ local separators = lain.util.separators
 local clock = require("widgets.clock")
 local ram   = require("widgets.ram")
 local cpu   = require("widgets.cpu")
+-- local swap   = require("widgets.swap")
 local temp  = require("widgets.temp")
 local ld    = require("widgets.load")
 local email = require("widgets.email")
 local signal= require("widgets.signal")
 
-local weather = require("widgets.weather")
+-- local weather = require("widgets.weather")
 
 theme.music   = require("widgets.music")
 theme.volume  = require("widgets.volume")
 theme.battery = require("widgets.battery")
-theme.net     = require("widgets.net")
+-- theme.net     = require("widgets.net")
 
 
 theme.modkeys     = require("widgets.modkeys")
@@ -267,6 +268,8 @@ function theme.at_screen_connect(s)
 			spr,
 			ram.widget,
 			spr,
+                        -- swap.text,
+                        -- spr,
 			cpu.widget,
 			spr,
 			temp.text,

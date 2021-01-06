@@ -32,12 +32,12 @@ sub download {
 	my $song = shift;
 	$song =~ s/&.*//; #remove data about playlist and others
 	print "$song\n" if $print;
-	my $cmd = "youtube-dlc --extract-audio --audio-format mp3 '$song' -o '$output/%(title)s.%(ext)s'";
+	my $cmd = "youtube-dl --extract-audio --audio-format mp3 '$song' -o '$output/%(title)s.%(ext)s'";
 	unless ($verbose) {#show output in real time
 		system $cmd;
 	}
 	else {#ignore output
-		`youtube-dlc --extract-audio --audio-format mp3 '$song' -o '$output/%(title)s.%(ext)s'`
+		`youtube-dl --extract-audio --audio-format mp3 '$song' -o '$output/%(title)s.%(ext)s'`
 	}
     print "running mp3gain";
     #system "mp3gain -r -c $output/*.mp3";

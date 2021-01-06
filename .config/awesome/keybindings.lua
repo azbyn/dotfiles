@@ -332,35 +332,35 @@ greekTable= {
 }
 local translitKey = "Control_R"
 
-translitKeygrabber = awful.keygrabber {
-   -- stop_key = "Control_R",
-   stop_key = translitKey,
-   stop_event = "release",
-   mask_modkeys=true,
-   -- allowedKeys={'a', 'b'},      -- 
-   -- timeout = 1,          --
-   keypressed_callback = function(self, mods, key)
-      -- naughty.notify({text="Pressed "..key.." w ".. table.concat(mods, "-")})
-      local tbl = greekTable
-      if greekTable[key] then
-         local val = greekTable[key]
-         -- naughty.notify({text="Pressed "..key.."->"..val})
-         awful.spawn({"xdotool", "type", val})
-         awful.spawn({"xdotool", "key", translitKey})
-         translitKeygrabber:stop()
-      end
-      --try sending another F13ψ
-      -- if key == "r" then
+-- translitKeygrabber = awful.keygrabber {
+--    -- stop_key = "Control_R",
+--    stop_key = translitKey,
+--    stop_event = "release",
+--    mask_modkeys=true,
+--    -- allowedKeys={'a', 'b'},      -- 
+--    -- timeout = 1,          --
+--    keypressed_callback = function(self, mods, key)
+--       -- naughty.notify({text="Pressed "..key.." w ".. table.concat(mods, "-")})
+--       local tbl = greekTable
+--       if greekTable[key] then
+--          local val = greekTable[key]
+--          -- naughty.notify({text="Pressed "..key.."->"..val})
+--          awful.spawn({"xdotool", "type", val})
+--          awful.spawn({"xdotool", "key", translitKey})
+--          translitKeygrabber:stop()
+--       end
+--       --try sending another F13ψ
+--       -- if key == "r" then
       
-      -- end
-   end
-}
+--       -- end
+--    end
+-- }
 
 M.globalkeys = awful.util.table.join(
-   key(translitKey, {"Misc", "quick transliteration",
-                     function() translitKeygrabber:start() end}),
-   key("Shift", translitKey, {"Misc", "quick transliteration",
-                     function() translitKeygrabber:start() end}),
+   -- key(translitKey, {"Misc", "quick transliteration",
+                     -- function() translitKeygrabber:start() end}),
+   -- key("Shift", translitKey, {"Misc", "quick transliteration",
+                     -- function() translitKeygrabber:start() end}),
    -- key("Control_R", function()
    -- end),  -- 
     --awful.key({}, "Menu", exec("xdotool click 3")),
