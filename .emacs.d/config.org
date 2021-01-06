@@ -1589,17 +1589,15 @@ also use =C-n=, =C-p= for movement
   (diminish 'compilation-shell-minor-mode)
 
   (setq-default python-indent-offset 4)
-  (add-hook 'python-mode-hook
-            (lambda ()
-              (local-set-key (kbd "M-c") (lambda () (interactive) (compile (format "py \"%s\"" (buffer-file-name)))))
-              (setq azbyn/make-file-function 'elpy-shell-send-buffer)
+  (defun azbyn/python-hook ()
+    (local-set-key (kbd "M-c") (lambda () (interactive) (compile (format "py \"%s\"" (buffer-file-name)))))
+    (setq azbyn/make-file-function 'elpy-shell-send-buffer)
+    (setq prettify-symbols-alist '(("lambda" . 955)))
+    (setq azbyn/goto-definition-function 'jedi:goto-definition)
+    (setq azbyn/search-symbol-function 'elpy-rgrep-symbol)
+    (setq azbyn/repl-name "*Python*"))
 
-              (setq azbyn/goto-definition-function
-                    'jedi:goto-definition)
-              (setq azbyn/search-symbol-function
-                    'elpy-rgrep-symbol)
-              (setq azbyn/repl-name "*Python*")))
-
+  (add-hook 'python-mode-hook 'azbyn/python-hook)
 
 #+END_SRC
 ** c++
