@@ -1397,6 +1397,17 @@ also use =C-n=, =C-p= for movement
   ;;(global-set-key (kbd "M-m") 'yas-expand)
   (setq compilation-scroll-output t)
 #+END_SRC
+** comint (*inferior <language>*)
+   #+begin_src emacs-lisp
+     ;; (define-key comint-mode-map (kbd "M-I") 'comint-previous-input)
+     (defun azbyn-comint-hook ()
+       (local-set-key (kbd "M-r") 'comint-previous-input)
+       (local-set-key (kbd "M-q") 'comint-next-input)
+       )
+     (add-hook comint-mode-hook 'azbyn-comint-hook)
+
+     ;; (define-key comint-mode-map (kbd "M-J") 'comint-next-input)
+   #+end_src
 ** c-style
 #+BEGIN_SRC emacs-lisp
     (diminish 'company-dcd-mode)
@@ -1558,10 +1569,7 @@ also use =C-n=, =C-p= for movement
     (elpy-enable)
     ;;(add-hook 'python-mode-hook 'company-mode)
     )
-  (define-key inferior-python-mode-map (kbd "M-I") 'comint-previous-input)
-  (define-key inferior-python-mode-map (kbd "M-r") 'comint-previous-input)
-  (define-key inferior-python-mode-map (kbd "M-J") 'comint-next-input)
-  (define-key inferior-python-mode-map (kbd "M-q") 'comint-next-input)
+
 
   (defun azbyn/python-eval-stmt()
     (interactive)
@@ -1602,41 +1610,73 @@ also use =C-n=, =C-p= for movement
 #+END_SRC
 ** c++
 #+BEGIN_SRC emacs-lisp
-  (use-package irony
-    :diminish irony-mode
-    :ensure t)
-  ;;#define breaks
-  (add-hook 'c-mode-hook (lambda () (rainbow-mode -1)))
+  (unless azbyn/windows-mode
+    (use-package irony
+      :diminish irony-mode
+      :ensure t)
+    (use-package irony-eldoc
+      :ensure t)
+    ;;#define breaks
+    (add-hook 'c-mode-hook (lambda () (rainbow-mode -1)))
 
-  ;;i don't like autopairing  for this
-  (sp-local-pair '(c-mode c++-mode) "/*" nil :actions :rem)
-  (add-hook 'c++-mode-hook (lambda ()
-    (setq flycheck-clang-language-standard "c++20")))
+    ;;i don't like autopairing  for this
+    (sp-local-pair '(c-mode c++-mode) "/*" nil :actions :rem)
 
-  ;;(add-hook 'c++-mode-hook 'semantic-mode)
-  ;;(add-hook 'c-mode-hook 'semantic-mode)
+    ;;(add-hook 'c++-mode-hook 'semantic-mode)
+    ;;(add-hook 'c-mode-hook 'semantic-mode)
 
-  (add-hook 'c-mode-hook 'azbyn/remove-sp)
-  (add-hook 'c-mode-hook 'company-mode)
-  (add-hook 'c-mode-hook 'flycheck-mode)
+    (add-hook 'c-mode-hook 'azbyn/remove-sp)
+    (add-hook 'c-mode-hook 'company-mode)
+    (add-hook 'c-mode-hook 'flycheck-mode)
 
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'c++-mode-hook 'company-mode)
-  (add-hook 'c++-mode-hook 'flycheck-mode)
-  (add-hook 'c++-mode-hook 'irony-mode)
+    (add-hook 'c-mode-hook 'irony-mode)
+    ;; (add-hook 'c++-mode-hook 'company-mode)
+    ;; (add-hook 'c++-mode-hook 'flycheck-mode)
 
-  ;;i don't like having /* autocompleted
-  ;(define-key c++-mode-map (kbd "*") nil)
+    (defun azbyn/c++-hook ()
+      (company-mode)
+      (flycheck-mode)
+      (irony-mode)
+      (irony-eldoc)
+
+      (setq flycheck-clang-language-standard "c++20")
+      (when (fboundp 'platformio-conditionally-enable)
+        ;;if that's defined we prolly have the whole platformio stuff
+        (platformio-conditionally-enable)
+
+        ;;idk why this doesn't work
+        (when (projectile-verify-file "platformio.ini")
+          (azbyn/platformio-setup)
+          )
+
+        ))
+    (defun azbyn/platformio-setup ()
+      (interactive)
+      ;; (setq azbyn/make-file-function 'platformio-upload)
+      (local-set-key (kbd "M-c") 'platformio-upload)
+      (setq flycheck-clang-include-path
+              (list
+               (expand-file-name "~/.platformio/packages/toolchain-atmelavr/avr/include/")
+               (expand-file-name "~/.platformio/packages/framework-arduino-avr/variants/atmega328pb/")
+               "/usr/share/arduino/hardware/archlinux-arduino/avr/cores/arduino/"))
+        (setq flycheck-clang-args '("-nostdinc++" "--target=avr"
+                                    "-I/usr/share/arduino/hardware/archlinux-arduino/avr/cores/arduino/"
+                                    )))
+
+    (add-hook 'c++-mode-hook 'azbyn/c++-hook)
+
+    ;;i don't like having /* autocompleted
+                                          ;(define-key c++-mode-map (kbd "*") nil)
 
 
-  (with-eval-after-load "flycheck"
-    (setq flycheck-clang-warnings `(,@flycheck-clang-warnings
-                                    "no-pragma-once-outside-header")))
-  (with-eval-after-load 'flycheck
-    (setq-default flycheck-disabled-checkers
-                  '(c/c++-cppcheck c/c++-gcc)))
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-  (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+    (with-eval-after-load "flycheck"
+      (setq flycheck-clang-warnings `(,@flycheck-clang-warnings
+                                      "no-pragma-once-outside-header")))
+    (with-eval-after-load 'flycheck
+      (setq-default flycheck-disabled-checkers
+                    '(c/c++-cppcheck c/c++-gcc)))
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+    (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)))
 #+END_SRC
 ** java
 #+BEGIN_SRC emacs-lisp
@@ -1714,9 +1754,10 @@ also use =C-n=, =C-p= for movement
   (add-hook 'haskell-mode-hook 'flycheck-mode))
 #+END_SRC
 ** arduino
-
 #+BEGIN_SRC emacs-lisp
 (unless azbyn/windows-mode
+  (use-package platformio-mode
+    :ensure t)
   (use-package arduino-mode
     :ensure t)
   (use-package company-arduino
@@ -1733,5 +1774,32 @@ also use =C-n=, =C-p= for movement
             )))
 #+END_SRC
  
+** octave
+   #+begin_src emacs-lisp
+     (unless azbyn/windows-mode
+       (setq auto-mode-alist
+             (cons '("\\.m$" . octave-mode) auto-mode-alist))
+       (add-hook 'octave-mode-hook 'azbyn/octave-hook)
+       (defun azbyn/octave-hook ()
+         (company-mode)
+         (flycheck-mode)
+
+         (define-key octave-mode-map (kbd "<C-return>") 'octave-send-line)
+         (define-key octave-mode-map (kbd "<M-return>") 'octave-send-defun)
+         (define-key octave-mode-map (kbd "<M-S-return>") 'octave-send-block)
+         (define-key octave-mode-map (kbd "<C-S-return>") 'octave-send-block)
+         (define-key octave-mode-map (kbd "C-c C-c") 'octave-send-buffer)
+       ))
+   #+end_src
+* webkit
+  #+begin_src emacs-lisp
+    (unless (version< emacs-version "28.0")
+      (require 'webkit)
+      (global-set-key (kbd "H-r") 'webkit) ;; Bind to whatever global key binding you want if you want
+      (require 'webkit-ace) ;; If you want link hinting
+      (require 'webkit-dark) ;; If you want to use the simple dark mode
+      (setq webkit-dark-mode t)
+      (modify-frame-parameters nil '((inhibit-double-buffering . t))))
+  #+end_src
 * todo
 fix compile

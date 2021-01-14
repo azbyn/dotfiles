@@ -1,3 +1,4 @@
+.emacs.d/lisp/emacs-webkit
 .config/fish/fishd.*
 .config/nvim/undodir/*
 .config/nvim/plugged/*

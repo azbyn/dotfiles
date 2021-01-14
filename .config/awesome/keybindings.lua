@@ -442,7 +442,10 @@ M.globalkeys = awful.util.table.join(
     key(mod, "w", {"Misc", "emacs window",
         function() toggle_dropdown("emacs") end}),
     key(mod, "f", {"Misc", "signal window",
-        function() toggle_dropdown("signal") end}),
+                   function()
+                      exec_tag_special("s")
+                      -- toggle_dropdown("signal")
+    end}),
 
     key(mod, ctrl, "p", {"misc", "Sstfy Print screen",
         function()

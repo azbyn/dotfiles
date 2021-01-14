@@ -108,15 +108,17 @@ M.program_rules = {
 }
 
 M.nr_normal_tags = 5
-M.special_tags_order = { "E", "S", "W", "G", "P", "T" } --"V"
+M.special_tags_order = { "E", "S", "W", "G", "P", "T", } --"V"
 M.special_tags = {
-   --tag = {command, class, role-for-primary}
+   --tag = {command, class, role-for-primary}w
    W = {"qutebrowser", "qutebrowser"},
    G = {"gimp", "Gimp", "gimp-image-window"},
    P = {"keepassxc", "KeePassXC"},
    T = {"qbittorrent", "qBittorrent"},
    S = {"android-studio", "jetbrains-studio"},
    E = {"emacs", "Emacs"},
+   -- f = {"qbittorrent", "qBittorrent"},
+   -- s = {"signal-desktop", "Signal"},
    --V = {"vlc", "Vlc", "vlc-main"},
 }
 M.tags = {}
