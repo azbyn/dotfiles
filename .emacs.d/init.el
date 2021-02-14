@@ -42,11 +42,11 @@
    ["#1d1f21" "#CC342B" "#198844" "#FBA922" "#3971ED" "#A36AC7" "#3971ED" "#c5c8c6"])
  '(default-input-method "azbyn-TeX")
  '(package-selected-packages
-   '(clang-format+ irony-eldoc platformio-mode company-arduino arduino-mode lsp-java dap-mode lsp-ui lsp-mode flycheck-java emms mpdel dad-joke haskell-mode fish-completion dumb-jump jedi help-fns+ elpy company-jedi hl-todo nasm-mode company-racer rust-mode zop-to-char anzu htmlize rmsbolt magit smartparens nlinum nlinum-mode smex xterm-color multiple-cursors persp-mode smart-comment ranger fish-mode highlight-escape-sequences highlight-numbers avy lua-mode window-numbering company-dcd find-file-in-project diminish company dashboard expand-region rainbow-mode ivy org-bullets popup-kill-ring rainbow-delimiters which-key use-package base16-theme))
+   '(wucuo clang-format+ irony-eldoc platformio-mode company-arduino arduino-mode lsp-java dap-mode lsp-ui lsp-mode flycheck-java emms mpdel dad-joke haskell-mode fish-completion dumb-jump jedi help-fns+ elpy company-jedi hl-todo nasm-mode company-racer rust-mode zop-to-char anzu htmlize rmsbolt magit smartparens nlinum nlinum-mode smex xterm-color multiple-cursors persp-mode smart-comment ranger fish-mode highlight-escape-sequences highlight-numbers avy lua-mode window-numbering company-dcd find-file-in-project diminish company dashboard expand-region rainbow-mode ivy org-bullets popup-kill-ring rainbow-delimiters which-key use-package base16-theme))
  '(winner-mode t)
  '(zop-to-char-prec-keys '(left 1)))
 
- 
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -63,9 +63,13 @@ xkb_symbols "basic" {
     key <AC04> { [ f,          F,  adiaeresis,  Adiaeresis ] };
     key <AC05> { [ g,          G,  dstroke,     Dstroke ] };
     key <AC06> { [ h,          H,  U180E,       U180E ] }; // mongolian vowel separator
-    
+
     key <AC08> { [ k,          K,       sacute,       Sacute ] };
     key <AC09> { [ l,          L,       lstroke,      Lstroke ] };
+    key <AC10> { [ semicolon, 	    colon, leftdoublequotemark ] };
+    key <AC11> { [ apostrophe, 	 quotedbl, rightdoublequotemark ] };
+    
+    
     key <AB01> { [ z,          Z,       zabovedot,    Zabovedot ] };
     key <AB02> { [ x,          X,       zacute,       Zacute ] };
     key <AB03> { [ c,          C,       cacute,       Cacute ] };

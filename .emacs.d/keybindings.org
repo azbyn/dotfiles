@@ -203,6 +203,7 @@
   (define-key 'azbyn-key-map (kbd "M-c") 'azbyn/open-compilation)
   (define-key 'azbyn-key-map (kbd "M-r") 'azbyn/open-repl)
   (define-key 'azbyn-key-map (kbd "m") 'azbyn/open-messages)
+  (define-key 'azbyn-key-map (kbd "i") 'ielm)
 
 #+END_SRC
 *** goto
@@ -236,13 +237,19 @@
 
   (define-key 'azbyn-key-map (kbd "C-k") 'keybindings-visit)
   (define-key 'azbyn-key-map (kbd "C-S-k") 'keybindings-visit-readonly)
-  (defun azbyn/edit-todo () (interactive) (find-file "~/todo.org"))
-  (define-key 'azbyn-key-map (kbd "M-t") 'azbyn/edit-todo)
-  (defun azbyn/edit-food () (interactive) (find-file "~/food.org"))
-  (define-key 'azbyn-key-map (kbd "M-f") 'azbyn/edit-food)
 
-  (defun azbyn/edit-movies () (interactive) (find-file "~/movies.org"))
-  (define-key 'azbyn-key-map (kbd "M-m") 'azbyn/edit-movies)
+  (if azbyn/windows-mode
+      (define-key 'azbyn-key-map (kbd "M-t") 'neotree-toggle)
+    (defun azbyn/edit-todo () (interactive) (find-file "~/todo.org"))
+    (define-key 'azbyn-key-map (kbd "M-t") 'azbyn/edit-todo))
+
+  (unless azbyn/windows-mode
+    (defun azbyn/edit-food () (interactive) (find-file "~/food.org"))
+    (define-key 'azbyn-key-map (kbd "M-f") 'azbyn/edit-food))
+
+  (unless azbyn/windows-mode
+    (defun azbyn/edit-movies () (interactive) (find-file "~/movies.org"))
+    (define-key 'azbyn-key-map (kbd "M-m") 'azbyn/edit-movies))
 
 #+END_SRC
 *** spell checking bindings
@@ -257,6 +264,7 @@
   (define-key 'azbyn/spellcheck-map (kbd "d") 'ispell-change-dictionary)
   (define-key 'azbyn/spellcheck-map (kbd "s") 'flyspell-mode)
   (define-key 'azbyn/spellcheck-map (kbd "k") 'ispell-kill-ispell)
+  (define-key 'azbyn/spellcheck-map (kbd "c") 'flyspell-correct-word-before-point)
 #+END_SRC
 *** input methods
 #+BEGIN_SRC emacs-lisp
@@ -265,13 +273,15 @@
   (define-key 'azbyn-key-map (kbd "C-\\") azbyn/input-method-map)
 
   (defun azbyn/set-input-russian() (interactive) (set-input-method "azbyn-russian-translit"))
-  (defun azbyn/set-input-tex() (interactive) (set-input-method "azbyn-TeX"))
+  (defun azbyn/set-input-azbyn-tex() (interactive) (set-input-method "azbyn-TeX"))
+  (defun azbyn/set-input-tex() (interactive) (set-input-method "TeX"))
   (defun azbyn/set-input-hiragana() (interactive) (set-input-method "japanese-hiragana"))
   (defun azbyn/set-input-katakana() (interactive) (set-input-method "japanese-katakana"))
   (defun azbyn/set-input-japanese() (interactive) (set-input-method "japanese"))
 
   (define-key 'azbyn/input-method-map (kbd "r") 'azbyn/set-input-russian)
-  (define-key 'azbyn/input-method-map (kbd "t") 'azbyn/set-input-tex)
+  (define-key 'azbyn/input-method-map (kbd "t") 'azbyn/set-input-azbyn-tex)
+  (define-key 'azbyn/input-method-map (kbd "T") 'azbyn/set-input-tex)
   (define-key 'azbyn/input-method-map (kbd "h") 'azbyn/set-input-hiragana)
   (define-key 'azbyn/input-method-map (kbd "k") 'azbyn/set-input-katakana)
   (define-key 'azbyn/input-method-map (kbd "j") 'azbyn/set-input-japanese)
@@ -686,7 +696,7 @@
 
 #+END_SRC
 * code folding
-  #+begin_src emacs-lisp  
+  #+begin_src emacs-lisp
     (define-key undo-tree-map (kbd "C-_") nil)
     (global-set-key (kbd "C-+") 'evil-open-folds) ;; ctrl+shift+=
     (global-set-key (kbd "C-_") 'evil-close-folds)   ;; ctrl+shift+-
@@ -869,39 +879,55 @@
 ** resizing and stuff
 #+BEGIN_SRC emacs-lisp
   (define-prefix-command 'window-edit-key-map)
-  (global-set-key (kbd "M-O") window-edit-key-map)
+  ;; (global-set-key (kbd "M-O") window-edit-key-map)
+  (global-set-key (kbd "C-t") window-edit-key-map)
+
+  (global-set-key (kbd "C-t C-s") 'ace-swap-window)
+  (global-set-key (kbd "C-t C-t") 'recenter-top-bottom)
 
   (smartrep-define-key
-      global-map "M-O"
+      global-map "C-t"
     '(("i" . evil-window-rotate-upwards)
       ("j" . evil-window-rotate-downwards)
 
-      ("a" . shrink-window-horizontally)
-      ("f" . enlarge-window-horizontally)
+      ;; ("a" . shrink-window-horizontally)
+      ;; ("f" . enlarge-window-horizontally)
 
-      ("e" . enlarge-window)
-      ("w" . shrink-window)
+      ;; ("i" . evil-window-rotate-upwards)
+      ;; ("j" . evil-window-rotate-downwards)
+
+      ("<left>" . shrink-window-horizontally)
+      ("<right>" . enlarge-window-horizontally)
+      ("<up>" . enlarge-window)
+      ("<down>" . shrink-window)
 
       ("=" . balance-windows)
 
-      ("M-i" . evil-window-move-very-top)
-      ("M-j" . evil-window-move-very-bottom)
-      ("M-a" . evil-window-move-far-left)
-      ("M-f" . evil-window-move-far-right)
+      ("<C-up>" . evil-window-move-very-top)
+      ("<C-down>" . evil-window-move-very-bottom)
+      ("<C-left>" . evil-window-move-far-left)
+      ("<C-right>" . evil-window-move-far-right)
+
+
+      ;; ("M-i" . evil-window-move-very-top)
+      ;; ("M-j" . evil-window-move-very-bottom)
+      ;; ("M-a" . evil-window-move-far-left)
+      ;; ("M-f" . evil-window-move-far-right)
 
       ("u" . winner-undo)
       ("r" . winner-redo)
+      ("h" . winner-redo)
 
       ("o" . next-buffer)
       ("O" . previous-buffer)
       ))
 
-  (global-set-key (kbd "M-O d") 'delete-window)
-  (global-set-key (kbd "M-O q") 'delete-window)
-  (global-set-key (kbd "M-O k") 'kill-buffer-and-window)
-  (global-set-key (kbd "M-O s") 'server-edit)
+  (global-set-key (kbd "C-t d") 'delete-window)
+  (global-set-key (kbd "C-t q") 'delete-window)
+  (global-set-key (kbd "C-t k") 'kill-buffer-and-window)
+  (global-set-key (kbd "C-t s") 'server-edit)
 
-  (global-set-key (kbd "M-O t") 'toggle-transparency)
+  (global-set-key (kbd "C-t t") 'toggle-transparency)
 
   (defun switch-to-minibuffer ()
     "Switch to minibuffer window."
@@ -910,13 +936,10 @@
         (select-window (active-minibuffer-window))
       (error "Minibuffer is not active")))
 
-  (global-set-key (kbd "M-O m") 'switch-to-minibuffer)
-  (global-set-key (kbd "M-O SPC") 'switch-to-minibuffer)
-  (global-set-key (kbd "M-O C-SPC") 'ivy-resume)
+  (global-set-key (kbd "C-t m") 'switch-to-minibuffer)
+  (global-set-key (kbd "C-t SPC") 'switch-to-minibuffer)
+  (global-set-key (kbd "C-t C-SPC") 'ivy-resume)
 
-
-  (global-set-key (kbd "C-t") window-edit-key-map)
-  (global-set-key (kbd "C-t C-t") 'recenter-top-bottom)
 
 #+END_SRC
 ** transparency

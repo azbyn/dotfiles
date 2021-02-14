@@ -2,17 +2,25 @@
   #+begin_src emacs-lisp
     (setq-default azbyn/windows-mode (string-equal system-type "windows-nt"))
     (when azbyn/windows-mode
+      ;; bat file
+      ;; set PATH=%PATH%;C:\LegacyApp\Cygwin\3.0.7\bin
+      ;; wherever\emacs.exe
+
+      ;; comment me and remember to change init.el
       (setq default-frame-alist
             (append default-frame-alist '((font . "Consolas")
                                           (height . 117))))
+      ;; </>
       (setq shell-file-name "cmdproxy.exe")
       (setq w32-pass-lwindow-to-system nil
             w32-pass-rwindow-to-system nil
             w32-pass-apps-to-system nil
-            w32-lwindow-modifier 'super ;; Left Windows key
-            w32-rwindow-modifier 'super ;; Right Windows key
-            w32-apps-modifier 'hyper) ;; Menu key
-      (w32-register-hot-key [s-]))
+            w32-lwindow-modifier 'meta ;; Left Windows key
+            w32-rwindow-modifier 'meta ;; Right Windows key
+            ;; w32-apps-modifier 'hyper ;; Menu key
+            )
+      ;; (w32-register-hot-key [s-])
+      )
   #+end_src
 * Theme
 ** colors
@@ -355,21 +363,21 @@ for org mode conversions
     (let ((default-directory  "~/.emacs.d/lisp/"))
       (normal-top-level-add-subdirs-to-load-path)))
 #+END_SRC
-* multi cursors
-#+BEGIN_SRC emacs-lisp
-  (use-package multiple-cursors
-    :ensure t
-    :bind
-    ("H-SPC" . set-rectangular-region-anchor))
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-#+END_SRC
-* rmsbolt - compiler explorer like
-#+BEGIN_SRC emacs-lisp
-(use-package rmsbolt
-  :ensure t)
-#+END_SRC
+# * multi cursors
+# #+BEGIN_SRC emacs-lisp
+    ;; (use-package multiple-cursors
+  ;;     :ensure t
+  ;;     :bind
+  ;;     ("H-SPC" . set-rectangular-region-anchor))
+  ;; (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  ;; (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  ;; (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+# #+END_SRC
+# * rmsbolt - compiler explorer like
+# #+BEGIN_SRC emacs-lisp
+  ;; (use-package rmsbolt
+    ;; :ensure t)
+# #+END_SRC
 * non-melpa packages
 ** move line
 #+BEGIN_SRC emacs-lisp
@@ -493,12 +501,13 @@ for org mode conversions
 #+END_SRC
 ** fish completion
 #+BEGIN_SRC emacs-lisp
+(unless azbyn/windows-mode
   (use-package fish-completion
     :ensure t
     :config
     (when (and (executable-find "fish")
              (require 'fish-completion nil t))
-      (add-hook 'eshell-mode-hook 'fish-completion-mode)))
+      (add-hook 'eshell-mode-hook 'fish-completion-mode))))
 #+END_SRC
 * window numbering
 #+BEGIN_SRC emacs-lisp
@@ -1339,11 +1348,18 @@ also use =C-n=, =C-p= for movement
       '(("<left>" . winner-undo)
         ("<right>" . winner-redo)))
 #+END_SRC
-* flyspell
+* spell checking
 #+BEGIN_SRC emacs-lisp
   (unless azbyn/windows-mode
     (add-hook 'prog-mode-hook 'flyspell-prog-mode))
   (define-key flyspell-mode-map (kbd "C-;") nil)
+  (unless azbyn/windows-mode
+    (use-package wucuo
+      :ensure t)
+    (add-hook 'prog-mode-hook 'wucuo-start)
+    (add-hook 'text-mode-hook 'wucuo-start)
+  )
+
 #+END_SRC
 * flycheck
 #+BEGIN_SRC emacs-lisp
@@ -1393,18 +1409,43 @@ also use =C-n=, =C-p= for movement
 * programming languages config
 ** common
 #+BEGIN_SRC emacs-lisp
+  (when (require 'so-long nil :noerror)
+   (global-so-long-mode 1))
   (add-hook 'prog-mode-hook 'hs-minor-mode)
   ;;(global-set-key (kbd "M-m") 'yas-expand)
-  (setq compilation-scroll-output t)
+  ;;(setq compilation-scroll-output t)
+  (add-hook 'before-save-hook
+            'delete-trailing-whitespace)
+
+  (defun prog-hook ()
+    (setq tab-width 4))
+
+  (add-hook 'prog-mode-hook 'prog-hook)
+
+
 #+END_SRC
+** quickfix
+   #+begin_src emacs-lisp
+     (require 'quickfix-mode)
+     (load-file "~/.emacs.d/lisp/quickfix-mode/quickfix-python.el")
+   #+end_src
+** conf mode
+   #+begin_src emacs-lisp
+
+     (defun azbyn/conf-hook ()
+       (highlight-numbers-mode)
+       (display-line-numbers-mode))
+     (add-hook 'conf-unix-mode-hook 'azbyn/conf-hook)
+
+   #+end_src
 ** comint (*inferior <language>*)
    #+begin_src emacs-lisp
      ;; (define-key comint-mode-map (kbd "M-I") 'comint-previous-input)
      (defun azbyn-comint-hook ()
        (local-set-key (kbd "M-r") 'comint-previous-input)
        (local-set-key (kbd "M-q") 'comint-next-input)
-       )
-     (add-hook comint-mode-hook 'azbyn-comint-hook)
+      )
+     (add-hook 'comint-mode-hook 'azbyn-comint-hook)
 
      ;; (define-key comint-mode-map (kbd "M-J") 'comint-next-input)
    #+end_src
@@ -1444,9 +1485,12 @@ also use =C-n=, =C-p= for movement
                                (C . t)
                                (octave . t)))
   (setq org-confirm-babel-evaluate nil)
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (setq-local azbyn/make-thing-function 'org-latex-export-to-pdf)))
+  (defun azbyn/org-hook ()
+    (setq-local azbyn/make-thing-function 'org-latex-export-to-pdf)
+    (hl-todo-mode))
+
+  (add-hook 'org-mode-hook 'azbyn/org-hook)
+
 
   (setq org-latex-listings 'minted
         org-latex-packages-alist '(("" "minted"))
@@ -1547,10 +1591,15 @@ also use =C-n=, =C-p= for movement
   (add-hook 'python-mode-hook 'jedi-mode)
   ;;(add-hook 'python-mode-hook 'jedi:setup)
   (when azbyn/windows-mode
-    ;; (setq python-scripts-path "C:\\Users\\azbyn\\AppData\\Local\\Programs\\Python\\Python37\\Scripts\\")
+    ;; (setq python-scripts-path "C:/LegacyApp/Python36/Scripts/")
     (setq python-scripts-path "C:/Users/azbyn/AppData/Local/Programs/Python/Python37/Scripts/")
     (setq python-environment-virtualenv (list (concat python-scripts-path "virtualenv.exe")))
     (setq python-shell-interpreter (concat python-scripts-path "ipython.exe"))
+
+    (setq flycheck-python-pycompile-executable "C:/LegacyApp/Python36/python.exe")
+    ;; you might have to redefine flycheck-temp-files-writable-p to return only t
+    (setq flycheck-python-pylint-executable (concat python-scripts-path "pylint.exe"))
+    (setq flycheck-python-mypy-executable (concat python-scripts-path "mypy.exe"))
     )
 
   (use-package elpy
@@ -1560,13 +1609,14 @@ also use =C-n=, =C-p= for movement
     (setq elpy-modules '(elpy-module-sane-defaults
                          elpy-module-company
                          elpy-module-eldoc
-                         elpy-module-flymake
+                         ;; elpy-module-flymake
                          ;;elpy-module-highlight-indentation
                          ;; elpy-module-pyvenv
                          elpy-module-yasnippet
                          ;;elpy-module-django
                          ))
     (elpy-enable)
+    ;;    (setq elpy-rpc-backend "jedi")
     ;;(add-hook 'python-mode-hook 'company-mode)
     )
 
@@ -1598,7 +1648,16 @@ also use =C-n=, =C-p= for movement
 
   (setq-default python-indent-offset 4)
   (defun azbyn/python-hook ()
-    (local-set-key (kbd "M-c") (lambda () (interactive) (compile (format "py \"%s\"" (buffer-file-name)))))
+    (local-set-key (kbd "M-c") (lambda ()(interactive)
+                                 (compile (format "py \"%s\"" (buffer-file-name)))))
+    (local-set-key (kbd "M-v") (lambda () (interactive)
+                                 (compile (format "py -m pylint \"%s\"" (buffer-file-name)))))
+
+    (if azbyn/windows-mode
+        (setq-local flycheck-disabled-checkers '(python-pylint python-mypy))
+      (setq-local flycheck-disabled-checkers '(python-pylint python-mypy))
+      )
+
     (setq azbyn/make-file-function 'elpy-shell-send-buffer)
     (setq prettify-symbols-alist '(("lambda" . 955)))
     (setq azbyn/goto-definition-function 'jedi:goto-definition)
@@ -1606,6 +1665,8 @@ also use =C-n=, =C-p= for movement
     (setq azbyn/repl-name "*Python*"))
 
   (add-hook 'python-mode-hook 'azbyn/python-hook)
+  (setq auto-mode-alist
+        (cons '("\\.pylintrc\\'" . conf-unix-mode) auto-mode-alist))
 
 #+END_SRC
 ** c++
@@ -1773,7 +1834,7 @@ also use =C-n=, =C-p= for movement
               (setq tab-width 4)
             )))
 #+END_SRC
- 
+
 ** octave
    #+begin_src emacs-lisp
      (unless azbyn/windows-mode
@@ -1791,6 +1852,27 @@ also use =C-n=, =C-p= for movement
          (define-key octave-mode-map (kbd "C-c C-c") 'octave-send-buffer)
        ))
    #+end_src
+** web
+   #+begin_src emacs-lisp
+   (use-package web-mode
+     :ensure t)
+   #+end_src
+** groovy
+   #+begin_src emacs-lisp
+     (use-package groovy-mode
+       :ensure t)
+     (setq auto-mode-alist
+               (cons '("\\.groovy$" . groovy-mode) auto-mode-alist))
+     (defun azbyn/groovy-hook ()
+          (setq tab-width 4))
+     (add-hook 'groovy-mode-hook 'azbyn/groovy-hook)
+   #+end_src
+** canoe
+   #+begin_src emacs-lisp
+     (setq auto-mode-alist
+                 (cons '("\\.can$" . c-mode) auto-mode-alist))
+   #+end_src
+
 * webkit
   #+begin_src emacs-lisp
     (unless (version< emacs-version "28.0")
