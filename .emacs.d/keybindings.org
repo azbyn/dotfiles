@@ -304,6 +304,15 @@
   (add-hook 'minibuffer-inactive-mode-hook 'azbyn/minibuffer-movement)
 
 #+END_SRC
+** fix C-a and friends
+   #+begin_src emacs-lisp
+     (define-key input-decode-map "\C-a" [C-a])
+     (define-key input-decode-map "\C-e" [C-e])
+     (define-key input-decode-map "\M-a" [M-a])
+     (define-key input-decode-map "\M-e" [M-e])
+     (define-key input-decode-map "\M-p" [M-p])
+     (define-key input-decode-map "\M-n" [M-n])
+   #+end_src
 ** scrolling
 #+BEGIN_SRC emacs-lisp
   (defun azbyn/scroll-up() (interactive) (forward-line -10))
@@ -391,6 +400,7 @@
 #+BEGIN_SRC emacs-lisp
   (defvar azbyn/key-bindings-table
     (make-hash-table :test 'equal))
+
   (defun azbyn/define-key (key value)
     "Define a key which often gets overridden"
     (puthash key value azbyn/key-bindings-table))
@@ -399,34 +409,35 @@
   ;;(make-variable-buffer-local 'azbyn/original-keys)
   (defun azbyn/gen-call-original (key alternative)
     "You might want to call the mode's purpose for a key
-     for example C-a which gets overridden in eshell mode."
+       for example C-a which gets overridden in eshell mode."
     (cons (kbd key) alternative))
+
   (defun azbyn/force-key-bindings()
     (interactive)
     (let ((og-keys (key-binding [f14]))) ;(or azbyn/original-keys (current-local-map))))
-        ;;(unless azbyn/original-keys
+      ;;(unless azbyn/original-keys
                                           ;(message "set-original-keys")
                                           ;)
-        ;; (setq azbyn/original-keys (key-binding [f14]))
-        (maphash
-         (lambda (k v)
-           ;;(princ (format "m16 %s %s =%s\n" k v
-           ;;               (if og-keys "Y" "N")))
-           (let ((new-val
-                  (if (consp v); from azbyn/get-call-original: car = key; cdr = default
-                      (if og-keys
-                          (let ((old-key (lookup-key og-keys (car v))))
-                            ;;(princ (message "old-key %s\n" old-key))
-                            (or old-key (cdr v)))
-                        ;;(princ "WTF, original is null!\n")
-                        (cdr v)
-                        )
-                    v)))
-             (local-set-key k new-val)
-             ;;(princ (format "m %s %s\n" k new-val))
-             ))
-         azbyn/key-bindings-table)))
-  (defun azbyn/key-bindings ()
+      ;; (setq azbyn/original-keys (key-binding [f14]))
+      (maphash
+       (lambda (k v)
+         ;;(princ (format "m16 %s %s =%s\n" k v
+         ;;               (if og-keys "Y" "N")))
+         (let ((new-val
+                (if (consp v); from azbyn/get-call-original: car = key; cdr = default
+                    (if og-keys
+                        (let ((old-key (lookup-key og-keys (car v))))
+                          ;;(princ (message "old-key %s\n" old-key))
+                          (or old-key (cdr v)))
+                      ;;(princ "WTF, original is null!\n")
+                      (cdr v)
+                      )
+                  v)))
+           (local-set-key k new-val)
+           ;;(princ (format "m %s %s\n" k new-val))
+           ))
+       azbyn/key-bindings-table)))
+  (defun azbyn/key-bindings-old ()
     (interactive)
     ;;(princ (format "\n\nname: %s\n" mode-name))
     ;;(princ (format "before? %s\n"
@@ -436,23 +447,80 @@
       ;;(setq azbyn/thing
       (local-set-key [f14] (current-local-map));)
       (azbyn/force-key-bindings)
-    ;; (unless azbyn/original-keys
-    ;;   (princ "setazbyn!\n")
-    ;;   (setq-local azbyn/original-keys (current-local-map)))
-    ;;(princ (format "after? %s\n" (if (key-binding [f14]) "Y" "N")))
+      ;; (unless azbyn/original-keys
+      ;;   (princ "setazbyn!\n")
+      ;;   (setq-local azbyn/original-keys (current-local-map)))
+      ;;(princ (format "after? %s\n" (if (key-binding [f14]) "Y" "N")))
       ))
   (defun azbyn/key-bindings-uberforce ()
     (interactive)
     ;; shouldn't really be used
     ;; only when C-q gets goofd to backward-char
-      (local-set-key [f14] nil)
-      (azbyn/force-key-bindings)
-      )
+    (local-set-key [f14] nil)
+    (azbyn/force-key-bindings)
+    )
 
+
+
+
+    ;;;; mk2
+  ;; (defconst azbyn/keys-to-keep
+  ;;   '("C-a" "C-e" "M-a" "M-e"
+  ;;     "M-p" "M-n"))
+
+  ;; (defvar-local azbyn/defined-keys nil)
+  ;; (defvar-local azbyn/og-keys (make-hash-table :test 'equal))
+
+  ;; (defun azbyn/keybindings-mk2 ()
+  ;;   (interactive)
+
+  ;;   ;;(print "hi")
+  ;;   ;;(princ (format "oida mk2: %s" azbyn/defined-keys))
+  ;;   (unless azbyn/defined-keys
+  ;;     (setq-local azbyn/defined-keys t)
+
+  ;;     (defvar-local azbyn/og-keys (make-hash-table :test 'equal))
+
+
+  ;;     (dolist (key azbyn/keys-to-keep)
+  ;;       (puthash key (key-binding key) azbyn/og-keys))
+
+  ;;     (maphash
+  ;;      (lambda (k v)
+  ;;        (let ((new-val
+  ;;               (if (consp v); from azbyn/get-call-original: car = key; cdr = defaul
+  ;;                   (let ((cmd (gethash (car v) azbyn/og-keys)))
+  ;;                     cmd
+  ;;                     )
+  ;;                 ;; (if og-keys
+  ;;                 ;;     (let ((old-key (lookup-key og-keys (car v))))
+  ;;                 ;;       ;;(princ (message "old-key %s\n" old-key))
+  ;;                 ;;       (or old-key (cdr v)))
+  ;;                 ;;   ;;(princ "WTF, original is null!\n")
+  ;;                 ;;   (cdr v)
+  ;;                 ;;   )
+  ;;                 v)))
+  ;;          ;;(princ (format "newkey - %s \n" new-val))
+  ;;          (local-set-key k new-val)
+  ;;          (bind-key*)
+  ;;          ;;(princ (format "m %s %s\n" k new-val))
+  ;;          ))
+  ;;      azbyn/key-bindings-table)
+  ;;     ))
+  ;; (lookup-key (current-local-map) (kbd "C-c '"))
+  ;; (equal (kbd "C-k") (kbd "C-k"))
+
+
+  (defun azbyn/key-bindings ()
+    (interactive))
+
+    ;; (condition-case err
+    ;;     (azbyn/key-bindings-old)
+    ;;   (error (princ (format "keybinding-error: %s" err)))))
 
   (add-hook 'after-change-major-mode-hook 'azbyn/key-bindings)
   (add-hook 'messages-buffer-mode-hook 'azbyn/key-bindings)
-  ;(add-hook 'dashboard-mode-hook 'azbyn/key-bindings)
+  ;;(add-hook 'dashboard-mode-hook 'azbyn/key-bindings)
   (add-hook 'minibuffer-setup-hook 'azbyn/key-bindings)
   ;;(add-hook 'ivy-mode-hook 'azbyn/key-bindings)
 #+END_SRC
@@ -698,6 +766,7 @@
 * code folding
   #+begin_src emacs-lisp
     (define-key undo-tree-map (kbd "C-_") nil)
+    
     (global-set-key (kbd "C-+") 'evil-open-folds) ;; ctrl+shift+=
     (global-set-key (kbd "C-_") 'evil-close-folds)   ;; ctrl+shift+-
     (global-set-key (kbd "C-=") 'evil-open-fold)
@@ -812,6 +881,26 @@
   (global-set-key (kbd "C-9") 'kmacro-start-macro-or-insert-counter)
   (global-set-key (kbd "C-0") 'kmacro-end-or-call-macro)
 #+END_SRC
+** grep
+   #+begin_src emacs-lisp
+     (define-key undo-tree-map (kbd "C-/") nil)
+     (defun azbyn/grep ()
+       (interactive)
+
+       ;;(grep-compute-defaults)
+       (let ((command (read-shell-command "Grep command: "
+                                          "grep . -rnI -e "
+                                          'grep-history)))
+
+         (grep--save-buffers)
+         (compilation-start command 'grep-mode)))
+
+     (global-set-key (kbd "C-/") 'azbyn/grep)
+   #+end_src
+** quick-shell
+   #+begin_src emacs-lisp
+     (global-set-key (kbd "C-1") 'shell-command)
+   #+end_src
 * compile
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "M-c") 'azbyn/run-make-thing)

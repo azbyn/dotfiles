@@ -232,9 +232,9 @@ russianTable = {
  ["z"] = "з",
  ["i"] = "и",
  ["j"] = "й",
- 
+
  ["q"] = "й",
- 
+
  ["k"] = "к",
  ["l"] = "л",
  ["m"] = "м",
@@ -282,7 +282,7 @@ greekTable= {
 
    ["v"] = "θ",
    ["V"] = "Θ",
-   
+
    ["i"] = "ι",
    ["k"] = "κ",
    ["l"] = "λ",
@@ -301,7 +301,7 @@ greekTable= {
    ["ó"] = "ψ",
    ["q"] = "ψ",
    ["w"] = "ω",
-   
+
    ["A"] = "Α",
    ["B"] = "Β",
    ["G"] = "Γ",
@@ -337,7 +337,7 @@ local translitKey = "Control_R"
 --    stop_key = translitKey,
 --    stop_event = "release",
 --    mask_modkeys=true,
---    -- allowedKeys={'a', 'b'},      -- 
+--    -- allowedKeys={'a', 'b'},      --
 --    -- timeout = 1,          --
 --    keypressed_callback = function(self, mods, key)
 --       -- naughty.notify({text="Pressed "..key.." w ".. table.concat(mods, "-")})
@@ -351,7 +351,7 @@ local translitKey = "Control_R"
 --       end
 --       --try sending another F13ψ
 --       -- if key == "r" then
-      
+
 --       -- end
 --    end
 -- }
@@ -362,7 +362,7 @@ M.globalkeys = awful.util.table.join(
    -- key("Shift", translitKey, {"Misc", "quick transliteration",
                      -- function() translitKeygrabber:start() end}),
    -- key("Control_R", function()
-   -- end),  -- 
+   -- end),  --
     --awful.key({}, "Menu", exec("xdotool click 3")),
     --awful.key({shift}, "Menu", exec("xdotool click 1")),
     --awful.key({alt}, "Menu", exec("xdotool click 2")),
@@ -372,6 +372,9 @@ M.globalkeys = awful.util.table.join(
     --key(mod, "grave", term),
     --
   -- for the transition to new layout
+
+   key(mod, "k", {"Misc", "Clear notifications - meeting mode",
+                  function() toggle_meeting_mode() end}),
 
     key(hyper, "bracketleft", music["bwd"]),
     key(hyper, ctrl, "bracketleft", music["bbwd"]),
@@ -422,7 +425,7 @@ M.globalkeys = awful.util.table.join(
   --end}),
     key(alt, ctrl, "minus", vol["sdown"]),
 
-  
+
 
     -- key(alt, "apostrophe", vol["up"]),
     -- key(alt, ctrl, "apostrophe", vol["sup"]),
@@ -477,11 +480,12 @@ M.globalkeys = awful.util.table.join(
         hotkeys_popup.show_help}),
 
     key(mod, "BackSpace", {"Misc", "Clear notifications",
-        function() naughty.destroy_all_notifications() end}),
+                           function() naughty.destroy_all_notifications() end}),
+
 
     key(mod, ctrl, "BackSpace", {"Misc", "Restart Awesome",
         awesome.restart}),
-    
+
     key(hyper, ctrl, "BackSpace", {"Misc", "Restart Awesome",
         awesome.restart}),
     key(mod, ctrl, "r", {"Misc", "Restart Awesome",
@@ -509,7 +513,7 @@ M.globalkeys = awful.util.table.join(
         function()
             switch_layout(1)
             --naughty.notify({text="OIDA"})
-            --gears.wallpaper.maximized(os.getenv("HOME").. "/Pictures/bear.jpg", 
+            --gears.wallpaper.maximized(os.getenv("HOME").. "/Pictures/bear.jpg",
             --    awful.screen.focused(), true)
         end}),
 

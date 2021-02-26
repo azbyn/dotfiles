@@ -11,7 +11,7 @@ M.text = wibox.widget {
 	font = config.top_font,
 	widget = wibox.widget.textbox
 }
-M.nr_cores = 2
+M.nr_cores = 4
 
 function M.update()
 	-- load for 1, 5 and 15 minutes
@@ -34,4 +34,3 @@ end
 helpers.newtimer("load", 30, M.update)
 
 return M
-

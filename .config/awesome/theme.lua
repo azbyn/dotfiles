@@ -72,6 +72,7 @@ local cpu   = require("widgets.cpu")
 -- local swap   = require("widgets.swap")
 local temp  = require("widgets.temp")
 local ld    = require("widgets.load")
+local meeting_mode = require("widgets.meeting_mode")
 local email = require("widgets.email")
 local signal= require("widgets.signal")
 
@@ -283,6 +284,8 @@ function theme.at_screen_connect(s)
             wibox.container.background(spr, theme.bg_focus),
             wibox.container.background(signal.widget, theme.bg_focus),
             wibox.container.background(signal.text, theme.bg_focus),
+            wibox.container.background(meeting_mode.text, theme.bg_focus),
+            wibox.container.background(spr, theme.bg_focus),
             wibox.container.background(sspr, theme.bg_focus),
 			arrl_dl,
 
@@ -307,5 +310,3 @@ function theme.at_screen_connect(s)
 end
 
 return theme
-
-
