@@ -4,5 +4,6 @@ function fish_user_key_bindings
     bind \ce forward-word
     bind \cq beginning-of-line
     bind \cr end-of-line
+    # bind \cs incremental-search
 end
 

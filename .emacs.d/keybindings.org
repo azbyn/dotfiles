@@ -130,7 +130,7 @@
 
   (define-key 'azbyn-key-map (kbd "e r") 'azbyn/eval-region)
   (define-key 'azbyn-key-map (kbd "e b") 'azbyn/eval-buffer)
-  (define-key 'azbyn-key-map (kbd "C-a") 'flyspell-buffer)
+  (define-key 'azbyn-key-map (kbd "<C-a>") 'flyspell-buffer)
 
   (define-key 'azbyn-key-map (kbd "q") 'quoted-insert)
   (define-key 'azbyn-key-map (kbd "s") 'eshell)
@@ -232,7 +232,7 @@
 
   (define-key 'azbyn-key-map (kbd "C-c") 'config-visit)
   (define-key 'azbyn-key-map (kbd "C-S-c") 'config-visit-readonly)
-  (define-key 'azbyn-key-map (kbd "C-e") 'config-visit)
+  (define-key 'azbyn-key-map (kbd "<C-e>") 'config-visit)
   (define-key 'azbyn-key-map (kbd "C-S-e") 'config-visit-readonly)
 
   (define-key 'azbyn-key-map (kbd "C-k") 'keybindings-visit)
@@ -304,15 +304,6 @@
   (add-hook 'minibuffer-inactive-mode-hook 'azbyn/minibuffer-movement)
 
 #+END_SRC
-** fix C-a and friends
-   #+begin_src emacs-lisp
-     (define-key input-decode-map "\C-a" [C-a])
-     (define-key input-decode-map "\C-e" [C-e])
-     (define-key input-decode-map "\M-a" [M-a])
-     (define-key input-decode-map "\M-e" [M-e])
-     (define-key input-decode-map "\M-p" [M-p])
-     (define-key input-decode-map "\M-n" [M-n])
-   #+end_src
 ** scrolling
 #+BEGIN_SRC emacs-lisp
   (defun azbyn/scroll-up() (interactive) (forward-line -10))
@@ -395,185 +386,197 @@
   (global-set-key (kbd "M-m w") 'azbyn/mark-whole-word)
 
 #+END_SRC
-** set keys which are often overwritten by modes *cough org*
-*** infrastructure
+** COMMENT TODO REMOVE ME IF EVERYTHING WORKS
+*** COMMENT infrastructure
 #+BEGIN_SRC emacs-lisp
-  (defvar azbyn/key-bindings-table
-    (make-hash-table :test 'equal))
+  ;; (defvar azbyn/key-bindings-table
+  ;;   (make-hash-table :test 'equal))
 
-  (defun azbyn/define-key (key value)
-    "Define a key which often gets overridden"
-    (puthash key value azbyn/key-bindings-table))
+  ;; (defun azbyn/define-key (key value)
+  ;;   "Define a key which often gets overridden"
+  ;;   (puthash key value azbyn/key-bindings-table))
 
-  ;;(defvar azbyn/original-keys nil)
-  ;;(make-variable-buffer-local 'azbyn/original-keys)
-  (defun azbyn/gen-call-original (key alternative)
-    "You might want to call the mode's purpose for a key
-       for example C-a which gets overridden in eshell mode."
-    (cons (kbd key) alternative))
+  ;; ;;(defvar azbyn/original-keys nil)
+  ;; ;;(make-variable-buffer-local 'azbyn/original-keys)
+  ;; (defun azbyn/gen-call-original (key alternative)
+  ;;   "You might want to call the mode's purpose for a key
+  ;;      for example C-a which gets overridden in eshell mode."
+  ;;   (cons (kbd key) alternative))
 
-  (defun azbyn/force-key-bindings()
-    (interactive)
-    (let ((og-keys (key-binding [f14]))) ;(or azbyn/original-keys (current-local-map))))
-      ;;(unless azbyn/original-keys
-                                          ;(message "set-original-keys")
-                                          ;)
-      ;; (setq azbyn/original-keys (key-binding [f14]))
-      (maphash
-       (lambda (k v)
-         ;;(princ (format "m16 %s %s =%s\n" k v
-         ;;               (if og-keys "Y" "N")))
-         (let ((new-val
-                (if (consp v); from azbyn/get-call-original: car = key; cdr = default
-                    (if og-keys
-                        (let ((old-key (lookup-key og-keys (car v))))
-                          ;;(princ (message "old-key %s\n" old-key))
-                          (or old-key (cdr v)))
-                      ;;(princ "WTF, original is null!\n")
-                      (cdr v)
-                      )
-                  v)))
-           (local-set-key k new-val)
-           ;;(princ (format "m %s %s\n" k new-val))
-           ))
-       azbyn/key-bindings-table)))
-  (defun azbyn/key-bindings-old ()
-    (interactive)
-    ;;(princ (format "\n\nname: %s\n" mode-name))
-    ;;(princ (format "before? %s\n"
-    ;;               (if (key-binding [f14]) "Y" "N")))
-    (unless (key-binding [f14])
-      ;;(princ "!!!!!!setkey!\n")
-      ;;(setq azbyn/thing
-      (local-set-key [f14] (current-local-map));)
-      (azbyn/force-key-bindings)
-      ;; (unless azbyn/original-keys
-      ;;   (princ "setazbyn!\n")
-      ;;   (setq-local azbyn/original-keys (current-local-map)))
-      ;;(princ (format "after? %s\n" (if (key-binding [f14]) "Y" "N")))
-      ))
-  (defun azbyn/key-bindings-uberforce ()
-    (interactive)
-    ;; shouldn't really be used
-    ;; only when C-q gets goofd to backward-char
-    (local-set-key [f14] nil)
-    (azbyn/force-key-bindings)
-    )
-
-
-
-
-    ;;;; mk2
-  ;; (defconst azbyn/keys-to-keep
-  ;;   '("C-a" "C-e" "M-a" "M-e"
-  ;;     "M-p" "M-n"))
-
-  ;; (defvar-local azbyn/defined-keys nil)
-  ;; (defvar-local azbyn/og-keys (make-hash-table :test 'equal))
-
-  ;; (defun azbyn/keybindings-mk2 ()
+  ;; (defun azbyn/force-key-bindings()
   ;;   (interactive)
-
-  ;;   ;;(print "hi")
-  ;;   ;;(princ (format "oida mk2: %s" azbyn/defined-keys))
-  ;;   (unless azbyn/defined-keys
-  ;;     (setq-local azbyn/defined-keys t)
-
-  ;;     (defvar-local azbyn/og-keys (make-hash-table :test 'equal))
-
-
-  ;;     (dolist (key azbyn/keys-to-keep)
-  ;;       (puthash key (key-binding key) azbyn/og-keys))
-
+  ;;   (let ((og-keys (key-binding [f14]))) ;(or azbyn/original-keys (current-local-map))))
+  ;;     ;;(unless azbyn/original-keys
+  ;;                                         ;(message "set-original-keys")
+  ;;                                         ;)
+  ;;     ;; (setq azbyn/original-keys (key-binding [f14]))
   ;;     (maphash
   ;;      (lambda (k v)
+  ;;        ;;(princ (format "m16 %s %s =%s\n" k v
+  ;;        ;;               (if og-keys "Y" "N")))
   ;;        (let ((new-val
-  ;;               (if (consp v); from azbyn/get-call-original: car = key; cdr = defaul
-  ;;                   (let ((cmd (gethash (car v) azbyn/og-keys)))
-  ;;                     cmd
+  ;;               (if (consp v); from azbyn/get-call-original: car = key; cdr = default
+  ;;                   (if og-keys
+  ;;                       (let ((old-key (lookup-key og-keys (car v))))
+  ;;                         ;;(princ (message "old-key %s\n" old-key))
+  ;;                         (or old-key (cdr v)))
+  ;;                     ;;(princ "WTF, original is null!\n")
+  ;;                     (cdr v)
   ;;                     )
-  ;;                 ;; (if og-keys
-  ;;                 ;;     (let ((old-key (lookup-key og-keys (car v))))
-  ;;                 ;;       ;;(princ (message "old-key %s\n" old-key))
-  ;;                 ;;       (or old-key (cdr v)))
-  ;;                 ;;   ;;(princ "WTF, original is null!\n")
-  ;;                 ;;   (cdr v)
-  ;;                 ;;   )
   ;;                 v)))
-  ;;          ;;(princ (format "newkey - %s \n" new-val))
   ;;          (local-set-key k new-val)
-  ;;          (bind-key*)
   ;;          ;;(princ (format "m %s %s\n" k new-val))
   ;;          ))
-  ;;      azbyn/key-bindings-table)
+  ;;      azbyn/key-bindings-table)))
+  ;; (defun azbyn/key-bindings-old ()
+  ;;   (interactive)
+  ;;   ;;(princ (format "\n\nname: %s\n" mode-name))
+  ;;   ;;(princ (format "before? %s\n"
+  ;;   ;;               (if (key-binding [f14]) "Y" "N")))
+  ;;   (unless (key-binding [f14])
+  ;;     ;;(princ "!!!!!!setkey!\n")
+  ;;     ;;(setq azbyn/thing
+  ;;     (local-set-key [f14] (current-local-map));)
+  ;;     (azbyn/force-key-bindings)
+  ;;     ;; (unless azbyn/original-keys
+  ;;     ;;   (princ "setazbyn!\n")
+  ;;     ;;   (setq-local azbyn/original-keys (current-local-map)))
+  ;;     ;;(princ (format "after? %s\n" (if (key-binding [f14]) "Y" "N")))
   ;;     ))
-  ;; (lookup-key (current-local-map) (kbd "C-c '"))
-  ;; (equal (kbd "C-k") (kbd "C-k"))
+  ;; (defun azbyn/key-bindings-uberforce ()
+  ;;   (interactive)
+  ;;   ;; shouldn't really be used
+  ;;   ;; only when C-q gets goofd to backward-char
+  ;;   (local-set-key [f14] nil)
+  ;;   (azbyn/force-key-bindings)
+  ;;   )
 
 
-  (defun azbyn/key-bindings ()
-    (interactive))
 
-    ;; (condition-case err
-    ;;     (azbyn/key-bindings-old)
-    ;;   (error (princ (format "keybinding-error: %s" err)))))
 
-  (add-hook 'after-change-major-mode-hook 'azbyn/key-bindings)
-  (add-hook 'messages-buffer-mode-hook 'azbyn/key-bindings)
-  ;;(add-hook 'dashboard-mode-hook 'azbyn/key-bindings)
-  (add-hook 'minibuffer-setup-hook 'azbyn/key-bindings)
-  ;;(add-hook 'ivy-mode-hook 'azbyn/key-bindings)
+  ;;   ;;;; mk2
+  ;; ;; (defconst azbyn/keys-to-keep
+  ;; ;;   '("C-a" "C-e" "M-a" "M-e"
+  ;; ;;     "M-p" "M-n"))
+
+  ;; ;; (defvar-local azbyn/defined-keys nil)
+  ;; ;; (defvar-local azbyn/og-keys (make-hash-table :test 'equal))
+
+  ;; ;; (defun azbyn/keybindings-mk2 ()
+  ;; ;;   (interactive)
+
+  ;; ;;   ;;(print "hi")
+  ;; ;;   ;;(princ (format "oida mk2: %s" azbyn/defined-keys))
+  ;; ;;   (unless azbyn/defined-keys
+  ;; ;;     (setq-local azbyn/defined-keys t)
+
+  ;; ;;     (defvar-local azbyn/og-keys (make-hash-table :test 'equal))
+
+
+  ;; ;;     (dolist (key azbyn/keys-to-keep)
+  ;; ;;       (puthash key (key-binding key) azbyn/og-keys))
+
+  ;; ;;     (maphash
+  ;; ;;      (lambda (k v)
+  ;; ;;        (let ((new-val
+  ;; ;;               (if (consp v); from azbyn/get-call-original: car = key; cdr = defaul
+  ;; ;;                   (let ((cmd (gethash (car v) azbyn/og-keys)))
+  ;; ;;                     cmd
+  ;; ;;                     )
+  ;; ;;                 ;; (if og-keys
+  ;; ;;                 ;;     (let ((old-key (lookup-key og-keys (car v))))
+  ;; ;;                 ;;       ;;(princ (message "old-key %s\n" old-key))
+  ;; ;;                 ;;       (or old-key (cdr v)))
+  ;; ;;                 ;;   ;;(princ "WTF, original is null!\n")
+  ;; ;;                 ;;   (cdr v)
+  ;; ;;                 ;;   )
+  ;; ;;                 v)))
+  ;; ;;          ;;(princ (format "newkey - %s \n" new-val))
+  ;; ;;          (local-set-key k new-val)
+  ;; ;;          (bind-key*)
+  ;; ;;          ;;(princ (format "m %s %s\n" k new-val))
+  ;; ;;          ))
+  ;; ;;      azbyn/key-bindings-table)
+  ;; ;;     ))
+  ;; ;; (lookup-key (current-local-map) (kbd "C-c '"))
+  ;; ;; (equal (kbd "C-k") (kbd "C-k"))
+
+
+  ;; (defun azbyn/key-bindings ()
+  ;;   (interactive))
+
+  ;;   ;; (condition-case err
+  ;;   ;;     (azbyn/key-bindings-old)
+  ;;   ;;   (error (princ (format "keybinding-error: %s" err)))))
+
+  ;; (add-hook 'after-change-major-mode-hook 'azbyn/key-bindings)
+  ;; (add-hook 'messages-buffer-mode-hook 'azbyn/key-bindings)
+  ;; ;;(add-hook 'dashboard-mode-hook 'azbyn/key-bindings)
+  ;; (add-hook 'minibuffer-setup-hook 'azbyn/key-bindings)
+  ;; ;;(add-hook 'ivy-mode-hook 'azbyn/key-bindings)
 #+END_SRC
-**** =messages= won't get the keybindings
+**** =messages=won't get the keybindings
 #+BEGIN_SRC emacs-lisp
-  (with-current-buffer "*Messages*"
-    (azbyn/key-bindings))
+  ;; (with-current-buffer "*Messages*"
+  ;;   (azbyn/key-bindings))
 #+END_SRC
 
-*** the actual keys
+** keys that don't play nice
 #+BEGIN_SRC emacs-lisp
-  ;;(global-set-key (kbd "C-a") 'back-to-indentation)
-  ;;(global-set-key (kbd "C-e") 'end-of-line)
-  ;; (define-key input-decode-map "\C-a" [C-a])
-  ;; (define-key input-decode-map "\C-e" [C-e])
-  ;; (define-key input-decode-map "\C-p" [C-p])
-  ;; (define-key input-decode-map "\C-n" [C-n])
+  ;; we don't straight up bind-key* because we want to get the original key
+  ;; so for example C-q calls org-beginning-of-line in org mode
+  (define-key input-decode-map "\C-a" [C-a])
+  (define-key input-decode-map "\M-a" [M-a])
+  (define-key input-decode-map "\C-e" [C-e])
+  (define-key input-decode-map "\M-e" [M-e])
 
-  ;; (define-key input-decode-map "\M-p" [M-p])
-  ;; (define-key input-decode-map "\M-n" [M-n])
+  (define-key input-decode-map "\C-p" [C-p])
+  (define-key input-decode-map "\C-n" [C-n])
+
+  (define-key input-decode-map "\M-p" [M-p])
+  (define-key input-decode-map "\M-n" [M-n])
+
+  (global-set-key (kbd "M-p") 'move-lines-up)
+  (global-set-key (kbd "M-n") 'move-lines-down)
 
   ;; (define-key input-decode-map "\C-\M-e" [C-M-e])
 
+  (defun azbyn/get-og-key (key) (key-binding (kbd key)))
+  (defun azbyn/bind-key (key what)
+    ;;i might want to change that to bind-key so that's why i use a wrapper
+    (bind-key* key what))
 
+  ;;(key-binding "C-a")
 
-  (azbyn/define-key (kbd "C-q") (azbyn/gen-call-original "C-a" 'back-to-indentation))
-  (azbyn/define-key (kbd "C-r") (azbyn/gen-call-original "C-e" 'end-of-line))
+  (azbyn/bind-key "C-x <C-e>" (azbyn/get-og-key "C-x C-e"))
 
-  (azbyn/define-key (kbd "M-q") (azbyn/gen-call-original "M-a" 'backward-paragraph))
-  (azbyn/define-key (kbd "M-r") (azbyn/gen-call-original "M-e" 'forward-sentence))
-  ;;;
-  (azbyn/define-key (kbd "C-a") 'backward-char)
-  (azbyn/define-key (kbd "C-f") 'forward-char)
+  (azbyn/bind-key "C-q" (azbyn/get-og-key "C-a"))
+  (azbyn/bind-key "C-r" (azbyn/get-og-key "C-e"))
+
+  (azbyn/bind-key "M-q" (azbyn/get-og-key "M-a"))
+  (azbyn/bind-key "M-r" (azbyn/get-og-key "M-e"))
+
+  (azbyn/bind-key "<C-a>" 'backward-char)
+  (azbyn/bind-key "C-f" 'forward-char)
 
   ;;M-j is set by c++-mode
-  (azbyn/define-key (kbd "M-j") 'azbyn/scroll-down)
-  (azbyn/define-key (kbd "M-i") 'azbyn/scroll-up)
-  (azbyn/define-key (kbd "M-I") (azbyn/gen-call-original "M-p" 'move-lines-up))
-  (azbyn/define-key (kbd "M-J") (azbyn/gen-call-original "M-n" 'move-lines-down))
+  (azbyn/bind-key "M-j" 'azbyn/scroll-down)
+  (azbyn/bind-key "M-i" 'azbyn/scroll-up)
+  (azbyn/bind-key "M-I" (azbyn/get-og-key "M-p"))
+  (azbyn/bind-key "M-J" (azbyn/get-og-key "M-n"))
 
-  (azbyn/define-key (kbd "C-e") 'azbyn/forward-word-begin)
-  (azbyn/define-key (kbd "C-w") 'azbyn/backward-word-begin)
+  (azbyn/bind-key "<C-e>" 'azbyn/forward-word-begin)
+  (azbyn/bind-key "C-w" 'azbyn/backward-word-end)
 
-  (azbyn/define-key (kbd "M-e") 'azbyn/forward-subword-begin)
-  (azbyn/define-key (kbd "M-w") 'azbyn/backward-subword-end)
+  (azbyn/bind-key "<M-e>" 'azbyn/forward-subword-begin)
+  (azbyn/bind-key "M-w" 'azbyn/backward-subword-end)
 
-  (azbyn/define-key (kbd "C-M-e") 'azbyn/forward-subword-end)
-  (azbyn/define-key (kbd "C-M-w") 'azbyn/backward-subword-begin)
+  (azbyn/bind-key "C-M-e" 'azbyn/forward-subword-end)
+  (azbyn/bind-key "C-M-w" 'azbyn/backward-subword-begin)
 
 
-  (azbyn/define-key (kbd "M-f") 'fill-key-map)
-  (azbyn/define-key (kbd "M-a") 'azbyn-key-map)
-
+  (azbyn/bind-key "M-f" 'fill-key-map)
+  (azbyn/bind-key "<M-a>" 'azbyn-key-map)
 
 
 
@@ -582,154 +585,73 @@
   (global-set-key (kbd "C-M-d") 'azbyn/kill-subword)
   (global-set-key (kbd "C-S-d") 'azbyn/kill-subword)
   (global-set-key (kbd "M-D") 'azbyn/kill-subword)
+  (defun azbyn/find-char ()
+    (interactive)
+    (message "Find char...")
+    (call-interactively 'evil-find-char))
 
+  (defun azbyn/find-char-backward ()
+    (interactive)
+    (message "Find char backward...")
+    (call-interactively 'evil-find-char-to-backward))
 
-  (azbyn/define-key (kbd "C-n") 'evil-find-char)
-  (azbyn/define-key (kbd "C-b") 'evil-find-char-to-backward)
+  (azbyn/bind-key "<C-n>" 'azbyn/find-char)
+  (azbyn/bind-key "C-b" 'azbyn/find-char-backward)
 
   (global-set-key (kbd "C-'") 'recenter-top-bottom)
   ;; ;;org mode likes rebinding C-k
-  (azbyn/define-key (kbd "M-k") 'azbyn/kill-whole-line-or-append-region)
-  (azbyn/define-key (kbd "C-M-k") 'append-next-kill)
+  (azbyn/bind-key "M-k" 'azbyn/kill-whole-line-or-append-region)
+  (azbyn/bind-key "C-M-k" 'append-next-kill)
 
-  (azbyn/define-key (kbd "C-l") 'azbyn/copy-to-eol-or-region)
+  (azbyn/bind-key "C-l" 'azbyn/copy-to-eol-or-region)
   (global-set-key (kbd "C-S-l") 'azbyn/copy-whole-word)
   (global-set-key (kbd "M-L") 'azbyn/copy-whole-subword)
 
-  (azbyn/define-key (kbd "C-k") 'azbyn/kill-to-eol-or-region)
+  (azbyn/bind-key "C-k" 'azbyn/kill-to-eol-or-region)
   ;; azbyn/define-key doesn't like lambdas and we can use global-set-key
-  (global-set-key (kbd "M-l") (lambda ()
-                                (interactive)
-                                (call-interactively 'evil-yank-line)
-                                (message "yanked line")))
+  (defun azbyn/yank-line-and-notify ()
+    (interactive)
+    (call-interactively 'evil-yank-line)
+    (message "yanked line"))
+  (azbyn/bind-key (kbd "M-l") 'azbyn/yank-line-and-notify)
 
-  (global-set-key (kbd "C-S-k") 'azbyn/kill-whole-word)
-  (global-set-key (kbd "M-K") 'azbyn/kill-whole-subword)
+  (azbyn/bind-key (kbd "C-S-k") 'azbyn/kill-whole-word)
+  (azbyn/bind-key (kbd "M-K") 'azbyn/kill-whole-subword)
+
+  (azbyn/bind-key "<C-p>" 'yank); azbyn/paste)
+  (azbyn/bind-key "C-S-p" 'azbyn/paste-before)
+  (azbyn/bind-key "<M-p>" 'azbyn/paste)
+  (azbyn/bind-key "M-P" 'azbyn/paste-before)
+
+  (azbyn/bind-key "M-b" 'evil-search-next)
+  (azbyn/bind-key "<M-n>" 'evil-search-previous)
 
 
-  (azbyn/define-key (kbd "C-p") 'yank); azbyn/paste)
-  (azbyn/define-key (kbd "C-S-p") 'azbyn/paste-before)
-  (azbyn/define-key (kbd "M-p") 'azbyn/paste)
-  (azbyn/define-key (kbd "M-P") 'azbyn/paste-before)
+  (azbyn/bind-key "C-M-f" 'forward-sexp)
+  (azbyn/bind-key "C-M-a" 'backward-sexp)
 
-  (azbyn/define-key (kbd "M-b") 'evil-search-next)
-  (azbyn/define-key (kbd "M-n") 'evil-search-previous)
+  (azbyn/bind-key "C-z" 'zap-up-to-char)
 
-  (global-set-key (kbd "C-M-f") 'forward-sexp)
-  (global-set-key (kbd "C-M-a") 'backward-sexp)
-  ;;(global-set-key (kbd "C-t") 'zop-up-to-char);;  evil-find-char)
+  (azbyn/bind-key "C-v" 'yank);; azbyn/paste)
+  (azbyn/bind-key "C-S-v" 'azbyn/paste-before)
 
-  (global-set-key (kbd "C-z") 'zap-up-to-char)
-
-  (global-set-key (kbd "C-v") 'yank);; azbyn/paste)
-  (global-set-key (kbd "C-S-v") 'azbyn/paste-before)
-
-  (global-set-key (kbd "M-v") 'popup-kill-ring);; 'counsel-yank-pop)
+  (azbyn/bind-key "M-v" 'popup-kill-ring);; 'counsel-yank-pop)
 
   ;; ;(global-set-key (kbd "M-y") 'evil-join)
 
-  (global-set-key (kbd "M-`") 'evil-invert-char)
-  (global-set-key (kbd "C-2") 'evil-invert-char)
+  (azbyn/bind-key "M-`" 'evil-invert-char)
+  (azbyn/bind-key "C-2" 'evil-invert-char)
 
   ;(global-set-key (kbd "C-u") 'universal-argument)
-  (global-set-key (kbd "M-u") 'undo-tree-undo)
-  (global-set-key (kbd "M-U") 'undo-tree-redo)
+  (azbyn/bind-key "M-u" 'undo-tree-undo)
+  (azbyn/bind-key "M-U" 'undo-tree-redo)
 
-  (global-set-key (kbd "M-h") 'undo-tree-redo)
+  (azbyn/bind-key "M-h" 'undo-tree-redo)
   ;; *** defun movement?
   ;(global-set-key (kbd "M-g") 'beginning-of-defun)
   ;;(global-set-key (kbd "M-g") 'end-of-defun)
 
   (global-set-key (kbd "<C-tab>") 'er-switch-to-previous-buffer)
-
-  ;;(global-set-key (kbd "M-t") 'evil-delete)
-  ;;(global-set-key (kbd "M-y") 'evil-yank)
-  ;;(global-set-key (kbd "M-e") 'er/expand-region)
-  ;;(global-set-key (kbd "M-s") 'er/contract-region)
-
-  ;; we set this there so that when it's not overritten we
-
-  ;;(defun azbyn/key-bindings ()
-    ;;(interactive)
-
-    ;; (unless (key-binding [f13])
-    ;;   (let (
-    ;;         ;; we MUST set these keys again here, otherwise
-    ;;         ;; we won't override anything with global-set-key
-    ;;         (old/beg-of-line (key-binding "\C-a"))
-    ;;         (old/end-of-line (key-binding "\C-e"))
-    ;;         (old/beg-of-stmt (key-binding "\M-a"))
-    ;;         (old/end-of-stmt (key-binding "\M-e"))
-    ;;         (old/delete-char (key-binding "\C-d"))
-    ;;         (old/M-p (key-binding "\M-p"))
-    ;;         (old/M-n (key-binding "\M-n"))
-    ;;         )
-        ;; (local-set-key [f13] 'eshell);actual value doesn't matter
-        ;; ;;(message "hi from %s" major-mode)
-        ;; (local-set-key (kbd "C-q") old/beg-of-line)
-        ;; (local-set-key (kbd "C-r") old/end-of-line)
-        ;; (local-set-key (kbd "M-r") old/end-of-stmt)
-
-        ;; (local-set-key (kbd "M-q") old/beg-of-stmt)
-        ;; (local-set-key (kbd "C-a") 'backward-char)
-        ;; (local-set-key (kbd "C-f") 'forward-char)
-
-        ;; (local-set-key (kbd "M-I") old/M-p)
-        ;; (local-set-key (kbd "M-J") old/M-n)
-
-        ;; (local-set-key (kbd "C-e") 'azbyn/forward-word-begin)
-        ;; (local-set-key (kbd "C-w") 'azbyn/backward-word-begin)
-
-        ;; (local-set-key (kbd "M-e") 'azbyn/forward-subword-begin)
-        ;; (local-set-key (kbd "M-w") 'azbyn/backward-subword-end)
-
-        ;; (local-set-key (kbd "C-M-e") 'azbyn/forward-subword-end)
-        ;; (local-set-key (kbd "C-M-w") 'azbyn/backward-subword-begin)
-
-
-        ;; (local-set-key (kbd "M-f") 'fill-key-map)
-        ;; (local-set-key (kbd "M-a") 'azbyn-key-map)
-
-        ;; (defun azbyn/delete-char-or-region ()
-        ;;   (interactive)
-        ;;   (if mark-active
-        ;;       (call-interactively 'delete-region)
-        ;;     (delete-char 1)))
-
-
-        ;; (local-set-key (kbd "C-d") 'azbyn/delete-char-or-region)
-        ;; (local-set-key (kbd "M-d") 'azbyn/kill-word)
-        ;; (local-set-key (kbd "C-M-d") 'azbyn/kill-subword)
-
-
-        ;; (local-set-key (kbd "C-n") 'evil-find-char)
-        ;; (local-set-key (kbd "C-b") 'evil-find-char-to-backward)
-
-        ;; ;;(local-set-key (kbd "M-a") 'backward-word)
-        ;; ;;(local-set-key (kbd "M-f") 'forward-word)
-        ;; (local-set-key (kbd "C-'") 'recenter-top-bottom)
-        ;; ;org mode likes rebinding C-k
-        ;; (local-set-key (kbd "M-k") 'kill-whole-line)
-        ;; (local-set-key (kbd "C-l") 'azbyn/copy-to-eol-or-region)
-        ;; (local-set-key (kbd "C-k") 'azbyn/kill-to-eol-or-region)
-        ;; (local-set-key (kbd "M-l") (lambda ()
-        ;;                         (interactive)
-        ;;                         (call-interactively 'evil-yank-line)
-        ;;                         (message "yanked line")))
-
-        ;; (local-set-key (kbd "C-p") 'yank); azbyn/paste)
-        ;; (local-set-key (kbd "C-S-p") 'azbyn/paste-before)
-        ;; (local-set-key (kbd "M-p") 'azbyn/paste)
-        ;; (local-set-key (kbd "M-P") 'azbyn/paste-before)
-
-        ;; (local-set-key (kbd "M-n") 'evil-search-next)
-        ;; (local-set-key (kbd "M-b") 'evil-search-previous)
-
-        ;;)))
-  ;;(add-hook 'after-change-major-mode-hook 'azbyn/key-bindings)
-  ;;(add-hook 'dashboard-mode-hook 'azbyn/key-bindings)
-  ;;(add-hook 'minibuffer-setup-hook 'azbyn/key-bindings)
-  ;;(add-hook 'ivy-mode-hook 'azbyn/key-bindings)
 
 #+END_SRC
 * macros
@@ -900,6 +822,25 @@
 ** quick-shell
    #+begin_src emacs-lisp
      (global-set-key (kbd "C-1") 'shell-command)
+   #+end_src
+** external open
+   #+begin_src emacs-lisp
+     (defun azbyn/external-open ()
+       (interactive)
+       (let ((path (read-file-name "External open: ")))
+         (if (file-directory-p path)
+             (message "We can't open a directory. (or we can but you probably don't want that)")
+           ;; (async-start-process "azbyn-open" nil "xdg-run")
+           ;; (async-shell-command (format "xdg-open \"%s\"" path))
+
+           ;;i use ranger so i have that
+           (make-process :name "external-open"
+                         :buffer nil
+                         :command (list "rifle" path)
+                         ))))
+
+
+     (global-set-key (kbd "C-`") 'azbyn/external-open)
    #+end_src
 * compile
 #+BEGIN_SRC emacs-lisp

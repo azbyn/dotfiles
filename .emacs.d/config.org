@@ -1,3 +1,8 @@
+* lexical bindings
+We have to leave this as the first line
+  #+begin_src emacs-lisp
+  ;;; -*- lexical-binding: t -*-
+  #+end_src
 * Windows mode
   #+begin_src emacs-lisp
     (setq-default azbyn/windows-mode (string-equal system-type "windows-nt"))
@@ -109,7 +114,6 @@
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x b") 'ibuffer)
 #+END_SRC
-
 ** Rainbow
    Preview the color when you encounter a hex code
 #+BEGIN_SRC emacs-lisp
@@ -678,11 +682,11 @@ for org mode conversions
 #+BEGIN_SRC emacs-lisp
   (setq org-src-window-setup 'current-window)
 #+END_SRC
-** fix my bindings
+** TODO fix my bindings
 #+BEGIN_SRC emacs-lisp
-  (define-key org-mode-map (kbd "C-a") nil)
-  (define-key org-mode-map (kbd "C-e") nil)
-  (define-key org-mode-map (kbd "M-h") nil)
+  ;;(define-key org-mode-map (kbd "C-a") nil)
+  ;;(define-key org-mode-map (kbd "C-e") nil)
+  ;;(define-key org-mode-map (kbd "M-h") nil)
   ;(define-key org-mode-map (kbd "M-e") nil)
 #+END_SRC
 * Custom functions
@@ -1102,7 +1106,7 @@ Repeated invocations toggle between the two most recently open buffers."
     (interactive)
     (my-c-transpose-args--direction nil))
 #+END_SRC
-* compile
+* compile TODO
 ** project finding functions
 *** misc
 #+BEGIN_SRC emacs-lisp
@@ -1112,21 +1116,45 @@ Repeated invocations toggle between the two most recently open buffers."
                             (setq r-path (substitute-in-file-name r-path))
                             (setq r-path (expand-file-name r-path current-dir))
                             r-path))))
+  ;; (defun azbyn/updir (path)
+  ;;   (let ((r-path (azbyn/expand-name path)))
+  ;;     (if (and (> (length r-path) 0)
+  ;;              (equal (substring r-path -1) "/"))
+  ;;         (setq r-path (substring r-path 0 -1)))
+  ;;     (if (eq (length r-path) 0)
+  ;;         (setq r-path "/"))
+  ;;     (directory-file-name
+  ;;      (file-name-directory r-path))))
+
+  ;; (require 'seq)
+  ;; (defun azbyn/project-dir (path &optional pattern)
+  ;;   "Find the first directory with a file that matches the pattern"
+  ;;   (unless pattern (setq pattern "Makefile"))
+  ;;   (if (or (not path) (member path '("/" "/home/azbyn/Projects" "/home/azbyn")))
+  ;;       nil
+  ;;     (if (seq-contains-p (directory-files path) pattern
+  ;;                         (lambda (f _) (string-match-p pattern f)))
+  ;;         ;;(member "Makefile" (directory-files path))
+  ;;         path
+  ;;       (azbyn/project-dir (azbyn/updir path) pattern))))
   (defun azbyn/updir (path)
-    (let ((r-path (azbyn/expand-name path)))
-      (if (and (> (length r-path) 0)
-               (equal (substring r-path -1) "/"))
-          (setq r-path (substring r-path 0 -1)))
-      (if (eq (length r-path) 0)
-          (setq r-path "/"))
-      (directory-file-name
-       (file-name-directory r-path))))
-  (defun azbyn/project-dir (path)
-    "find the first directory with a makefile"
-    (if (member path '("/" "/home/azbyn/Projects" "/home/azbyn"))
-        path
-      (if (member "Makefile" (directory-files path))
-          path (azbyn/project-dir (azbyn/updir path)))))
+    "Returns the parent directory of =path=. For \"/\" it returns nil."
+    (if (equal path "/")
+        nil
+      (expand-file-name ".." path)))
+
+  (require 'seq)
+  (defun azbyn/project-dir (path &optional pattern)
+    "Find the first parent directory with a file that matches the pattern.
+     Might or might not end in an infinite loop on /that non-free operating system/.
+     (press C-g if that's the case)."
+    (unless pattern (setq pattern "Makefile"))
+    (if (not path)
+        nil
+      (if (seq-contains-p (directory-files path) pattern
+                          (lambda (f _) (string-match-p pattern f)))
+          path
+        (azbyn/project-dir (azbyn/updir path) pattern))))
 #+END_SRC
 *** find root
 #+BEGIN_SRC emacs-lisp
@@ -1339,8 +1367,8 @@ also use =C-n=, =C-p= for movement
                                    (remove 'company-files company-backends)))
       (define-key company-active-map [escape] 'company-abort)
       (define-key company-active-map (kbd "C-h") nil)
-      (define-key company-active-map (kbd "M-n") nil)
-      (define-key company-active-map (kbd "M-p") nil)
+      ;;(define-key company-active-map (kbd "M-n") nil)
+      ;;(define-key company-active-map (kbd "M-p") nil)
       (define-key company-active-map [C-j] 'company-select-next)
       (define-key company-active-map [C-i] 'company-select-previous)
       (define-key company-active-map (kbd "RET") 'company-complete-selection)
@@ -1365,19 +1393,6 @@ also use =C-n=, =C-p= for movement
       winner-mode-map "C-c"
       '(("<left>" . winner-undo)
         ("<right>" . winner-redo)))
-#+END_SRC
-* spell checking
-#+BEGIN_SRC emacs-lisp
-  (unless azbyn/windows-mode
-    (add-hook 'prog-mode-hook 'flyspell-prog-mode))
-  (define-key flyspell-mode-map (kbd "C-;") nil)
-  (unless azbyn/windows-mode
-    (use-package wucuo
-      :ensure t)
-    (add-hook 'prog-mode-hook 'wucuo-start)
-    (add-hook 'text-mode-hook 'wucuo-start)
-  )
-
 #+END_SRC
 * flycheck
 #+BEGIN_SRC emacs-lisp
@@ -1919,10 +1934,45 @@ also use =C-n=, =C-p= for movement
        (setq auto-mode-alist
              (cons '("\\.csproj$" . xml-mode) auto-mode-alist))
 
-       (defun azbyn/csharp-hook ()
-         (flycheck-mode)
-         (company-mode)
-         (lsp))
+
+
+       ;; (defun call-dotnet (&rest args)
+       ;;   (make-process :name "run-dotnet"
+       ;;                 :buffer nil
+       ;;                 :command (cons "dotnet" args)))
+       ;; (setq lexical-binding t)
+       (defun csharp/new-project ()
+         (interactive)
+         (let* ((parent-dir (read-directory-name "Parent Directory: "))
+                        (proj-name (read-string "Project Name: "))
+                        (template (read-string "Template: " "console"))
+                        (full-path (expand-file-name proj-name parent-dir)))
+
+         (unless (and (file-directory-p full-path)
+                      (not (y-or-n-p (format "Directory %s already exists. Continue? " full-path))))
+           (message "Generating '%s'..." full-path)
+           (lsp-async-start-process
+            (lambda ()
+              (message "oi")
+              (message "oi '%s'" full-path)
+              (let ((f (expand-file-name "Program.cs" full-path)))
+                (if (file-exists-p f)
+                    (progn
+                      (message "Done.")
+                      (find-file f))
+                  (message "Something went wrong :("))))
+            (lambda (why)
+              (message "Something went wrong: '%s'" why))
+            "dotnet" "new" template "-o" full-path))))
+
+       (defun csharp/run-project ()
+         (interactive)
+         (let ((dir (azbyn/project-dir (azbyn/find-root buffer-file-name) ".*\\.csproj$")))
+           (if dir
+               (compile (format "dotnet run -p '%s'" dir))
+             (message "Not inside a C# project. (.csproj file not found)"))
+           ))
+
        ;; var not being purple is annoying
 
        (c-lang-defconst c-type-modifier-kwds
@@ -1936,8 +1986,8 @@ also use =C-n=, =C-p= for movement
      ;;        (c-lang-defconst c-primitive-type-kwds
      ;;          csharp '("bool" "byte" "sbyte" "char" "decimal" "double" "float" "int" "uint"
      ;;                   "long" "ulong" "short" "ushort" "void" "object" "string"))
-  
-       
+
+
        (c-lang-defconst c-other-decl-kwds
          csharp '("var"))
        (c-lang-defconst c-modifier-kwds
@@ -1951,6 +2001,11 @@ also use =C-n=, =C-p= for movement
          csharp '("bool" "byte" "sbyte" "char" "decimal" "double" "float" "int" "uint"
                   "long" "ulong" "short" "ushort" "void" "object" "string"))
 
+       (define-key csharp-mode-map (kbd "M-c") 'csharp/run-project)
+       (defun azbyn/csharp-hook ()
+         (flycheck-mode)
+         (company-mode)
+         (lsp))
        (add-hook 'csharp-mode-hook 'azbyn/csharp-hook))
    #+end_src
 ** f#
@@ -1990,11 +2045,45 @@ also use =C-n=, =C-p= for movement
 #+END_SRC
 * irc
   #+begin_src emacs-lisp
-    ;; (setq rcirc-default-user-name "azbyn")
-    ;; (setq rcirc-server-alist
-    ;;            '(("localhost"
-    ;;              :channels ("#sheep-test" "#sheep-general"))))
+    (unless azbyn/windows-mode
+      (defun azbyn/irc ()
+        (interactive)
+        (let ((pass (read-passwd "IRC Password: ")))
+          ;; (erc :server "localhost"
+          ;;      :nick "azbyn"
+          ;;      :password pass)
+      
+          (rcirc-connect "localhost"
+                         6667
+                         "azbyn";;nick
+                         "azbyn";;user name
+                         "azbyn";;full name
+                         '();;startup channels
+                         pass
+                         ;;encryption
+                         )
 
+          ))
+  
+      (with-eval-after-load 'rcirc
+        (defun-rcirc-command sv (arg)
+          "Boast about rcirc."
+          (interactive "i")
+          (rcirc-send-message process target
+                              (concat "I use \r\nhardbass\r\n"))))
+
+
+      ;; (setq rcirc-default-user-name "azbyn")
+      ;; (setq rcirc-server-alist
+      ;;       '(("localhost"
+      ;;          :port 6667
+      ;;          :user-name "azbyn"
+      ;;          :channels ("&bitlbee" "#sheep-test"))
+      ;;         ))
+      ;; (setq rcirc-authinfo
+      ;;       '(("bitlbee" bitlbee "azbyn" "Termopile1")))
+
+      )
   #+end_src
 * webkit
   #+begin_src emacs-lisp
@@ -2006,5 +2095,6 @@ also use =C-n=, =C-p= for movement
       (setq webkit-dark-mode t)
       (modify-frame-parameters nil '((inhibit-double-buffering . t))))
   #+end_src
-* todo
+* TODO
 fix compile
+
