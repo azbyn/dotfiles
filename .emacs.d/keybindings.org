@@ -566,7 +566,7 @@
   (azbyn/bind-key "M-J" (azbyn/get-og-key "M-n"))
 
   (azbyn/bind-key "<C-e>" 'azbyn/forward-word-begin)
-  (azbyn/bind-key "C-w" 'azbyn/backward-word-end)
+  (azbyn/bind-key "C-w" 'azbyn/backward-word-en)
 
   (azbyn/bind-key "<M-e>" 'azbyn/forward-subword-begin)
   (azbyn/bind-key "M-w" 'azbyn/backward-subword-end)

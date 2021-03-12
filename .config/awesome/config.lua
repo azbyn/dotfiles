@@ -107,7 +107,7 @@ M.program_rules = {
    } },
 }
 
-M.nr_normal_tags = 5
+M.nr_normal_tags = 6
 M.special_tags_order = { "E", "S", "W", "G", "P", "T", } --"V"
 M.special_tags = {
    --tag = {command, class, role-for-primary}w

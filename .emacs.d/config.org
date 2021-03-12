@@ -1531,18 +1531,20 @@ also use =C-n=, =C-p= for movement
 #+END_SRC
 ** latex
    #+begin_src emacs-lisp
-     (use-package tex-mode
-       :defer t
-       :ensure auctex)
-     (use-package company-auctex
-       :defer t
-       :ensure t)
-     (defun azbyn/tex-hook()
-       (company-mode)
-       (prettify-symbols-mode -1)
-       (flycheck-mode))
+     (unless azbyn/windows-mode
+       (use-package auctex
+         :defer t
+         :ensure t)
+       (use-package company-auctex
+         :defer t
+         :ensure t)
+       (defun azbyn/tex-hook()
+         (company-mode)
+         (prettify-symbols-mode -1)
+         (flycheck-mode))
+       (add-hook 'TeX-mode-hook 'azbyn/tex-hook)
+       )
 
-     (add-hook 'TeX-mode-hook 'azbyn/tex-hook)
    #+end_src
 ** ptry
 #+BEGIN_SRC emacs-lisp
@@ -2010,14 +2012,16 @@ also use =C-n=, =C-p= for movement
    #+end_src
 ** f#
 #+BEGIN_SRC emacs-lisp
-  (use-package fsharp-mode
-    :defer t
-    :ensure t)
+  (unless azbyn/windows-mode
+    (use-package fsharp-mode
+      :defer t
+      :ensure t))
 #+end_src
 ** julia
    #+begin_src emacs-lisp
-   (use-package julia-mode
-     :ensure t)
+     (unless azbyn/windows-mode
+       (use-package julia-mode
+         :ensure t))
    #+end_src
 ** org
 #+BEGIN_SRC emacs-lisp
