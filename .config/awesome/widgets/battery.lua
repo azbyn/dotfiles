@@ -47,7 +47,8 @@ function M.show(timeout)
             fg          = "#"..config.colors.fg_focus,
             font        = "DejaVu Sans Mono 10",
             timeout     = timeout or 5,
-            text        = sprintf("%d%%, %s", M.last.charge, M.last.time),
+            text        = sprintf("%d%%, %s, %s", M.last.charge, M.last.status,
+            M.last.time),
     })
 end
 function M.hide()
@@ -75,60 +76,63 @@ end
 function M.update()
     awful.spawn.easy_async({"acpi", "-b"},
         function(out, _, _, _)
-            for status, charge, time in string.gmatch(out, ".-: (.-), (.*)%%,? ?(.-)") do
+            for status, charge, time in string.gmatch(out, ".-: (.-), (.*)%%,? ?(.*)") do
                 --out = "Battery 0: Discharging, 95%, 00:25:16 remaining\n"
                 --local status, charge, time = string.match(out, ".-: (.-), (.*)%%,? ?(.-)")
-                local color
-                local data = {time = time ~="" and time or (status or "") }
-                if charge == "0" then
-                    goto continue --why, lua
-                end
-                if status then
-                    data.charge = tonumber(charge)
-                    local icon
-                    if data.charge <= CRIT_PERCENT then
-                        icon = NONE
-                        color = config.colors.orange
-                    elseif data.charge <= LOW_PERCENT then
-                        icon = LOW
-                        color = config.colors.yellow
-                    else
-                        icon = HI
-                        color = config.colors.green
-                    end
-                    if status == "Charging" then
-                        data.pluggedin = true
-                        if data.charge >= FULL_PERCENT then
-                            M.icon:set_image(AC, config.colors.cyan)
-                        else
-                            M.icon:set_image(AC, config.colors.fg_gray)
-                        end
-                    elseif status == "Full" then
-                        data.pluggedin = true
-                        color = config.colors.blue
-                        M.icon:set_image(AC, config.colors.fg_normal)
-                    else
-                        if data.charge <= CRIT_PERCENT and M.last.charge > CRIT_PERCENT then
-                            notify("Battery critical!", time, config.colors.red)
-                        elseif data.charge <= LOW_PERCENT and M.last.charge > LOW_PERCENT then
-                            notify("Battery low!", time, config.colors.orange)
-                        elseif M.last.pluggedin then
-                            notify("On battery power! ("..charge.."%)", time, config.colors.yellow)
-                        end
-                        data.pluggedin = false
-                        M.icon:set_image(icon, config.colors.orange)
-                    end
-                else -- no battery
-                    data.charge = 0
-                    data.plugedin = true
-                    color = config.colors.fg_gray
-                    M.icon:set_image(AC, config.colors.fg_normal)
-                end
-                M.last = data
-                M.arc.value = data.charge
-                M.arc.colors = {"#"..color}
-                M.text:set_text(sprintf("%s%%", data.charge))
-                ::continue::
+               local color
+               local t = time or ""
+               local data = {time = time ~="" and time or (status or "")}
+               data.status = status
+
+               if charge == "0" then
+                  goto continue --why, lua
+               end
+               if status then
+                  data.charge = tonumber(charge)
+                  local icon
+                  if data.charge <= CRIT_PERCENT then
+                     icon = NONE
+                     color = config.colors.orange
+                  elseif data.charge <= LOW_PERCENT then
+                     icon = LOW
+                     color = config.colors.yellow
+                  else
+                     icon = HI
+                     color = config.colors.green
+                  end
+                  if status == "Charging" then
+                     data.pluggedin = true
+                     if data.charge >= FULL_PERCENT then
+                        M.icon:set_image(AC, config.colors.cyan)
+                     else
+                        M.icon:set_image(AC, config.colors.fg_gray)
+                     end
+                  elseif status == "Full" then
+                     data.pluggedin = true
+                     color = config.colors.blue
+                     M.icon:set_image(AC, config.colors.fg_normal)
+                  else
+                     if data.charge <= CRIT_PERCENT and M.last.charge > CRIT_PERCENT then
+                        notify("Battery critical!", time, config.colors.red)
+                     elseif data.charge <= LOW_PERCENT and M.last.charge > LOW_PERCENT then
+                        notify("Battery low!", time, config.colors.orange)
+                     elseif M.last.pluggedin then
+                        notify("On battery power! ("..charge.."%)", time, config.colors.yellow)
+                     end
+                     data.pluggedin = false
+                     M.icon:set_image(icon, config.colors.orange)
+                  end
+               else -- no battery
+                  data.charge = 0
+                  data.plugedin = true
+                  color = config.colors.fg_gray
+                  M.icon:set_image(AC, config.colors.fg_normal)
+               end
+               M.last = data
+               M.arc.value = data.charge
+               M.arc.colors = {"#"..color}
+               M.text:set_text(sprintf("%s%%", data.charge))
+               ::continue::
             end
     end)
 end

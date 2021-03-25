@@ -17,11 +17,18 @@ function M.update()
 		function(out, _, _, _)
 			local temp = 0
 			local i = 0
-            --for t in string.gmatch(out, "Core %d:%s*(.-)°C") do
+            -- for t in string.gmatch(out, "Core %d:%s*(.-)°C") do
+            for t in string.gmatch(out, "Package id %d:%s*(.-)°C") do
+			--for t in string.gmatch(out, "Tctl:%s*(.-)°C") do
+				temp = temp + tonumber(t)
+				i = i + 1
+			end
 			for t in string.gmatch(out, "Tctl:%s*(.-)°C") do
 				temp = temp + tonumber(t)
 				i = i + 1
 			end
+
+
             if i == 0 then
 				local color = config.colors.yellow
                 M.text:set_markup(markup(color, "?°C"))

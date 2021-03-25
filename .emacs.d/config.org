@@ -186,23 +186,9 @@ for org mode conversions
     :ensure t
     :diminish anzu-mode
     :config
-    (global-anzu-mode 1)
-    (defun azbyn/anzu-replace-regexp ()
-      "no query for me"
-      (interactive)
-      (anzu--query-replace-common t
-                                  ;;:at-cursor t
-                                  ;;:thing anzu-replace-at-cursor-thing
-                                  :query nil))
-    (define-prefix-command 'meta-t-key-map)
-    (global-set-key (kbd "M-t") meta-t-key-map)
-    (global-set-key (kbd "M-t r") 'anzu-query-replace-regexp)
-    (global-set-key (kbd "M-t C-t") 'anzu-query-replace-regexp)
-    (global-set-key (kbd "M-t M-t") 'azbyn/anzu-replace-regexp)
-    (global-set-key (kbd "M-t q") 'anzu-query-replace)
-    (global-set-key (kbd "M-t c") 'anzu-replace-at-cursor-thing))
+    (global-anzu-mode 1))
 #+END_SRC
-** mpdel
+** COMMENT mpdel
 #+BEGIN_SRC emacs-lisp
   ;; (use-package mpdel
     ;; :ensure t)
@@ -1453,6 +1439,10 @@ also use =C-n=, =C-p= for movement
     (setq tab-width 4)
     (hs-minor-mode)
     (yas-minor-mode))
+  (defun azbyn/company-flycheck ()
+    (interactive)
+    (flycheck-mode)
+    (company-mode))
 
   (add-hook 'prog-mode-hook 'prog-hook)
 #+END_SRC
@@ -1484,7 +1474,13 @@ also use =C-n=, =C-p= for movement
          :init
          (setq lsp-prefer-flymake nil)
          :demand t
-         :after jmi-init-platform-paths)
+         :after jmi-init-platform-pat)
+       (defun azbyn/lsp-hook ()
+         (define-key lsp-mode-map (kbd "<C-return>") 'lsp-execute-code-action)
+         (define-key lsp-mode-map (kbd "C-M-g") 'lsp-goto-type-definition);; lsp-execute-code-action)
+         (define-key lsp-mode-map (kbd "C-M-b") 'lsp-goto-implementation);; lsp-execute-code-action)
+         )
+       (add-hook 'lsp-mode-hook 'azbyn/lsp-hook)
 
        (use-package lsp-ui
          :ensure t
@@ -1493,6 +1489,8 @@ also use =C-n=, =C-p= for movement
                lsp-ui-sideline-enable nil
                lsp-ui-flycheck-enable t)
          :after lsp-mode)
+       (use-package all-the-icons
+         :ensure t)
 
        (use-package dap-mode
          :ensure t
@@ -1601,6 +1599,10 @@ also use =C-n=, =C-p= for movement
   (use-package fish-mode
     :ensure t))
 #+END_SRC
+** sh
+   #+begin_src emacs-lisp
+     (add-hook 'sh-mode-hook 'azbyn/company-flycheck)
+   #+end_src
 ** xmodmap
 #+BEGIN_SRC emacs-lisp
  (define-generic-mode 'xmodmap-mode
@@ -1798,16 +1800,17 @@ also use =C-n=, =C-p= for movement
 ** java
 #+BEGIN_SRC emacs-lisp
   (unless azbyn/windows-mode
-    (defun azbyn/java-mode-config ()
-        (setq-local tab-width 4
-                    c-basic-offset 4)
-        ;; (toggle-truncate-lines 1)
-        (setq-local tab-width 4)
-        (setq-local c-basic-offset 4)
-        (company-mode)
-        (flycheck-mode)
-        (lsp))
-    (add-hook 'java-mode-hook 'azbyn/java-mode-config)
+    (defun azbyn/java-hook ()
+      (setq-local tab-width 4
+                  c-basic-offset 4)
+      ;; (toggle-truncate-lines 1)
+      (setq-local tab-width 4)
+      (setq-local c-basic-offset 4)
+      (company-mode)
+      (flycheck-mode)
+      (lsp))
+    (add-hook 'java-mode-hook 'azbyn/java-hook)
+
     (use-package lsp-java
       :ensure t
 

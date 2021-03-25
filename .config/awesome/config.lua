@@ -13,6 +13,9 @@ M.theme_icons_dir = os.getenv("HOME").."/.config/awesome/papirus-icon-theme/Papi
 M.titlebar_icons_dir = os.getenv("HOME").."/.config/awesome/papirus-icon-theme/Papirus/16x16/actions/"
 local file = os.getenv("HOME").."/.config/colors/colors"
 
+M.smallScreen = awful.screen.focused().dpi > 120
+
+
 --local content = read_file(file)
 M.colors = yaml.load(read_file(file)) or {
    base00 = "000000", -- Black
@@ -52,7 +55,9 @@ M.colors.fg_focus  = M.colors.orange
 --M.top_font = "DejaVu Sans Mono 10"
 --M.bar_font = "DejaVu Sans Mono 8"
 M.default_font = "UbuntuMono Nerd Font 11"-- "DejaVu Sans 9" "Droid Sans Mono 9"-- --"xos4 Terminus 9"
-M.top_font = "UbuntuMono Nerd Font 11"
+M.top_font = M.smallScreen and "UbuntuMono Nerd Font 10" or "UbuntuMono Nerd Font 11"
+
+M.top_height = M.smallScreen and 24 or 22
 
 M.bar_font = "UbuntuMono Nerd Font 9"
 
@@ -64,8 +69,12 @@ M.kb_led = "3"
 
 M.term = "urxvt"
 M.music = "ncmpcpp"
-M.editor = "vim"
-M.geditor = "tvim"
+
+--HORRIBLE, we shouldn't use io.popen, but it shouldn't be that bad for one read/refresh
+local hostname =  io.popen("hostname"):read()
+local naughty = require("naughty")
+naughty.notify({text="hm:"..hostname})
+
 
 -- tables of form { when, cmd }
 -- when can be:
@@ -79,8 +88,13 @@ M.geditor = "tvim"
 --     always_fn: call function always
 M.autorun = {
    { "once", "unclutter -root" },
+   { "start_fn", function()
+        if hostname=="tadeusz" then
+           awful.spawn("sleep 1; xinput -disable 'SYNAPTICS Synaptics Touch Digitizer V04'")
+        end
+   end},
    { "once", "picom -b --config ~/.config/picom.conf" },
-   { "once", "mpd ; mpc pause" },
+   { "once", "mpd; mpc pause" },
    --{ "once", "emacs --daemon"},
    -- { "start", "mpc pause" },
    { "start_fn", function()
@@ -173,6 +187,7 @@ function exec_tag_special(tag)
 end
 --table.insert(M.tags, "Hidden")
 
+awful.util.shell = "sh"
 local alpha_bg = "-bg [90]#"..M.colors.black..""
 function M.get_dropdowns()
    return {

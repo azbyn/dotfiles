@@ -1,0 +1,4 @@
+URxvt.font: xft:DejaVuSansMono Nerd Font:pixelsize=21,xft:Code2003, xft:Symbola
+*.dpi: 144
+rofi.font: Ubuntu Mono 16
+Xcursor.size: 24

@@ -20,7 +20,7 @@ local home = os.getenv("HOME")
 local here = home.."/.config/awesome/"
 
 local function color(name)
-	return "#"..config.colors[name]
+   return "#"..config.colors[name]
 end
 
 theme.dir                = here
@@ -43,7 +43,7 @@ theme.titlebar_fg_focus  = theme.fg_focus
 theme.useless_gap  = 0
 theme.border_width = 1
 
-theme.menu_height                               = 16
+theme.menu_height                               = 16 --not used now
 theme.menu_width                                = 140
 theme.menu_submenu_icon                         = theme.dir .. "/icons/submenu.png"
 theme.taglist_squares_sel                       = theme.dir .. "/icons/square_sel.png"
@@ -72,14 +72,17 @@ local cpu   = require("widgets.cpu")
 -- local swap   = require("widgets.swap")
 local temp  = require("widgets.temp")
 local ld    = require("widgets.load")
-local meeting_mode = require("widgets.meeting_mode")
+theme.meeting_mode = require("widgets.meeting_mode")
 local email = require("widgets.email")
-local signal= require("widgets.signal")
+
+theme.touch = require("widgets.touch")
+-- local signal= require("widgets.signal")
 
 -- local weather = require("widgets.weather")
 
 theme.music   = require("widgets.music")
 theme.volume  = require("widgets.volume")
+theme.brightness  = require("widgets.brightness")
 theme.battery = require("widgets.battery")
 -- theme.net     = require("widgets.net")
 
@@ -151,17 +154,29 @@ local freedesktop = require("freedesktop")
 
 -- {{{ Menu
 -- Create a launcher widget and a main menu
-myawesomemenu = {
-    { "hotkeys", function() return false, hotkeys_popup.show_help end, menubar.utils.lookup_icon("preferences-desktop-keyboard-shortcuts") },
-    { "manual", terminal .. " -e man awesome", menubar.utils.lookup_icon("system-help") },
-    { "edit config", gui_editor .. " " .. awesome.conffile,  menubar.utils.lookup_icon("accessories-text-editor") },
-}
+
 myexitmenu = {
     { "log out", function() awesome.quit() end, menubar.utils.lookup_icon("system-log-out") },
     { "suspend", "systemctl suspend", menubar.utils.lookup_icon("system-suspend") },
     { "hibernate", "systemctl hibernate", menubar.utils.lookup_icon("system-suspend-hibernate") },
     { "reboot", "systemctl reboot", menubar.utils.lookup_icon("system-reboot") },
     { "shutdown", "poweroff", menubar.utils.lookup_icon("system-shutdown") }
+}
+music_menu = {
+   { "ncmpcpp",
+     function ()
+        awful.screen.focused().dropdown["music"]:toggle()
+     end,
+   },
+   {"Next Song", theme.music.next()},
+   {"Previous Song", theme.music.prev()},
+   {"Play/Pause", theme.music.toggle()},
+   {"Pause", theme.music.pause()},
+   {"Seek Forward", theme.music.fwd()},
+   {"Seek Forward Big", theme.music.bfwd()},
+   {"Seek Backward", theme.music.bwd()},
+   {"Seek Backward Big", theme.music.bbwd()},
+   {"Seek Begining", theme.music.beg()},
 }
 theme.mymainmenu = freedesktop.menu.build({
     icon_size = 32,
@@ -172,15 +187,20 @@ theme.mymainmenu = freedesktop.menu.build({
         -- other triads can be put here
     },
     after = {
-        { "Restart Awesome", awesome.restart, menubar.utils.lookup_icon("system-restart") },
-        { "Exit", myexitmenu, menubar.utils.lookup_icon("system-shutdown") },
-        -- other triads can be put here
+       { "Restart Awesome", awesome.restart, menubar.utils.lookup_icon("system-restart") },
+       { "Exit", myexitmenu, menubar.utils.lookup_icon("system-shutdown") },
+       { "Music", music_menu },
+       { "Close", function() client.focus:kill() end, },
+       { "Toggle Touch", function() theme.touch.toggle() end, },
+       -- other triads can be put here
     }
 })
+
 mylauncher = awful.widget.launcher({ image = "/usr/share/awesome/icons/awesome32.png", --beautiful.awesome_icon,
                                      menu = theme.mymainmenu })
 
 --mykeyboardlayout = awful.widget.keyboardlayout()
+
 
 function theme.at_screen_connect(s)
 	-- Quake applications
@@ -232,7 +252,7 @@ function theme.at_screen_connect(s)
 
 	-- Create the wibox
 	--s.mywibox = awful.wibar({ position = "top", screen = s, height = 18, bg = theme.bg_normal, fg = "#"..config.colors.fg_normal })
-	s.mywibox = awful.wibar({ position = "top", screen = s, height = 22, bg = theme.bg_normal, fg = "#"..config.colors.fg_normal })
+	s.mywibox = awful.wibar({ position = "top", screen = s, height = config.top_height, bg = theme.bg_normal, fg = "#"..config.colors.fg_normal })
 
 
 	-- Add widgets to the wibox
@@ -265,6 +285,10 @@ function theme.at_screen_connect(s)
 			wibox.container.background(sspr, theme.bg_focus),
 			arrl_dl,
 			sspr,
+
+            theme.brightness.widget,
+            spr,
+
 			ld.text,
 			spr,
 			ram.widget,
@@ -282,9 +306,9 @@ function theme.at_screen_connect(s)
             --wibox.container.background(spr, theme.bg_focus),
             --wibox.container.background(weather.text, theme.bg_focus),
             wibox.container.background(spr, theme.bg_focus),
-            wibox.container.background(signal.widget, theme.bg_focus),
-            wibox.container.background(signal.text, theme.bg_focus),
-            wibox.container.background(meeting_mode.text, theme.bg_focus),
+            wibox.container.background(theme.touch.widget, theme.bg_focus),
+            -- wibox.container.background(signal.text, theme.bg_focus),
+            wibox.container.background(theme.meeting_mode.text, theme.bg_focus),
             wibox.container.background(spr, theme.bg_focus),
             wibox.container.background(sspr, theme.bg_focus),
 			arrl_dl,

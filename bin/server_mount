@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+sudo update_time
+showmount -e schlachtkreuzer
+sudo mount schlachtkreuzer:/srv/nfs/Music ~/Music
+sudo mount schlachtkreuzer:/srv/nfs/home ~/mnt
+mpd
+mpc update

@@ -1,11 +1,3 @@
-!URxvt.font: xft:Droid Sans Mono for Powerline:size=14
-!URxvt.font: xft:DejaVuSansMono Nerd Font:size=11, xft:FontAwesome, xft:Icons, xft:unifont
-!URxvt.font: xft:Source Code Pro:pixelsize=20
-URxvt.font: xft:DejaVuSansMono Nerd Font:pixelsize=19,xft:Code2003, xft:Symbola
-!URxvt.font: xft:UbuntuMono Nerd Font:pixelsize=20
-!URxvt.background: [60]#050205
-!URxvt.background: #050205
-!
 URxvt.intensityStyles:	false
 URxvt.depth:		32
 URxvt.scrollBar:	false
@@ -61,23 +53,24 @@ URxvt.keysym.Shift-Down: command:\033]721;1\007
 !URxvt.keysym.C-slash: perl:keyboard-select:search
 
 URxvt.fading: 0
-!20
 
 URxvt.iso14755: False
 URxvt.iso14755_52: False
-*.dpi: 120
+
+Xcursor.theme: Adwaita
+
 !URxvt.termName: xterm-256color
 !URxvt.colorUL:		#4682B4
-!*.dpi: 174
+
 rofi.fake-transparency: true
 rofi.lines: 8
 rofi.bw: 0
 rofi.opacity: 30
 rofi.hide-scrollbar: true
 rofi.width: 45
-rofi.font: UbuntuMono Nerd Font 14
-!rofi.font: DejaVuSansMono Nerd Font 14
 
-!rofi.separator-style: solid
 
 #include ".colors/xresources"
+
+! contains font sizes and dpi
+#include ".Xresources_screen_specific"

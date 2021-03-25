@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+pkill mpd
+sudo umount ~/Music
+sudo umount ~/mnt

@@ -39,24 +39,15 @@ local file_explorer = {"Program", "GUI - File Explorer - thunar",
 
 
 local music = {
-    next = {"Music", "Next Song",
-        theme.music.call("mpc next")},
-    prev = {"Music", "Previous Song",
-        theme.music.call("mpc prev")},
-    toggle = {"Music", "Play/Pause Music",
-        theme.music.call("mpc toggle")},
-    pause = {"Music", "Pause Music",
-        theme.music.call("mpc pause")},
-    fwd = {"Music", "Seek Forward",
-        theme.music.call("mpc seek +5")},
-    bfwd = {"Music", "Seek Forward Big",
-        theme.music.call("mpc seek +30")},
-    bwd = {"Music", "Seek Backward",
-        theme.music.call("mpc seek -5")},
-    bbwd = {"Music", "Seek Backward Big",
-        theme.music.call("mpc seek -30")},
-    beg = {"Music", "Seek Begining",
-        theme.music.call("mpc seek 0%")},
+    next = {"Music", "Next Song", theme.music.next()},
+    prev = {"Music", "Previous Song", theme.music.prev()},
+    toggle = {"Music", "Play/Pause Music", theme.music.toggle()},
+    pause = {"Music", "Pause Music", theme.music.pause()},
+    fwd = {"Music", "Seek Forward", theme.music.fwd()},
+    bfwd = {"Music", "Seek Forward Big", theme.music.bfwd()},
+    bwd = {"Music", "Seek Backward", theme.music.bwd()},
+    bbwd = {"Music", "Seek Backward Big", theme.music.bbwd()},
+    beg = {"Music", "Seek Begining", theme.music.beg()},
 }
 local vol = {
     up = {"Volume", "Volume Up",
@@ -72,13 +63,13 @@ local vol = {
 }
 local brightness = {
     up = {"Brightness", "Brightness Up",
-        exec("light -A 10")},
+          theme.brightness.exec("xbacklight + 10")}, --exec("light -A 10")},
     down = {"Brightness", "Brightness Down",
-        exec("light -U 10")},
+            theme.brightness.exec("xbacklight - 10")}, --exec("light -U 10")},
     low = {"Brightness", "Brightness Low",
-        exec("light -S 20")},
+          theme.brightness.exec("xbacklight = 2")}, --exec("light -S 20")},
     high = {"Brightness", "Brightness High",
-        exec("light -S 100")},
+          theme.brightness.exec("xbacklight = 100")}, --exec("light -S 100")},
 }
 local function set_titlebar(c, val)
     --if val then
@@ -190,6 +181,26 @@ local function inc_tag(inc)
 end
 local home = os.getenv("HOME")
 
+local mx_functions = {
+   ["touch-toggle"] = theme.touch.toggle,
+   ["meeting-mode-toggle"] = toggle_meeting_mode,
+}
+
+function M_x_menu()
+   local str = "touch-toggle\nmeeting-mode-toggle"
+
+   -- naughty.notify({text="strol '"..str.."'"})
+   awful.spawn.easy_async_with_shell("echo '"..str.."' | rofi -dmenu -p 'awesome M-x' ",
+                                     function(stdout, _, _, _)
+                                        stdout = string.gsub(stdout, '%s+', '')
+                                        if stdout ~= "" then
+                                           local func = mx_functions[stdout]
+                                           func()
+                                        end
+                                     end
+   )
+end
+
 --[[local function switch_kb_layout()
     awful.spawn.easy_async({"setxkbmap", "-query"},
         function(out, _, _, _)
@@ -217,146 +228,40 @@ local home = os.getenv("HOME")
 end
 ]]--
 
-russianTable = {
- ["a"] = "а",
- ["b"] = "б",
- ["v"] = "в",
- ["g"] = "г",
- ["d"] = "д",
- ["e"] = "е",
- ["ö"] = "ё",
- ["ż"] = "ж",
- ["ź"] = "ж",
- ["ž"] = "ж",
-
- ["z"] = "з",
- ["i"] = "и",
- ["j"] = "й",
-
- ["q"] = "й",
-
- ["k"] = "к",
- ["l"] = "л",
- ["m"] = "м",
- ["n"] = "н",
- ["o"] = "о",
- ["p"] = "п",
- ["r"] = "р",
- ["s"] = "с",
- ["t"] = "т",
- ["u"] = "у",
- ["f"] = "ф",
-
- ["h"] = "х",
- ["x"] = "х",
-
- ["c"] = "ц",
- ["ț"] = "ц",
-
- ["ć"] = "ч",
- ["č"] = "ч",
-
- ["ș"] = "ш",
- ["ś"] = "ш",
- ["š"] = "щ",
- ["â"] = "ъ",
- ["ß"] = "ъ",
- ["y"] = "ы",
- ["'"] = "ь",
- ["ę"] = "э",
- ["ü"] = "ю",
- ["ă"] = "я",
- ["ä"] = "я",
- ["w"] = "я",
-}
-greekTable= {
-   ["a"] = "α",
-   ["b"] = "β",
-   ["g"] = "γ",
-   ["d"] = "δ",
-   ["e"] = "ε",
-   ["z"] = "ζ",
-   ["h"] = "η",
-   ["ę"] = "η",
-   ["ț"] = "θ",
-
-   ["v"] = "θ",
-   ["V"] = "Θ",
-
-   ["i"] = "ι",
-   ["k"] = "κ",
-   ["l"] = "λ",
-   ["m"] = "μ",
-   ["n"] = "ν",
-   ["x"] = "ξ",
-   ["o"] = "ο",
-   ["p"] = "π",
-   ["r"] = "ρ",
-   ["s"] = "σ",
-   ["ș"] = "ς",
-   ["t"] = "τ",
-   ["u"] = "υ",
-   ["f"] = "φ",
-   ["h"] = "χ",
-   ["ó"] = "ψ",
-   ["q"] = "ψ",
-   ["w"] = "ω",
-
-   ["A"] = "Α",
-   ["B"] = "Β",
-   ["G"] = "Γ",
-   ["D"] = "Δ",
-   ["E"] = "Ε",
-   ["Z"] = "Ζ",
-   ["H"] = "Η",
-   ["Ę"] = "Η",
-   ["Ț"] = "Θ",
-   ["I"] = "Ι",
-   ["K"] = "Κ",
-   ["L"] = "Λ",
-   ["M"] = "Μ",
-   ["N"] = "Ν",
-   ["X"] = "Ξ",
-   ["O"] = "Ο",
-   ["P"] = "Π",
-   ["R"] = "Ρ",
-   ["S"] = "Σ",
-   ["Ș"] = "Σ",
-   ["T"] = "Τ",
-   ["U"] = "Υ",
-   ["F"] = "Φ",
-   ["H"] = "Χ",
-   ["Ó"] = "Ψ",
-   ["Q"] = "Ψ",
-   ["W"] = "Ω",
-}
-local translitKey = "Control_R"
-
--- translitKeygrabber = awful.keygrabber {
---    -- stop_key = "Control_R",
---    stop_key = translitKey,
---    stop_event = "release",
---    mask_modkeys=true,
---    -- allowedKeys={'a', 'b'},      --
---    -- timeout = 1,          --
---    keypressed_callback = function(self, mods, key)
---       -- naughty.notify({text="Pressed "..key.." w ".. table.concat(mods, "-")})
---       local tbl = greekTable
---       if greekTable[key] then
---          local val = greekTable[key]
---          -- naughty.notify({text="Pressed "..key.."->"..val})
---          awful.spawn({"xdotool", "type", val})
---          awful.spawn({"xdotool", "key", translitKey})
---          translitKeygrabber:stop()
---       end
---       --try sending another F13ψ
---       -- if key == "r" then
-
---       -- end
---    end
--- }
+function define_keypad_key(k, val)
+   return awful.key({hyper}, k, function ()
+         naughty.notify({text="key "..k..":"..val})
+         -- naughty.notify("
+         awful.spawn("xdotool key '"..val.."'")
+   end)
+end
 
 M.globalkeys = awful.util.table.join(
+   key(mod, ctrl, "x", { "Misc", "M-x", M_x_menu}),
+   key(mod, alt, "x", { "Misc", "M-x", M_x_menu}),
+
+   define_keypad_key('bracketleft', 'KP_Divide'),
+   define_keypad_key('bracketright', 'KP_Multiply'),
+
+   define_keypad_key('8', '7'),
+   define_keypad_key('9', '8'),
+   define_keypad_key('0', '9'),
+
+   define_keypad_key('i', '4'),
+   define_keypad_key('o', '5'),
+   define_keypad_key('p', '6'),
+
+   define_keypad_key('k', '1'),
+   define_keypad_key('l', '2'),
+   define_keypad_key('semicolon', '3'),
+
+   define_keypad_key('m', '0'),
+   define_keypad_key('comma', '0'),
+   define_keypad_key('period', 'KP_Decimal'),
+
+
+   --emulated keypad with hyper
+
    -- key(translitKey, {"Misc", "quick transliteration",
                      -- function() translitKeygrabber:start() end}),
    -- key("Shift", translitKey, {"Misc", "quick transliteration",
@@ -376,10 +281,10 @@ M.globalkeys = awful.util.table.join(
    key(mod, "k", {"Misc", "Clear notifications - meeting mode",
                   function() toggle_meeting_mode() end}),
 
-    key(hyper, "bracketleft", music["bwd"]),
-    key(hyper, ctrl, "bracketleft", music["bbwd"]),
-    key(hyper, "bracketright", music["fwd"]),
-    key(hyper, ctrl, "bracketright", music["bfwd"]),
+    -- key(hyper, "bracketleft", music["bwd"]),
+    -- key(hyper, ctrl, "bracketleft", music["bbwd"]),
+    -- key(hyper, "bracketright", music["fwd"]),
+    -- key(hyper, ctrl, "bracketright", music["bfwd"]),
 
     --key(hyper, "equal", vol["up"]),
     --key(hyper, ctrl, "equal", vol["sup"]),
@@ -452,8 +357,7 @@ M.globalkeys = awful.util.table.join(
 
     key(mod, ctrl, "p", {"misc", "Sstfy Print screen",
         function()
-            awful.spawn("sstfy")
-            --naughty.notify({text="took screenshot"})
+            awful.spawn(home.. "/bin/sstfy")
         end}),
     key(mod, alt, "p", {"misc", "Print screen",
         function()
@@ -614,9 +518,13 @@ M.globalkeys = awful.util.table.join(
 
 
     key(mod, "period", brightness["up"]),
-    --key(mod, ctrl, "period", brightness["high"]),
+    key(mod, ctrl, "period", brightness["high"]),
     key(mod, "comma", brightness["down"]),
-    --key(mod, ctrl, "comma", brightness["low"]),
+    key(mod, ctrl, "comma", brightness["low"]),
+
+    key(mod, shift, "period", brightness["high"]),
+    key(mod, shift, "comma", brightness["low"]),
+
 
     key(mod, "Return", term),
 
@@ -719,6 +627,25 @@ M.globalkeys = awful.util.table.join(
     --    function(c) c.minimized = true end}),
 )
 
+local decrease_width = {"Layout", "Decrease Master/Floating Width",
+                        function(c)
+                           if c.floating then
+                              inc_width(c, -0.05)
+                           else
+                              awful.tag.incmwfact(-0.05)
+                           end
+                        end
+}
+local increase_width = {"Layout", "Increase Master/Floating Width",
+                        function(c)
+                           if c.floating then
+                              inc_width(c, 0.05)
+                           else
+                              awful.tag.incmwfact(0.05)
+                           end
+                        end
+}
+
 
 M.clientkeys = awful.util.table.join(
     key(mod, ctrl, "Left", {"Movement", "Swap Left / Floating Move Left",
@@ -784,22 +711,13 @@ M.clientkeys = awful.util.table.join(
     --    end}),
 
 
-    key(mod, alt, "Left", {"Layout", "Decrease Master/Floating Width",
-        function(c)
-            if c.floating then
-                inc_width(c, -0.05)
-            else
-                awful.tag.incmwfact(-0.05)
-            end
-        end}),
-    key(mod, alt, "Right", {"Layout", "Increase Master/Floating Width",
-        function(c)
-            if c.floating then
-                inc_width(c, 0.05)
-            else
-                awful.tag.incmwfact(0.05)
-            end
-        end}),
+    key(mod, ctrl, "Home", decrease_width),
+    key(mod, ctrl, "End", increase_width),
+    key(mod, alt, "Home", decrease_width),
+    key(mod, alt, "End", increase_width),
+
+    key(mod, alt, "Left", decrease_width),
+    key(mod, alt, "Right", increase_width),
     key(mod, alt, "Up", {"Layout", "Increase Client/Floating Height",
         function(c)
             if c.floating then
@@ -888,51 +806,51 @@ for i = 1, 9 do
     end
     M.globalkeys = awful.util.table.join(M.globalkeys,
 
-        awful.key({hyper}, "#" .. i + 9,
-                function ()
-                    local screen = awful.screen.focused()
-                    local tag = screen.tags[i]
-                    if tag then
-                        tag:view_only()
-                        --[[if screen.clients[1] then
-                            screen.clients[1]:raise()
-                        end]]
-                    end
-                end,
-                descr_view),
-        -- Toggle tag display.
-        awful.key({hyper, alt}, "#" .. i + 9,
-                function ()
-                    local screen = awful.screen.focused()
-                    local tag = screen.tags[i]
-                    if tag then
-                        awful.tag.viewtoggle(tag)
-                    end
-                end,
-                descr_toggle),
-        -- Move client to tag.
-        awful.key({hyper, ctrl}, "#" .. i + 9,
-                function ()
-                    if client.focus then
-                        local tag = client.focus.screen.tags[i]
-                        if tag then
-                            client.focus:move_to_tag(tag)
-                            tag:view_only()
-                        end
-                    end
-                end,
-                descr_move),
-        -- Toggle tag on focused client.
-        awful.key({hyper, alt, ctrl}, "#" .. i + 9,
-                function ()
-                    if client.focus then
-                        local tag = client.focus.screen.tags[i]
-                        if tag then
-                            client.focus:toggle_tag(tag)
-                        end
-                    end
-                end,
-                descr_toggle_focus),
+        -- awful.key({hyper}, "#" .. i + 9,
+        --         function ()
+        --             local screen = awful.screen.focused()
+        --             local tag = screen.tags[i]
+        --             if tag then
+        --                 tag:view_only()
+        --                 --[[if screen.clients[1] then
+        --                     screen.clients[1]:raise()
+        --                 end]]
+        --             end
+        --         end,
+        --         descr_view),
+        -- -- Toggle tag display.
+        -- awful.key({hyper, alt}, "#" .. i + 9,
+        --         function ()
+        --             local screen = awful.screen.focused()
+        --             local tag = screen.tags[i]
+        --             if tag then
+        --                 awful.tag.viewtoggle(tag)
+        --             end
+        --         end,
+        --         descr_toggle),
+        -- -- Move client to tag.
+        -- awful.key({hyper, ctrl}, "#" .. i + 9,
+        --         function ()
+        --             if client.focus then
+        --                 local tag = client.focus.screen.tags[i]
+        --                 if tag then
+        --                     client.focus:move_to_tag(tag)
+        --                     tag:view_only()
+        --                 end
+        --             end
+        --         end,
+        --         descr_move),
+        -- -- Toggle tag on focused client.
+        -- awful.key({hyper, alt, ctrl}, "#" .. i + 9,
+        --         function ()
+        --             if client.focus then
+        --                 local tag = client.focus.screen.tags[i]
+        --                 if tag then
+        --                     client.focus:toggle_tag(tag)
+        --                 end
+        --             end
+        --         end,
+        --         descr_toggle_focus),
                                        ---REEEEEEEEEEEEEe
         -- View tag only.
         awful.key({mod}, "#" .. i + 9,

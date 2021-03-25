@@ -1,0 +1,9 @@
+# -*-conf-unix-*-
+prev_img
+next_img
+scroll_up 4
+scroll_down 5
+scroll_left 6
+scroll_right 7
+zoom_in C-4
+zoom_out C-5

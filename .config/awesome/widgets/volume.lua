@@ -33,7 +33,10 @@ M.widget = wibox.container.mirror(M.arc, { horizontal = true })
 
 
 function M.call(cmd)
-	return function() M.update(cmd) end
+   return function()
+      M.update(cmd)
+      -- naughty.notify({text="Volume: "..val})
+   end
 	--return function() exec(cmd) end
 end
 
