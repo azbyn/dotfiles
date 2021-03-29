@@ -81,6 +81,7 @@ linksAndStuff: linkExtra
 	sh ./linkFile.sh bin
 	sudo ln -f ~/dotfiles/ro /usr/share/X11/xkb/symbols/azb || true
 	sh ./linkFile.sh .config/awesome
+	sh ./linkFile.sh .config/urxvt
 	sh ./linkFile.sh .config/colors
 	sh ./linkFile.sh .config/fish
 	sh ./linkFile.sh .config/rofi

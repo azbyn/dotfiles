@@ -9,6 +9,26 @@ local naughty = require("naughty")
 sprintf = string.format
 THIN_SPACE = "\xE2\x80\x85" --four per em space
 
+function y_or_n(prompt, callback)
+   awful.spawn.easy_async_with_shell("echo 'no\nyes' | rofi -dmenu -p '"..prompt.."'",
+                                     function(stdout, _, _, _)
+                                        callback(string.gsub(stdout, '%s+', '') == 'yes')
+                                     end
+   )
+end
+
+local home = os.getenv("HOME")
+
+local function safe_bit_impl (what)
+   awful.spawn({home.."/bin/safe_shutdown", "systemctl poweroff"})
+end
+
+function safe_shutdown ()
+   safe_bit_impl("systemctl poweroff")
+end
+function safe_restart ()
+   safe_bit_impl("systemctl reboot")
+end
 
 -- Log msg to log_file
 function dlog(msg)

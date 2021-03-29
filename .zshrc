@@ -26,6 +26,8 @@ else
 fi
 
 
+export RANGER_LOAD_DEFAULT_RC=false
+
 alias ls="ls --color=auto"
 alias sudo="sudo -E"
 
@@ -235,6 +237,7 @@ bindkey '^[r' down-line-or-history
 
 #or yank?
 bindkey '^P' get-clipboard
+bindkey '^V' get-clipboard
 
 
 
@@ -244,7 +247,7 @@ alias df='df -h'                                                # Human-readable
 alias free='free -m'                                            # Show sizes in MB
 alias gitu='git add . && git commit && git push'
 
-# Theming section  
+# Theming section
 autoload -U compinit colors zcalc
 compinit -d
 colors

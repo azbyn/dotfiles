@@ -1,0 +1,3 @@
+#!/bin/sh
+var=`printf 'no\nyes' | rofi -dmenu -p "$@"`
+test $? -eq 0 && [ $var  = 'yes' ]

@@ -4,9 +4,14 @@ URxvt.scrollBar:	false
 URxvt.pointerBlank: true
 URxvt.reverseVideo: false
 !URxvt.cursorColor2: black
+URxvt.perl-lib:		/home/azbyn/.config/urxvt
 URxvt.cursorColor:	white
-URxvt.perl-ext-common:	default,resize-font,keyboard-select
-!URxvt.perl-lib:		$HOME/.config/Scripts
+URxvt.perl-ext-common:	default,resize-font,keyboard-select,close-gracefully
+
+URxvt.secondaryScreen: 1
+URxvt.secondaryScroll: 0
+! URxvt.letterSpace: -1
+
 !URxvt.url-launcher:	/usr/bin/xdg-open
 URxvt.clipboard.copycmd: xsel -ib
 URxvt.clipboard.pastecmd: xsel -ob

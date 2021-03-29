@@ -1,8 +1,89 @@
-#!/bin/sh
-pgrep emacs
-pgrep barrier
-moutpoint /home/azbyn/mnt
-moutpoint /home/azbyn/Music
+#!/usr/bin/env python3
 
-#TODO
-shutdown
+import subprocess, os, sys
+
+cmd = sys.argv[1]
+
+home = os.getenv("HOME")
+
+def returncode(cmd):
+    proc = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    proc.wait()
+    return proc.returncode
+
+def y_or_n(prompt):
+    if returncode([home+"/bin/y-or-n", prompt]) != 0:
+        exit(1)
+
+#taken from here https://github.com/andrewp-as-is/pgrep.py
+#I'd rather not make that a pip dependency
+def pgrep(pattern):
+    """return a list with process IDs which matches the selection criteria"""
+    args = ["pgrep", str(pattern)]
+    out = os.popen(" ".join(args)).read().strip()
+    # return list(map(int, out.splitlines()))
+    return out.splitlines()
+
+def subprocs(pid):
+    args = ["ps", "--ppid", pid, '--no-headers', "-o", "ucmd=", "-o '|%p'"]
+
+    out = os.popen(" ".join(args)).read().strip()
+    # def to_tuple(l):
+        # return tuple(map(lambda x: x.strip(), l))
+        # return (l[0].strip(), l[1].strip())
+
+    # return list(map(int, out.splitlines()))
+    return [ tuple(map(lambda x: x.strip(), s.split('|')))
+             for s in out.splitlines() ]# list(map(str, out.splitlines()))
+
+def is_running(name):
+    return returncode(["pgrep", name]) == 0
+
+##############################
+
+def check_emacs():
+    if is_running('emacs'): y_or_n("Close emacs?")
+
+# get all processes running under urxvt
+def get_sub_urxvt():
+    ignored = {'ncmpcpp', 'zsh', 'ranger', 'transliterate', 'e', 'python3',
+               'emacsclient'}
+
+    running = []
+
+    def impl(p, level=0):
+        #unlikely, but prevent an infinite loop
+        if level > 10: return
+
+        for what, pid in subprocs(p):
+            if what not in ignored:
+                running.append(what)
+            else:
+                impl(pid, level+1)
+
+    for p in pgrep('urxvt'):
+        impl(p)
+
+    # print(running)
+
+    if running: y_or_n(f"Close {', '.join(running)}?")
+
+def check_mounted(what):
+    if returncode(["mountpoint", what]) == 0:
+        y_or_n("Ignore mounted "+what)
+
+        # we dont have sudo ;_;
+        # TODO, fix
+        # if returncode([home+"/bin/y-or-n", "Run server_unmount"]) != 0:
+        #     exit(1)
+        # else:
+        #     os.system(home+"/bin/server_unmount")
+
+check_emacs()
+#if we have one mounted we prolly have both
+check_mounted(home+"/Music")
+check_mounted("/mnt/srv")
+
+get_sub_urxvt()
+
+os.system(cmd)

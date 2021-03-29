@@ -394,12 +394,10 @@ M.globalkeys = awful.util.table.join(
         awesome.restart}),
     key(mod, ctrl, "r", {"Misc", "Restart Awesome",
         awesome.restart}),
-    key(shift, hyper, alt, "BackSpace", {"Misc", "Restart",
-        exec("systemctl reboot")}),
+    key(shift, hyper, alt, "BackSpace", {"Misc", "Restart", safe_restart}),
     key(mod, ctrl, "Escape", {"Misc", "Quit Awesome",
         function() awesome.quit() end}),
-    key(shift, hyper, alt, "Escape", {"Misc", "Shutdown",
-        exec("systemctl poweroff")}),
+    key(shift, hyper, alt, "Escape", {"Misc", "Shutdown", safe_shutdown}),
 
 
     --[[key(alt, "Tab", {"Movement", "View Last Window",
@@ -576,8 +574,8 @@ M.globalkeys = awful.util.table.join(
     key(mod, "s", {"Misc", " Small Dropdown Terminal",
         function() toggle_dropdown("small") end}),
 
-    key(mod, "t", {"Misc", "Edit Todo",
-        function() toggle_dropdown("todo") end}),
+    -- key(mod, "t", {"Misc", "Edit Todo",
+        -- function() toggle_dropdown("todo") end}),
 
     key(mod, "m", {"Misc", "Dropdown music player",
         function() toggle_dropdown("music") end}),
