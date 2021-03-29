@@ -73,4 +73,4 @@ rofi.width: 45
 #include ".colors/xresources"
 
 ! contains font sizes and dpi
-#include ".Xresources_screen_specific"
+#include ".Xresources_extra"

@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/sh
 sudo update_time
 showmount -e schlachtkreuzer
 sudo mount schlachtkreuzer:/srv/nfs/Music ~/Music
-sudo mount schlachtkreuzer:/srv/nfs/home ~/mnt
+sudo mount schlachtkreuzer:/srv/nfs/home /mnt/srv
 mpd
 mpc update

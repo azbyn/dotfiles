@@ -72,8 +72,8 @@ M.music = "ncmpcpp"
 
 --HORRIBLE, we shouldn't use io.popen, but it shouldn't be that bad for one read/refresh
 local hostname =  io.popen("hostname"):read()
-local naughty = require("naughty")
-naughty.notify({text="hm:"..hostname})
+-- local naughty = require("naughty")
+-- naughty.notify({text="hm:"..hostname})
 
 
 -- tables of form { when, cmd }

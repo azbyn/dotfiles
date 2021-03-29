@@ -74,7 +74,6 @@ alias rH="r /mnt/hdd/"
 alias rQ="r ~/.config/qutebrowser/"
 alias rL="r ~/Projects/licenta/"
 
-alias eB="e ~/.bashrc"
 alias eX="e ~/.Xresources"
 alias eR="e ~/.config/ranger/"
 alias eRR="e ~/.config/ranger/rc.conf"
@@ -161,8 +160,6 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 HISTFILE=~/.zhistory
 HISTSIZE=10000
 SAVEHIST=10000
-#export EDITOR=/usr/bin/nano
-#export VISUAL=/usr/bin/nano
 WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
 
 
@@ -214,6 +211,15 @@ bindkey '^[s' history-incremental-search-forward
 bindkey '^K' kill-line
 bindkey '^[k' kill-whole-line
 
+copy-region-as-kill-deactivate-mark () {
+  zle copy-region-as-kill
+  zle set-mark-command -n -1
+  echo -n $CUTBUFFER | xclip
+}
+zle -N copy-region-as-kill-deactivate-mark
+
+bindkey '^L' copy-region-as-kill-deactivate-mark
+
 get-clipboard() {
   local clip
   clip=$(xclip -sel c -o 2> /dev/null && echo .) || return
@@ -227,7 +233,9 @@ bindkey '^[j' down-line-or-history
 bindkey '^[q' up-line-or-history
 bindkey '^[r' down-line-or-history
 
+#or yank?
 bindkey '^P' get-clipboard
+
 
 
 ## Alias section

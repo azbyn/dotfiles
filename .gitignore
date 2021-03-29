@@ -10,5 +10,5 @@
 !.emacs.d/init.el
 !.emacs.d/lisp/*
 !.emacs.d/lisp
+!.emacs.d/snippets
 !.emacs.d/*.org
-.Xresources_screen_specific

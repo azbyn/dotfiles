@@ -1,0 +1,8 @@
+#!/bin/sh
+pgrep emacs
+pgrep barrier
+moutpoint /home/azbyn/mnt
+moutpoint /home/azbyn/Music
+
+#TODO
+shutdown

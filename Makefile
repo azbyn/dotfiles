@@ -61,7 +61,10 @@ installPackages:
 	cpan Switch::Plain
 	sudo gem install --source http://gems.github.com jamis-fuzzy_file_finder
 
-linksAndStuff:
+linkExtra:
+	ln -s ~/dotfiles/.Xresources_extra_$(shell hostname) ~/.Xresources_extra
+
+linksAndStuff: linkExtra
 	sh ./linkFile.sh .xinitrc
 	sh ./linkFile.sh .Xresources
 	sh ./linkFile.sh .zshrc
@@ -72,7 +75,8 @@ linksAndStuff:
 	sh ./linkFile.sh .gtkrc-2.0
 	sh ./linkFile.sh .profile
 	sh ./linkFile.sh .xmodmaprc
-	sh ./linkFile.sh .emacs.d
+	git clone git@github.com:azbyn/emacs-config.git ~/.emacs.d
+	# sh ./linkFile.sh .emacs.d
 	sh ./linkFile.sh .colors
 	sh ./linkFile.sh bin
 	sudo ln -f ~/dotfiles/ro /usr/share/X11/xkb/symbols/azb || true

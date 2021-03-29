@@ -6,8 +6,8 @@ setxkbmap azb
 xmodmap $HOME/.xmodmaprc
 
 #TODO remove
-export QT_FONT_DPI=120
-export SHELL=/usr/bin/zsh
+# export QT_FONT_DPI=120
+# export SHELL=/usr/bin/zsh
 #<tadeusz>
 xinput set-button-map "TPPS/2 IBM TrackPoint" 1 0 3 4 5 6 7
 dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
