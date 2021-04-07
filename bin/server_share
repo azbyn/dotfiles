@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+sudo update_time
+sudo mount --bind /home/azbyn/Music/ /srv/nfs/Music/
+sudo mount --bind /home/azbyn/ /srv/nfs/home/
+sudo systemctl start nfs-server.service
+sudo systemctl start sshd
+ifconfig | grep 192
+barrier&

@@ -1,4 +1,3 @@
-
 # basic xorg
 PACKAGES := xorg xorg-xinit rxvt-unicode urxvt-perls urxvt-resize-font-git awesome\
          lrexlib-pcre picom lua-yaml lua53-yaml scrot unclutter papirus-icon-theme\
@@ -6,7 +5,8 @@ PACKAGES := xorg xorg-xinit rxvt-unicode urxvt-perls urxvt-resize-font-git aweso
 
 #programs
 PACKAGES += emacs htop ranger mpd mpc mpv feh ncmpcpp firefox thunar zathura \
-         neofetch keepassxc neovim fish w3m maim qbittorrent
+         neofetch keepassxc neovim fish w3m maim qbittorrent glances ncdu
+
 #firefox stuff
 PACKAGES += firefox-dark-reader firefox-ublock-origin
 #fonts
@@ -19,7 +19,7 @@ PACKAGES += python clang texlive-core texlive-latexextra boost cmake python-virt
 PACKAGES += net-tools fortune-mod lolcat zsh
 
 
-YOGA_PACKAGES = xournalpp
+TADEUSZ_PACKAGES = xournalpp
 
 #of use:
 #https://wiki.archlinux.org/index.php/Getty#With_systemd
@@ -57,6 +57,7 @@ locale:
  
 installPackages:
 	yay -S --needed ${PACKAGES}
+	@[ `hostname` = 'tadeusz' ] && yay -S --needed ${TADEUSZ_PACKAGES} || true
 	sudo luarocks install lrexlib-pcre --lua-version 5.3
 	cpan Switch::Plain
 	sudo gem install --source http://gems.github.com jamis-fuzzy_file_finder
@@ -81,6 +82,7 @@ linksAndStuff: linkExtra
 	sh ./linkFile.sh bin
 	sudo ln -f ~/dotfiles/ro /usr/share/X11/xkb/symbols/azb || true
 	sh ./linkFile.sh .config/awesome
+	sh ./linkFile.sh .config/zathura
 	sh ./linkFile.sh .config/urxvt
 	sh ./linkFile.sh .config/colors
 	sh ./linkFile.sh .config/fish

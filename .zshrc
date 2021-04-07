@@ -11,6 +11,12 @@ fi
 # if [[ -e /usr/share/zsh/manjaro-zsh-config ]]; then
 #   source /usr/share/zsh/manjaro-zsh-config
 # fi
+# source /usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+bindkey "^I" complete-word
+
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+# ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ff00ff,bg=cyan,bold,underline"
+# ZSH_AUTOSUGGEST_STRATEGY='completion'
 
 [[ ! -f ~/.profile ]] || source ~/.profile
 
@@ -29,6 +35,9 @@ fi
 export RANGER_LOAD_DEFAULT_RC=false
 
 alias ls="ls --color=auto"
+alias diff="diff --color=auto"
+alias grep="grep --color=auto"
+
 alias sudo="sudo -E"
 
 alias xclip="xclip -selection c"
@@ -68,8 +77,8 @@ alias rD="r ~/Downloads/"
 alias rDf="r --cmd='set show_hidden true' ~/dotfiles/"
 alias rG="r ~/Git/"
 alias rM="r ~/Music/"
-alias rMm="r ~/mnt/"
-alias rMM="r ~/mnt/"
+alias rMm="r /mnt/srv"
+alias rMM="r /mnt/srv"
 alias rP="r ~/Projects/"
 alias rB="r ~/bin/"
 alias rH="r /mnt/hdd/"
@@ -142,6 +151,8 @@ setopt inc_append_history                                       # save commands 
 
 # https://linuxhint.com/ls_colors_bash/
 LS_COLORS="di=1;34"
+
+zstyle ':completion:*' menu yes select
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'       # Case insensitive tab completion
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"         # Colored completion (different colors for dirs/files/etc)

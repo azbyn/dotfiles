@@ -71,7 +71,7 @@ M.term = "urxvt"
 M.music = "ncmpcpp"
 
 --HORRIBLE, we shouldn't use io.popen, but it shouldn't be that bad for one read/refresh
-local hostname =  io.popen("hostname"):read()
+M.hostname =  io.popen("hostname"):read()
 -- local naughty = require("naughty")
 -- naughty.notify({text="hm:"..hostname})
 
@@ -88,11 +88,11 @@ local hostname =  io.popen("hostname"):read()
 --     always_fn: call function always
 M.autorun = {
    { "once", "unclutter -root" },
-   { "start_fn", function()
-        if hostname=="tadeusz" then
-           awful.spawn("sleep 1; xinput -disable 'SYNAPTICS Synaptics Touch Digitizer V04'")
-        end
-   end},
+   -- { "start_fn", function()
+   --      if M.hostname=="tadeusz" then
+   --         awful.spawn("sleep 1; xinput -disable 'SYNAPTICS Synaptics Touch Digitizer V04'")
+   --      end
+   -- end},
    { "once", "picom -b --config ~/.config/picom.conf" },
    { "once", "mpd; mpc pause" },
    --{ "once", "emacs --daemon"},
@@ -225,7 +225,7 @@ function M.get_dropdowns()
       }),
       emacs = lain.util.quakeEmacs({
             app = "emacsclient",
-            extra = "-c -e '(dropdown-mode)'",
+            extra = "-c",-- -e '(dropdown-mode)'",
             --extra = alpha_bg.." -e \"emacsclient -nw -e '(switch-to-buffer \\'*scratch*\\')'\"",
             name = "QuakeDD_emacs",
             argname = "-F \"'(name . \\\"%s\\\"))\"",

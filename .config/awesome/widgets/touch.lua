@@ -1,6 +1,7 @@
 local awful    = require("awful")
 local wibox    = require("wibox")
 local helpers  = require("lain.helpers")
+local gears    = require("gears")
 local config   = require("config")
 local imagebox = require("widgets.imagebox")
 local naughty  = require("naughty")
@@ -37,6 +38,18 @@ function M.toggle()
    end)
    -- awful.spawn.easy_async({"xinput", "list-props", device_id},--script,
 end
+function M.disable()
+     M.is_enabled_async(function (enabled)
+         local str = "disable"
+         if not enabled then
+            return
+         end
+         
+         awful.spawn({"xinput", str, device_id})
+         update(not enabled)
+   end)
+   -- awful.spawn.easy_async({"xinput", "list-props", device_id},--script,
+end
 
 function update(enabled)
    local col = config.colors.fg_normal
@@ -51,5 +64,15 @@ end
 update(false)
 
 -- helpers.newtimer("email_", 1 * 60 * 60, M.update)-- once every 1 hr
+
+gears.timer {
+   timeout = 5,
+   -- call_now = true,
+   autostart = true,
+   single_shot = true,
+   callback = function ()
+      M.disable()
+   end
+}
 
 return M

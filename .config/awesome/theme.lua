@@ -74,8 +74,8 @@ local temp  = require("widgets.temp")
 local ld    = require("widgets.load")
 theme.meeting_mode = require("widgets.meeting_mode")
 local email = require("widgets.email")
-
 theme.touch = require("widgets.touch")
+
 -- local signal= require("widgets.signal")
 
 -- local weather = require("widgets.weather")

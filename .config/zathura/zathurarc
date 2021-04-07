@@ -1,0 +1,8 @@
+map n scroll full-down
+map m scroll full-up
+map z scroll half-down
+map x scroll half-up
+map <Space> scroll full-down
+map <C-r> recolor
+map p feedkeys ":set page-padding 45<Return>"
+set selection-clipboard clipboard
