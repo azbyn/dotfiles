@@ -7,6 +7,7 @@ export EDITOR=/home/azbyn/bin/e
 export VISUAL=/home/azbyn/bin/e
 export BASE16_SHELL_SET_BACKGROUND=false
 export DOTNET_CLI_TELEMETRY_OPTOUT=true
+export LESSHISTFILE="-"
 
 export PATH=$PATH:~/bin
 PERL5LIB="/home/azbyn/.local/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;

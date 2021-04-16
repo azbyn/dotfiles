@@ -70,14 +70,10 @@ def get_sub_urxvt():
 
 def check_mounted(what):
     if returncode(["mountpoint", what]) == 0:
-        y_or_n("Ignore mounted "+what)
-
-        # we dont have sudo ;_;
-        # TODO, fix
-        # if returncode([home+"/bin/y-or-n", "Run server_unmount"]) != 0:
-        #     exit(1)
-        # else:
-        #     os.system(home+"/bin/server_unmount")
+        if returncode([home+"/bin/y-or-n", "Run server_unmount"]) != 0:
+            exit(1)
+        else:
+            os.system(f"SUDO_ASKPASS={home}/bin/askpass-rofi sudo -A {home}/bin/server_unmount {home}")
 
 check_emacs()
 #if we have one mounted we prolly have both

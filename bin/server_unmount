@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 pkill mpd
-sudo umount ~/Music
+sudo umount ${1}/Music
 sudo umount /mnt/srv

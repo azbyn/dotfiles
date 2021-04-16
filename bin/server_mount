@@ -1,5 +1,7 @@
 #!/bin/sh
-sudo update_time
+if [ $# -lt 1 ]; then
+    sudo update_time
+fi
 showmount -e schlachtkreuzer
 sudo mount schlachtkreuzer:/srv/nfs/Music ~/Music
 sudo mount schlachtkreuzer:/srv/nfs/home /mnt/srv

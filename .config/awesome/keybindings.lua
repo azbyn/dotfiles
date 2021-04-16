@@ -240,24 +240,24 @@ M.globalkeys = awful.util.table.join(
    key(mod, ctrl, "x", { "Misc", "M-x", M_x_menu}),
    key(mod, alt, "x", { "Misc", "M-x", M_x_menu}),
 
-   define_keypad_key('bracketleft', 'KP_Divide'),
-   define_keypad_key('bracketright', 'KP_Multiply'),
+   -- define_keypad_key('bracketleft', 'KP_Divide'),
+   -- define_keypad_key('bracketright', 'KP_Multiply'),
 
-   define_keypad_key('8', '7'),
-   define_keypad_key('9', '8'),
-   define_keypad_key('0', '9'),
+   -- define_keypad_key('8', '7'),
+   -- define_keypad_key('9', '8'),
+   -- define_keypad_key('0', '9'),
 
-   define_keypad_key('i', '4'),
-   define_keypad_key('o', '5'),
-   define_keypad_key('p', '6'),
+   -- define_keypad_key('i', '4'),
+   -- define_keypad_key('o', '5'),
+   -- define_keypad_key('p', '6'),
 
-   define_keypad_key('k', '1'),
-   define_keypad_key('l', '2'),
-   define_keypad_key('semicolon', '3'),
+   -- define_keypad_key('k', '1'),
+   -- define_keypad_key('l', '2'),
+   -- define_keypad_key('semicolon', '3'),
 
-   define_keypad_key('m', '0'),
-   define_keypad_key('comma', '0'),
-   define_keypad_key('period', 'KP_Decimal'),
+   -- define_keypad_key('m', '0'),
+   -- define_keypad_key('comma', '0'),
+   -- define_keypad_key('period', 'KP_Decimal'),
 
 
    --emulated keypad with hyper
@@ -596,7 +596,7 @@ M.globalkeys = awful.util.table.join(
     key(mod, alt, "e", {"Misc", "Emacs toggle",
         function ()
                 local screen = awful.screen.focused()
-                local tag = screen.tags[6]
+                local tag = screen.tags[7]
                 if tag then
                     awful.tag.viewtoggle(tag)
                 end
@@ -604,7 +604,7 @@ M.globalkeys = awful.util.table.join(
     key(mod, ctrl, "e", {"Misc", "Emacs move",
         function ()
             if client.focus then
-                local tag = client.focus.screen.tags[6]
+                local tag = client.focus.screen.tags[7]
                 if tag then
                     client.focus:move_to_tag(tag)
                     tag:view_only()
@@ -614,7 +614,7 @@ M.globalkeys = awful.util.table.join(
     key(mod, alt, ctrl, "e", {"Misc", "Emacs toggle_focus",
         function ()
             if client.focus then
-                local tag = client.focus.screen.tags[6]
+                local tag = client.focus.screen.tags[7]
                 if tag then
                     client.focus:toggle_tag(tag)
                 end

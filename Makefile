@@ -14,9 +14,9 @@ PACKAGES += nerd-fonts-dejavu-complete ttf-dejavu nerd-fonts-ubuntu-mono \
          ttf-ubuntu-font-family awesome-terminal-fonts ttf-font-awesome ttf-all-the-icons
 #programming
 PACKAGES += python clang texlive-core texlive-latexextra boost cmake python-virtualenv \
-         dub dmd ipython jupyter
+         dub dmd ipython jupyter texlive-science texlive-localmanager-git
 #misc
-PACKAGES += net-tools fortune-mod lolcat zsh
+PACKAGES += net-tools fortune-mod lolcat zsh time
 
 
 TADEUSZ_PACKAGES = xournalpp
