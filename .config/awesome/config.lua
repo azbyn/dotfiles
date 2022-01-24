@@ -88,6 +88,8 @@ M.hostname =  io.popen("hostname"):read()
 --     always_fn: call function always
 M.autorun = {
    { "once", "unclutter -root" },
+
+   
    -- { "start_fn", function()
    --      if M.hostname=="tadeusz" then
    --         awful.spawn("sleep 1; xinput -disable 'SYNAPTICS Synaptics Touch Digitizer V04'")

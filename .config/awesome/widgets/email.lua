@@ -41,7 +41,8 @@ function M.update()
     end)
 end
 --M.update()--check on load
-helpers.newtimer("email_", 1 * 60 * 60, M.update)-- once every 1 hr
+-- helpers.newtimer("email_", 1 * 60 * 60, M.update)-- once every 1 hr
+helpers.newtimer("email_", 1 * 10 * 60, M.update)-- once every 10 min
 
 return M
 

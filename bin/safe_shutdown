@@ -41,8 +41,9 @@ def is_running(name):
 
 ##############################
 
-def check_emacs():
-    if is_running('emacs'): y_or_n("Close emacs?")
+def check_is_running(what):
+    if is_running(what): y_or_n(f"Close {what}?")
+
 
 # get all processes running under urxvt
 def get_sub_urxvt():
@@ -75,7 +76,8 @@ def check_mounted(what):
         else:
             os.system(f"SUDO_ASKPASS={home}/bin/askpass-rofi sudo -A {home}/bin/server_unmount {home}")
 
-check_emacs()
+check_is_running("emacs")
+check_is_running("yay")
 #if we have one mounted we prolly have both
 check_mounted(home+"/Music")
 check_mounted("/mnt/srv")

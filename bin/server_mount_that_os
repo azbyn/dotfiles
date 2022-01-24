@@ -1,0 +1,16 @@
+#!/bin/sh
+#if [ $# -lt 1 ]; then
+#    sudo update_time
+#fi
+#showmount -e franciszek
+#sudo mount -t cifs -o username=azbyn //192.168.100.42/FreeNFS/Music ~/Music
+sudo mount -t cifs -o credentials=/etc/win-credentials,uid=1000 //franciszek/FreeNFS/Music ~/Music
+sudo mount -t cifs -o credentials=/etc/win-credentials,uid=1000 //franciszek/FreeNFS/Memes ~/Downloads/__memes
+sudo mount -t cifs -o credentials=/etc/win-credentials,uid=1000 //franciszek/FreeNFS/ /mnt/srv
+# sudo mount franciszek:/srv/nfs/home /mnt/srv
+
+#sudo mount franciszek:/srv/nfs/music ~/Music
+#sudo mount franciszek:/srv/nfs/memes ~/Downloads/__memes
+#sudo mount franciszek:/srv/nfs/home /mnt/srv
+mpd
+mpc update

@@ -21,9 +21,10 @@ clear Mod5
 !keycode 37 = Alt_L
 !keycode 64 = Control_L
 
-!hyper, alt, ctrl; caps=super
+!ctrl, alt, ctrl; caps=super
 keycode 66 = Super_L
-keycode 37 = Hyper_L
+keycode 37 = Control_L
+! keycode 37 = Hyper_L
 keycode 133 = Alt_L
 keycode 64 = Control_L
 

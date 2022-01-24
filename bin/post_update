@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-sudo update_time
 make -C ~/Projects/transliterate/ rebuild
 make -C ~/Projects/ncmpcpp/ clean
 make -C ~/Projects/ncmpcpp/ -j8

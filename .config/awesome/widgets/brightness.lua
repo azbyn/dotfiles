@@ -38,9 +38,9 @@ end
 
 function M.update(cmd)
    if cmd then
-      cmd = cmd .. "&& xbacklight"
+      cmd = cmd .. "&& light"
    else
-      cmd = "xbacklight"
+      cmd = "light"
    end
    
    awful.spawn.easy_async_with_shell(cmd,-- .."&& xbacklight",

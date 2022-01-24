@@ -74,11 +74,11 @@ local function notify(title, text, col)
 end
 
 function M.update()
-    awful.spawn.easy_async({"acpi", "-b"},
-        function(out, _, _, _)
-            for status, charge, time in string.gmatch(out, ".-: (.-), (.*)%%,? ?(.*)") do
-                --out = "Battery 0: Discharging, 95%, 00:25:16 remaining\n"
-                --local status, charge, time = string.match(out, ".-: (.-), (.*)%%,? ?(.-)")
+   awful.spawn.easy_async({"acpi", "-b"},
+      function(out, _, _, _)
+         for _, line in  ipairs(split_string_lines(out)) do
+            for status, charge, time in string.gmatch(line, ".-: (.-), (.*)%%,? ?(.*)") do
+               
                local color
                local t = time or ""
                local data = {time = time ~="" and time or (status or "")}
@@ -134,7 +134,8 @@ function M.update()
                M.text:set_text(sprintf("%s%%", data.charge))
                ::continue::
             end
-    end)
+         end
+   end)
 end
 helpers.newtimer("bat_", 20, M.update)
 

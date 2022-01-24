@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+
 set -o noclobber -o noglob -o nounset -o pipefail
 IFS=$'\n'
+
 
 ## If the option `use_preview_script` is set to `true`,
 ## then this script will be called and its output will be displayed in ranger.
@@ -38,6 +40,13 @@ PV_IMAGE_ENABLED="${5}"  # 'True' if image previews are enabled, 'False' otherwi
 FILE_EXTENSION="${FILE_PATH##*.}"
 FILE_EXTENSION_LOWER="$(printf "%s" "${FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
 
+
+case "${FILE_PATH}" in
+    "/home/azbyn/Music"*|"/home/azbyn/Schlachtkreuzer_Projects"*)
+        exit 1;;
+esac
+
+
 ## Settings
 HIGHLIGHT_SIZE_MAX=262143  # 256KiB
 HIGHLIGHT_TABWIDTH=${HIGHLIGHT_TABWIDTH:-8}
@@ -49,6 +58,12 @@ OPENSCAD_COLORSCHEME=${RNGR_OPENSCAD_COLORSCHEME:-Tomorrow Night}
 
 handle_extension() {
     case "${FILE_EXTENSION_LOWER}" in
+        ## don't do it
+        epub)
+            exit 1;;
+        tif)
+            exit 1;;
+        
         ## Archive
         a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|\
         rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|Z|zip)
@@ -64,6 +79,9 @@ handle_extension() {
             7z l -p -- "${FILE_PATH}" && exit 5
             exit 1;;
 
+        m4a|mp3|flac|wma|wav|3gp|aac|m4b|mpc|ogg|oga|raw|ra|rm|webm|wv)
+            exit 1;;
+
         ## PDF
         pdf)
             ## Preview as text conversion
@@ -76,7 +94,7 @@ handle_extension() {
 
         ## BitTorrent
         torrent)
-            transmission-show -- "${FILE_PATH}" && exit 5
+            # transmission-show -- "${FILE_PATH}" && exit 5
             exit 1;;
 
         ## OpenDocument
@@ -338,6 +356,11 @@ handle_fallback() {
     exit 1
 }
 
+case "${FILE_EXTENSION_LOWER}" in
+    ## don't do it
+    tif)
+        exit 1;;
+esac
 
 MIMETYPE="$( file --dereference --brief --mime-type -- "${FILE_PATH}" )"
 if [[ "${PV_IMAGE_ENABLED}" == 'True' ]]; then

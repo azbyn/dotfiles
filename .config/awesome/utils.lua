@@ -36,7 +36,7 @@ function dlog(msg)
 end
 -- Log formated string to log_file
 function dlogf(...)
-	dlog(sprintf(...))
+   dlog(sprintf(...))
 end
 
 -- Run cmd if no instances are found
@@ -149,5 +149,15 @@ function parse_color(color)
 	else
 		error("invalid color, please use string or table")
 	end
+end
 
+function split_string_lines(str)
+   local res = {}
+   local i = 1
+   for line in str:gmatch("([^\n]*)\n?") do
+      res[i] = line
+      i = i + 1
+      -- do something
+   end
+   return res
 end

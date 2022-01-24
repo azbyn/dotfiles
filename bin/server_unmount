@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 pkill mpd
-sudo umount ${1}/Music
+sudo umount /home/azbyn/Music
+sudo umount /home/azbyn/Downloads/__memes
 sudo umount /mnt/srv

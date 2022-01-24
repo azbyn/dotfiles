@@ -2,8 +2,9 @@
 if [ $# -lt 1 ]; then
     sudo update_time
 fi
-showmount -e schlachtkreuzer
-sudo mount schlachtkreuzer:/srv/nfs/Music ~/Music
-sudo mount schlachtkreuzer:/srv/nfs/home /mnt/srv
+showmount -e franciszek
+sudo mount franciszek:/srv/nfs/music ~/Music
+sudo mount franciszek:/srv/nfs/memes ~/Downloads/__memes
+sudo mount franciszek:/srv/nfs/home /mnt/srv
 mpd
 mpc update

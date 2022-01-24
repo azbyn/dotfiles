@@ -1,0 +1,7 @@
+#!/bin/sh
+xrandr --addmode VIRTUAL1 1920x1080
+
+xrandr --output VIRTUAL1 --mode 1920x1080 --right-of eDP1
+
+sleep 3
+x11vnc -display :0 -clip 1920x1080+1920+0 -rfbauth ~/.vnc/passwd -viewonly

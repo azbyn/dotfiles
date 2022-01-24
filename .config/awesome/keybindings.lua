@@ -63,13 +63,13 @@ local vol = {
 }
 local brightness = {
     up = {"Brightness", "Brightness Up",
-          theme.brightness.exec("xbacklight + 10")}, --exec("light -A 10")},
+          theme.brightness.exec("light -A 10")}, --"xbacklight + 10")},
     down = {"Brightness", "Brightness Down",
-            theme.brightness.exec("xbacklight - 10")}, --exec("light -U 10")},
+            theme.brightness.exec("light -U 10")}, --"xbacklight - 10")},
     low = {"Brightness", "Brightness Low",
-          theme.brightness.exec("xbacklight = 2")}, --exec("light -S 20")},
+          theme.brightness.exec("light -S 20")}, --"xbacklight = 2")},
     high = {"Brightness", "Brightness High",
-          theme.brightness.exec("xbacklight = 100")}, --exec("light -S 100")},
+          theme.brightness.exec("light -S 100")}, --"xbacklight = 100")},
 }
 local function set_titlebar(c, val)
     --if val then
@@ -291,8 +291,8 @@ M.globalkeys = awful.util.table.join(
     --key(hyper, "minus", vol["down"]),
     --key(hyper, ctrl, "minus", vol["sdown"]),
 
-    key(mod, "i", vol["up"]),
-    key(mod, "j", vol["down"]),
+    -- key(mod, "i", vol["up"]),
+    -- key(mod, "j", vol["down"]),
     --key(mod, "i", music["next"]),
     --key(mod, "j", music["prev"]),
 
@@ -394,10 +394,10 @@ M.globalkeys = awful.util.table.join(
         awesome.restart}),
     key(mod, ctrl, "r", {"Misc", "Restart Awesome",
         awesome.restart}),
-    key(shift, hyper, alt, "BackSpace", {"Misc", "Restart", safe_restart}),
+    key(shift, ctrl, alt, "BackSpace", {"Misc", "Restart", safe_restart}),
     key(mod, ctrl, "Escape", {"Misc", "Quit Awesome",
         function() awesome.quit() end}),
-    key(shift, hyper, alt, "Escape", {"Misc", "Shutdown", safe_shutdown}),
+    key(shift, ctrl, alt, "Escape", {"Misc", "Shutdown", safe_shutdown}),
 
 
     --[[key(alt, "Tab", {"Movement", "View Last Window",
@@ -424,7 +424,12 @@ M.globalkeys = awful.util.table.join(
     --key(mod, "l", {"Movement", "Next Tag",
     --    function() inc_tag(1) end}),--awful.tag.viewnext}),
     key(mod, "o", {"Movement", "Next Window",
-        function() awful.client.focus.byidx(1) end}),
+                   function() awful.client.focus.byidx(1) end}),
+    key(mod, "i", {"Movement", "Next Screen",
+                   function() awful.screen.focus_relative(1) end}),
+    key(mod, ctrl, "space", {"Movement", "Next Screen",
+                             function() awful.screen.focus_relative(1) end}),
+
     key(mod, shift, "o", {"Movement", "Previous Window",
         function() awful.client.focus.byidx(-1) end}),
 
@@ -768,7 +773,7 @@ M.clientkeys = awful.util.table.join(
 
     key(mod, "F11", maximize),
     key(mod, ctrl, "F11", fullscreen),
-    key(mod, ctrl, "space", {"Client", "Toggle floating",
+    key(mod, alt, "space", {"Client", "Toggle floating",
         function(c) lain.util.magnify_client(c); c:raise() end }),
 
     key(mod, alt, "f", maximize),
@@ -790,7 +795,14 @@ M.clientkeys = awful.util.table.join(
     key(mod, ctrl, "o", {"Client", "Move to screen",
         function(c) c:move_to_screen() end}),
     key(mod, ctrl, "a", {"Client", "Toggle keep on top",
-        function(c) c.ontop = not c.ontop end})
+                         function(c) c.ontop = not c.ontop end}),
+
+    key(mod, ctrl, "i", {"Movement", "Move to next screen",
+                         function(c)
+                            c:move_to_screen()--c.screen.index+1)
+                            -- awful.screen.focus_relative(1)
+    end})
+    
 )
 
 for i = 1, 9 do
