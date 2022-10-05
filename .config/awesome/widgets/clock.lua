@@ -41,6 +41,6 @@ function M.update()
     --end
 end
 
-helpers.newtimer("date-time", 30, M.update)
+helpers.newtimer("date-time", 10, M.update)
 
 return M

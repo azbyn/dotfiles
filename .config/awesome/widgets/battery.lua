@@ -87,6 +87,7 @@ function M.update()
                if charge == "0" then
                   goto continue --why, lua
                end
+               
                if status then
                   data.charge = tonumber(charge)
                   local icon

@@ -85,6 +85,7 @@ linksAndStuff: linkExtra
 	sh ./linkFile.sh .config/zathura
 	sh ./linkFile.sh .config/urxvt
 	sh ./linkFile.sh .config/colors
+	sh ./linkFile.sh .cabal/config
 	sh ./linkFile.sh .config/fish
 	sh ./linkFile.sh .config/rofi
 	sh ./linkFile.sh .config/gtk-2.0

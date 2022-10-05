@@ -181,13 +181,29 @@ local function inc_tag(inc)
 end
 local home = os.getenv("HOME")
 
-local mx_functions = {
-   ["touch-toggle"] = theme.touch.toggle,
-   ["meeting-mode-toggle"] = toggle_meeting_mode,
-}
+local mx_functions_names = {}
+local mx_functions = {}
+
+function mx_def(name, fun)
+   table.insert(mx_functions_names, name)
+   mx_functions[name] = fun
+end
+
+mx_def("touch-toggle", theme.touch.toggle)
+mx_def("switch_layout", function() switch_layout(1) end)
+mx_def("meeting-mode-toggle", toggle_meeting_mode)
+mx_def("master-col-increase", function() awful.tag.incnmaster(1, nil, true) end)
+mx_def("master-col-decrease", function() awful.tag.incnmaster(-1, nil, true) end)
+
 
 function M_x_menu()
-   local str = "touch-toggle\nmeeting-mode-toggle"
+   local str = ""-- "touch-toggle\nmeeting-mode-toggle\nmaster-col-increase\nmaster-col-decrease"
+   for _, key in ipairs(mx_functions_names) do
+      if str ~= "" then
+         str = str.. "\n"
+      end
+      str = str .. key
+   end
 
    -- naughty.notify({text="strol '"..str.."'"})
    awful.spawn.easy_async_with_shell("echo '"..str.."' | rofi -dmenu -p 'awesome M-x' ",
@@ -337,10 +353,10 @@ M.globalkeys = awful.util.table.join(
     -- key(alt, "semicolon", vol["down"]),
     -- key(alt, ctrl, "semicolon", vol["sdown"]),
 
-    key(alt, "Left", {"Movement", "Focus Left",
-        function() focus_direction("left") end}),
-    key(alt, "Right", {"Movement", "Focus Right",
-        function() focus_direction("right") end}),
+    -- key(alt, "Left", {"Movement", "Focus Left",
+    --     function() focus_direction("left") end}),
+    -- key(alt, "Right", {"Movement", "Focus Right",
+    --     function() focus_direction("right") end}),
 
 
     -- key(alt, "grave", theme.mymainmenu:show()),
@@ -411,13 +427,13 @@ M.globalkeys = awful.util.table.join(
     key(mod, "space", {"Movement", "Last Tags",
         awful.tag.history.restore}),
 
-    key(alt, "tab", {"Layout", "Select next layout",
-        function()
-            switch_layout(1)
-            --naughty.notify({text="OIDA"})
-            --gears.wallpaper.maximized(os.getenv("HOME").. "/Pictures/bear.jpg",
-            --    awful.screen.focused(), true)
-        end}),
+    -- key(alt, "tab", {"Layout", "Select next layout",
+    --     function()
+    --         switch_layout(1)
+    --         --naughty.notify({text="OIDA"})
+    --         --gears.wallpaper.maximized(os.getenv("HOME").. "/Pictures/bear.jpg",
+    --         --    awful.screen.focused(), true)
+    --     end}),
 
     --key(mod, "h", {"Movement", "Previous Tag",
     --    function() inc_tag(-1) end}),--awful.tag.viewprev}),
@@ -609,7 +625,7 @@ M.globalkeys = awful.util.table.join(
     key(mod, ctrl, "e", {"Misc", "Emacs move",
         function ()
             if client.focus then
-                local tag = client.focus.screen.tags[7]
+                local tag = client.focus.screen.tags[config.nr_normal_tags + 1]
                 if tag then
                     client.focus:move_to_tag(tag)
                     tag:view_only()
@@ -619,7 +635,7 @@ M.globalkeys = awful.util.table.join(
     key(mod, alt, ctrl, "e", {"Misc", "Emacs toggle_focus",
         function ()
             if client.focus then
-                local tag = client.focus.screen.tags[7]
+                local tag = client.focus.screen.tags[config.nr_normal_tags + 1]
                 if tag then
                     client.focus:toggle_tag(tag)
                 end

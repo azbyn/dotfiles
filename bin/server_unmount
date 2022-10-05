@@ -3,3 +3,6 @@ pkill mpd
 sudo umount /home/azbyn/Music
 sudo umount /home/azbyn/Downloads/__memes
 sudo umount /mnt/srv
+# sudo sshpass -f /home/azbyn/.local/franciszek-pass
+
+# franek-watchdog unmount

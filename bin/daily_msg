@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use Switch::Plain;
+#use Switch::Plain;
 
 my $BLACK   = "\x1b[30m";
 my $RED     = "\x1b[31m";
@@ -27,13 +27,11 @@ my @databases = qw(
     anti-jokes
     computers
     cookie
-    debian
     drugs
     food
     fortunes
     humorists
     kids
-    limericks
     linux
     linuxcookie
     love
@@ -47,15 +45,15 @@ my $day = (localtime(time))[6];
 my $db = $databases[rand @databases];
 my $daymsg = "";
 
-sswitch ($day) {
-    case 1: { $daymsg = ""; }
-    case 2: { $daymsg = ""; }
-    case 3: { $daymsg = ""; }
-    case 4: { $daymsg = ""; }
-    case 5: { $daymsg = "It's Update Friday!"; }
-    case 6: { $daymsg = "Update, remember?"; }
-    case 7: { $daymsg = ""; }
-}
+#sswitch ($day) {
+#    case 1: { $daymsg = ""; }
+#    case 2: { $daymsg = ""; }
+#    case 3: { $daymsg = ""; }
+#    case 4: { $daymsg = ""; }
+#    case 5: { $daymsg = "It's Update Friday!"; }
+#    case 6: { $daymsg = "Update, remember?"; }
+#    case 7: { $daymsg = ""; }
+#}
 
 
 print $BLUE, "Welcome back $ENV{USER}", $RESET, "\n";

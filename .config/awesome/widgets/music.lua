@@ -118,7 +118,7 @@ function M.update(cmd)
                track = _track and _track
             end
          end
-         if date then album = album.." - "..date end
+         --if date then album = album.." - "..date end
          local function get_arc_text(s)
             local levels = { '█', '▉', '▊', '▋', '▌','▍', '▎', '▏', }
             return levels[math.floor(s / 2) + 1]

@@ -114,6 +114,12 @@ M.program_rules = {
    --  properties = { floating = true } },
    { rule = { class = "matplotlib" },
      properties = { floating = true } },
+   { rule = { name = "Transliterate" },
+     properties = { floating = true } },
+
+   { rule = { class = "tk" },
+     properties = { floating = true } },
+   
    { rule = { class = "screenshotifinator" },
      properties = {
         floating = true,
@@ -123,7 +129,7 @@ M.program_rules = {
    } },
 }
 
-M.nr_normal_tags = 6
+M.nr_normal_tags = 7
 M.special_tags_order = { "E", "S", "W", "G", "P", "T", } --"V"
 M.special_tags = {
    --tag = {command, class, role-for-primary}w
@@ -214,17 +220,17 @@ function M.get_dropdowns()
             vert = "center",
             horiz = "center",
       }),
-      signal = lain.util.quake({
-            app = "kitty",-- M.term,
-            extra = " -e sh -c \"sh ~/.colors/shell; sclid\"",
-            --extra = alpha_bg.." -e \"emacsclient -nw -e '(switch-to-buffer \\'*scratch*\\')'\"",
-            name = "QuakeDD_signal",
-            argname = "--name %s",
-            height = 0.8,
-            width = 0.75,
-            vert = "center",
-            horiz = "center",
-      }),
+      -- signal = lain.util.quake({
+      --       app = "kitty",-- M.term,
+      --       extra = " -e sh -c \"sh ~/.colors/shell; sclid\"",
+      --       --extra = alpha_bg.." -e \"emacsclient -nw -e '(switch-to-buffer \\'*scratch*\\')'\"",
+      --       name = "QuakeDD_signal",
+      --       argname = "--name %s",
+      --       height = 0.8,
+      --       width = 0.75,
+      --       vert = "center",
+      --       horiz = "center",
+      -- }),
       emacs = lain.util.quakeEmacs({
             app = "emacsclient",
             extra = "-c",-- -e '(dropdown-mode)'",
@@ -265,9 +271,9 @@ function M.get_dropdowns()
       --       horiz = "center",
       -- }),
       transliterate = lain.util.quake({
-            app = M.term,
-            extra = alpha_bg.." -e '/home/azbyn/bin/transliterate'",
-            name = "QuakeDD_transliterate",
+            app = "transliterate-tk",-- M.term,
+            extra = "",-- "QuakeDD_transliterate",-- alpha_bg.." -e '/home/azbyn/bin/transliterate'",
+            name = "quakeDD_transliterate",
             height = 120,
             width = 1100,--0.6,
             vert = "center",
@@ -280,6 +286,8 @@ end
 
 M.layouts = {
    --awful.layout.suit.floating,
+
+   --awful.layout.grid,
    awful.layout.suit.tile,
    --awful.layout.suit.tile.left,
    --awful.layout.suit.tile.bottom,

@@ -33,7 +33,8 @@ function quake:display()
     local i = 0
     for c in awful.client.iterate(function (c)
         -- c.name may be changed!
-        return c.instance == self.name
+          return c.instance == self.name
+          --return c.class == self.name
     end)
     do
         i = i + 1
