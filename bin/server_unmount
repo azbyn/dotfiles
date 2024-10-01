@@ -5,4 +5,9 @@ sudo umount /home/azbyn/Downloads/__memes
 sudo umount /mnt/srv
 # sudo sshpass -f /home/azbyn/.local/franciszek-pass
 
-# franek-watchdog unmount
+echo "Please do a nice unmount"
+read
+echo "are ya sure"
+read
+
+franek-watchdog unmount

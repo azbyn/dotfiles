@@ -24,6 +24,10 @@ xset s off
 # turn off default standby, hibernate, ... after n minutes
 xset -dpms
 
+
+mpd
+mpc pause
+
 session=awesome
 
 case $session in

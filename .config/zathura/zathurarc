@@ -6,3 +6,17 @@ map <Space> scroll full-down
 map <C-r> recolor
 map p feedkeys ":set page-padding 45<Return>"
 set selection-clipboard clipboard
+
+
+# set default-bg                  "#fdf6e3" # base3
+# set default-fg                  "#222222" # base00
+# set render-loading              true
+# set recolor-lightcolor          "#fdf6e3" # base3
+# set recolor-darkcolor           "#222222" # base00
+# set recolor                     "true"
+
+set default-bg                  "#1D1F21" # base02
+set default-fg                  "#E0E0E0" # base1
+set recolor                     false
+set recolor-lightcolor          "#1D1F21" # base02
+set recolor-darkcolor           "#E0E0E0" # base1

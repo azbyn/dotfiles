@@ -102,8 +102,8 @@ function M.update(cmd)
                                                                    '(.*)'..          --title
                                                                    '\\.(.*)')        --extension
             if not artist then
-               artist = _artist and trim(_artist) or
-                  (_album and trim(_album) or "")
+               artist = _artist and trim(_artist) or ""
+                  -- (_album and trim(_album) or "")
                    -- (dir and trim(dir) or ""))
                -- a nice fix
                if artist == "ACDC" then artist = "AC/DC" end

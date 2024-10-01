@@ -16,7 +16,7 @@ PACKAGES += nerd-fonts-dejavu-complete ttf-dejavu nerd-fonts-ubuntu-mono \
 PACKAGES += python clang texlive-core texlive-latexextra boost cmake python-virtualenv \
          dub dmd ipython jupyter texlive-science texlive-localmanager-git
 #misc
-PACKAGES += net-tools fortune-mod lolcat zsh time
+PACKAGES += net-tools fortune-mod lolcat zsh time python-bluetooth-battery jupyter-notebook 
 
 
 TADEUSZ_PACKAGES = xournalpp
@@ -61,6 +61,8 @@ installPackages:
 	sudo luarocks install lrexlib-pcre --lua-version 5.3
 	cpan Switch::Plain
 	sudo gem install --source http://gems.github.com jamis-fuzzy_file_finder
+	pip install jupyterthemes
+	jt -t onedork
 
 linkExtra:
 	ln -s ~/dotfiles/.Xresources_extra_$(shell hostname) ~/.Xresources_extra

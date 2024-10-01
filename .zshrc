@@ -401,3 +401,4 @@ add-zsh-hook preexec mzc_termsupport_preexec
 
 
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+# clear

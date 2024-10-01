@@ -32,7 +32,7 @@ sub download {
 	my $song = shift;
 	$song =~ s/&.*//; #remove data about playlist and others
 	print "$song\n" if $print;
-	my $cmd = "youtube-dl --extract-audio --audio-format mp3 '$song' -o '$output/%(title)s.%(ext)s'";
+	my $cmd = "youtube-dl --metadata-from-title \"(?P<artist>.+?) - (?P<title>.+)\" --extract-audio --audio-format mp3 '$song' -o '$output/%(artist)s - %(title)s.%(ext)s'";
 	unless ($verbose) {#show output in real time
 		system $cmd;
 	}
