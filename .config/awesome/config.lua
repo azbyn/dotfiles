@@ -95,7 +95,7 @@ M.autorun = {
    --         awful.spawn("sleep 1; xinput -disable 'SYNAPTICS Synaptics Touch Digitizer V04'")
    --      end
    -- end},
-   { "once", "picom -b --config ~/.config/picom.conf" },
+   { "once", "picom --backend xrender -b --config ~/.config/picom.conf" },
    { "once", "mpd; mpc pause" },
    --{ "once", "emacs --daemon"},
    -- { "start", "mpc pause" },

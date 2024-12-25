@@ -5,7 +5,9 @@ PACKAGES := xorg xorg-xinit rxvt-unicode urxvt-perls urxvt-resize-font-git aweso
 
 #programs
 PACKAGES += emacs htop ranger mpd mpc mpv feh ncmpcpp firefox thunar zathura \
-         neofetch keepassxc neovim fish w3m maim qbittorrent glances ncdu
+         neofetch keepassxc neovim fish w3m maim qbittorrent glances \
+         ncdu rofi bitwarden gimp pavucontrol xfce-settings \
+         pulseaudio-alsa alsa-utils light timidity++ ttf-ubuntu-mono-nerd
 
 #firefox stuff
 PACKAGES += firefox-dark-reader firefox-ublock-origin
@@ -93,7 +95,7 @@ linksAndStuff: linkExtra
 	sh ./linkFile.sh .config/gtk-2.0
 	sh ./linkFile.sh .config/gtk-3.0
 	mkdir ~/.config/mpd/
-	sh ./linkFile.sh .config/mpd/
+	sh ./linkFile.sh .config/mpd/mpd.conf
 	sh ./linkFile.sh .config/ncmpcpp
 	sh ./linkFile.sh .config/neofetch
 	sh ./linkFile.sh .config/nvim

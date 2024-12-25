@@ -9,12 +9,12 @@ export BASE16_SHELL_SET_BACKGROUND=false
 export DOTNET_CLI_TELEMETRY_OPTOUT=true
 export LESSHISTFILE="-"
 
-export PSPDEV=/usr/local/pspdev
-export DEVKITARM=/opt/devkitpro/devkitARM
+#export PSPDEV=/usr/local/pspdev
+#export DEVKITARM=/opt/devkitpro/devkitARM
 
-export DEVKITPRO=/opt/devkitpro
-export DEVKITARM=/opt/devkitpro/devkitARM
-export DEVKITPPC=/opt/devkitpro/devkitPPC
+#export DEVKITPRO=/opt/devkitpro
+#export DEVKITARM=/opt/devkitpro/devkitARM
+#export DEVKITPPC=/opt/devkitpro/devkitPPC
 
 
 export PATH=~/bin:$PATH:$PSPDEV/bin:${DEVKITPRO}/tools/bin:${DEVKITARM}/bin
@@ -32,4 +32,4 @@ PERL_MM_OPT="INSTALL_BASE=/home/azbyn/.local/perl5"; export PERL_MM_OPT;
 #PERL_MM_OPT="INSTALL_BASE=/home/azbyn/perl5"; export PERL_MM_OPT;
 #:~/Android/Sdk/tools:~/Android/Sdk/ndk-bundle:$PATH
 
-. "$HOME/.cargo/env"
+#. "$HOME/.cargo/env"
